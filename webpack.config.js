@@ -4,6 +4,7 @@ module.exports = {
   mode: 'development',
   entry: './client/src/index.tsx',
   devtool: 'inline-source-map',
+  watch: true,
   module: {
     rules: [
       {
@@ -20,5 +21,4 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
-  watch: true,
 };
