@@ -1,14 +1,24 @@
 const express = require('express');
 const { auth, requiresAuth } = require('express-openid-connect');
 const app = express();
+require('dotenv').config();
+
+// CONSTANTS
+// path to dist folder
+const DIST_PATH = path.resolve(__dirname, '..', 'client/dist');
+// port
+const PORT = 8000;
+// GOOGLE CLIENT keys from .env
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 
 const config = {
   authRequired: false,
   auth0Logout: true,
   baseURL: 'http://localhost:3000',
-  clientID: '{yourClientId}',
+  clientID: GOOGLE_CLIENT_ID,
   issuerBaseURL: 'https://{yourDomain}',
-  secret: 'LONG_RANDOM_STRING'
+  secret: GOOGLE_CLIENT_SECRET
 };
 
 // The `auth` router attaches /login, /logout
