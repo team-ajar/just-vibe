@@ -5,9 +5,9 @@ require('dotenv').config();
 
 // CONSTANTS
 // path to dist folder
-const DIST_PATH = path.resolve(__dirname, '..', 'client/dist');
-// port
-const PORT = 8000;
+// const DIST_PATH = path.resolve(__dirname, '..', 'client/dist');
+// // port
+// const PORT = 8000;
 // GOOGLE CLIENT keys from .env
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
