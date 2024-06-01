@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int         @id @default(autoincrement())
+  name       String
+  username   String
+  googleId   String
+  location   String
+  reviews    Review[]
+  userEvents UserEvent[]
+  favorite   Favorite[]
+}
+
+model Review {
+  id      Int    @id @default(autoincrement())
+  text    String
+  rating  Int
+  userId  Int
+  user    User   @relation(fields: [userId], references: [id])
+  albumId Int
+  album   Album  @relation(fields: [albumId], references: [id])
+}
+
+model Event {
+  id         Int         @id @default(autoincrement())
+  categoryId Int
+  category   Category    @relation(fields: [categoryId], references: [id])
+  date       DateTime
+  location   String
+  userEvents UserEvent[]
+}
+
+model Category {
+  id       Int     @id @default(autoincrement())
+  name     String
+  parentId Int?    @unique
+  event    Event[]
+}
+
+model Album {
+  id          Int      @id @default(autoincrement())
+  name        String
+  releaseDate DateTime
+  reviews     Review[]
+  artistId    Int
+  artist      Artist   @relation(fields: [artistId], references: [id])
+  song        Song[]
+}
+
+model Artist {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String
+  album       Album[]
+}
+
+model Song {
+  id      Int    @id @default(autoincrement())
+  name    String
+  albumId Int
+  album   Album  @relation(fields: [albumId], references: [id])
+}
+
+model UserEvent {
+  userId  Int
+  user    User  @relation(fields: [userId], references: [id])
+  eventId Int
+  event   Event @relation(fields: [eventId], references: [id])
+
+  @@id([userId, eventId])
+}
+
+model Favorite {
+  id       Int    @id @default(autoincrement())
+  userId   Int
+  user     User   @relation(fields: [userId], references: [id])
+  entity   Entity
+  entityId Int
+}
+
+enum Entity {
+  ALBUM
+  ARTIST
+  SONG
+}
