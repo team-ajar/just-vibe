@@ -14,16 +14,11 @@ module.exports = {
   mode: environment,
   entry: './client/src/index.tsx',
   devtool: 'inline-source-map',
-  watch: {
-    mode: 'development'
-  },
+  watch: true,
   module: {
     rules: [
-      {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/,
-      },
+      { test: /\.(ts|tsx)$/, use: 'ts-loader', exclude: /node_modules/},
+      { test: /\.(js|jsx)$/, use: 'babel-loader', exclude: /node_modules/},
     ],
   },
   resolve: {
@@ -33,9 +28,9 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
-  plugins: [
-    new webpack.DefinePlugin({
-        'API_URL': API_URL[environment]
-    })
-],
+//   plugins: [
+//     new webpack.DefinePlugin({
+//         'API_URL': API_URL[environment]
+//     })
+// ],
 };
