@@ -17,7 +17,7 @@ const config = {
   auth0Logout: true,
   baseURL: 'http://localhost:3000',
   clientID: GOOGLE_CLIENT_ID,
-  issuerBaseURL: 'https://{yourDomain}',
+  issuerBaseURL: 'https://dev-gxg3okgf4h43jdrx.us.auth0.com',
   secret: GOOGLE_CLIENT_SECRET
 };
 
