@@ -26,7 +26,10 @@ const config = {
 // and /callback routes to the baseURL
 app.use(auth(config));
 
+// serve client to server
 app.use(express.static(path.join(__dirname, '../dist')));
+// routers
+app.use('/api', routes);
 
 // req.oidc.isAuthenticated is provided from the auth router
 app.get('/', (req, res) => {
