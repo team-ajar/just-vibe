@@ -1,13 +1,12 @@
 const express = require('express');
-const path = require('path');
-// const session = require('express-session');
 const { auth, requiresAuth } = require('express-openid-connect');
+const path = require('path');
 const app = express();
 require('dotenv').config();
 
 // CONSTANTS
 // path to dist folder
-const DIST_PATH = path.resolve(__dirname, '..', 'client/dist');
+// const DIST_PATH = path.resolve(__dirname, '..', 'client/dist');
 // port
 // const PORT = 8000;
 // GOOGLE CLIENT keys from .env
@@ -27,8 +26,7 @@ const config = {
 // and /callback routes to the baseURL
 app.use(auth(config));
 
-// serve dist index.html
-app.use(express.static(DIST_PATH));
+app.use(express.static(path.join(__dirname, '../dist')));
 
 // req.oidc.isAuthenticated is provided from the auth router
 app.get('/', (req, res) => {

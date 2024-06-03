@@ -1,4 +1,6 @@
 const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 // this config can be in webpack.config.js or other file with constants
 const API_URL = {
@@ -28,9 +30,13 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
-//   plugins: [
-//     new webpack.DefinePlugin({
-//         'API_URL': API_URL[environment]
-//     })
-// ],
+  plugins: [
+    new webpack.DefinePlugin({
+        'API_URL': API_URL[environment]
+    }),
+    new HtmlWebpackPlugin({
+      template: './client/index.html',
+      filename: 'index.html'
+    })
+],
 };
