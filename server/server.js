@@ -1,5 +1,6 @@
 const express = require('express');
 const { auth, requiresAuth } = require('express-openid-connect');
+const path = require('path');
 const app = express();
 require('dotenv').config();
 
@@ -24,6 +25,8 @@ const config = {
 // The `auth` router attaches /login, /logout
 // and /callback routes to the baseURL
 app.use(auth(config));
+
+app.use(express.static(path.join(__dirname, '../dist')));
 
 // req.oidc.isAuthenticated is provided from the auth router
 app.get('/', (req, res) => {
