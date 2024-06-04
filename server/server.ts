@@ -1,8 +1,9 @@
-const express = require('express');
-const { auth, requiresAuth } = require('express-openid-connect');
-const path = require('path');
-const app = express();
-require('dotenv').config();
+import express, { Express, Request, Response } from 'express';
+import { auth, requiresAuth } from 'express-openid-connect';
+import path from 'path';
+const app: Express = express();
+import dotenv from 'dotenv';
+dotenv.config();
 
 // CONSTANTS
 // path to dist folder
@@ -29,7 +30,7 @@ app.use(auth(config));
 // serve client to server
 app.use(express.static(path.join(__dirname, '../dist')));
 // routers
-app.use('/api', routes);
+// app.use('/api', routes);
 
 // req.oidc.isAuthenticated is provided from the auth router
 app.get('/', (req, res) => {
