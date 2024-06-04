@@ -14,9 +14,9 @@ const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 
 const config = {
-  authRequired: false,
+  authRequired: true,
   auth0Logout: true,
-  baseURL: 'http://localhost:3000',
+  baseURL: 'http://localhost:3000/',
   clientID: GOOGLE_CLIENT_ID,
   issuerBaseURL: 'https://dev-gxg3okgf4h43jdrx.us.auth0.com',
   secret: GOOGLE_CLIENT_SECRET
