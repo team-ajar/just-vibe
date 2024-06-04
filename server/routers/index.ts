@@ -1,8 +1,8 @@
 const express = require('express');
-const searchController = ('./searchController');
-const eventsController = ('./eventsController');
-const profileController = ('./profileController');
-const reviewsController = ('./reviewsController');
+const searchController = require('./searchController');
+const eventsController = require('./eventsController');
+const profileController = require('./profileController');
+const reviewsController = require('./reviewsController');
 const router = express.Router();
 
 
