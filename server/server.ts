@@ -14,14 +14,14 @@ const DIST_PATH = path.resolve(__dirname, '../dist');
 // port
 const PORT = 3000;
 // GOOGLE CLIENT keys from .env
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_ID= process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const AUTH0_CLIENT_ID = process.env.AUTH0_CLIENT_ID;
 
 const config = {
-  authRequired: false,
+  authRequired: true,
   auth0Logout: true,
-  baseURL: 'http://localhost:3000/',
+  baseURL: `http://localhost:${PORT}/`,
   clientID: AUTH0_CLIENT_ID,
   issuerBaseURL: 'https://dev-gxg3okgf4h43jdrx.us.auth0.com',
   secret: GOOGLE_CLIENT_SECRET
