@@ -5,6 +5,5 @@ const searchController = require('./searchController');
 // const reviewsController = require('./reviewsController');
 const router = express.Router();
 
-router.route('/search').get(searchController.handleSearch);
-
+router.route('/search/:search').get(searchController.handleSearch);
 module.exports = router;
