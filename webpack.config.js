@@ -17,14 +17,14 @@ module.exports = {
   entry: './client/src/index.tsx',
   devtool: 'inline-source-map',
   watch: true,
-  module: {
-    rules: [
-      { test: /\.(ts|tsx)$/, use: 'ts-loader', exclude: /node_modules/},
-      { test: /\.(js|jsx)$/, use: 'babel-loader', exclude: /node_modules/},
-    ],
-  },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
+  },
+  module: {
+    rules: [
+      { test: /\.(ts|tsx)$/, use: ['ts-loader'], exclude: /node_modules/},
+      { test: /\.(js|jsx)$/, use: ['babel-loader'], exclude: /node_modules/},
+    ],
   },
   output: {
     filename: 'bundle.js',
