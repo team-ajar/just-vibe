@@ -14,14 +14,15 @@ const DIST_PATH = path.resolve(__dirname, '../dist');
 // port
 const PORT = 3000;
 // GOOGLE CLIENT keys from .env
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_ID= process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+const AUTH0_CLIENT_ID = process.env.AUTH0_CLIENT_ID;
 
 const config = {
   authRequired: true,
   auth0Logout: true,
-  baseURL: 'http://localhost:3000/',
-  clientID: GOOGLE_CLIENT_ID,
+  baseURL: `http://localhost:${PORT}/`,
+  clientID: AUTH0_CLIENT_ID,
   issuerBaseURL: 'https://dev-gxg3okgf4h43jdrx.us.auth0.com',
   secret: GOOGLE_CLIENT_SECRET
 };
@@ -34,7 +35,7 @@ app.use(auth(config));
 app.use(express.static(DIST_PATH));
 
 // routers
-// app.use('/api', routes);
+app.use('/api', routes);
 
 // req.oidc.isAuthenticated is provided from the auth router
 app.get('/', (req: Request, res: Response) => {
