@@ -6,4 +6,5 @@ const searchController = require('./searchController');
 const router = express.Router();
 
 router.route('/search/:search').get(searchController.handleSearch);
-module.exports = router;
+
+export default router;
