@@ -59,9 +59,9 @@ app.get('/profile', requiresAuth(), (req: Request, res: Response) => {
   console.log(authUserObj.nickname);
   const user = {
     username: authUserObj.nickname,
-    name: authUserObj.name || 'new user',
+    name: authUserObj.nickname || 'new user',
     googleId: authUserObj.sub,
-    location: authUserObj.locale
+    location: authUserObj.locale || 'N/A',
   }
 
   prisma.user.create({
@@ -69,7 +69,7 @@ app.get('/profile', requiresAuth(), (req: Request, res: Response) => {
   })
     .then(data => console.log(data))
     .catch(err => console.error(err));
-    
+
   res.send(JSON.stringify(req.oidc.user, null, 2));
 });
 
