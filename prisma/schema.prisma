@@ -8,14 +8,15 @@ datasource db {
 }
 
 model User {
-  id         Int         @id @default(autoincrement())
-  name       String
-  username   String
-  googleId   String
-  location   String
-  favorite   Favorite[]
-  reviews    Review[]
-  userEvents UserEvent[]
+  id            Int              @id @default(autoincrement())
+  name          String
+  username      String
+  googleId      String
+  location      String
+  favorite      Favorite[]
+  reviews       Review[]
+  userEvents    UserEvent[]
+  albumsOfTheDay AlbumOfTheDay[]
 }
 
 model Review {
@@ -49,13 +50,13 @@ model Category {
 }
 
 model Album {
-  id          Int      @id @default(autoincrement())
-  name        String
-  releaseDate DateTime
-  artistId    Int
-  artist      Artist   @relation(fields: [artistId], references: [id])
-  reviews     Review[]
-  song        Song[]
+  id            Int              @id @default(autoincrement())
+  name          String
+  artistId      Int
+  artist        Artist           @relation(fields: [artistId], references: [id])
+  reviews       Review[]
+  song          Song[]
+  albumsOfTheDay AlbumOfTheDay[]
 
   @@index([artistId], map: "Album_artistId_fkey")
 }
@@ -63,7 +64,6 @@ model Album {
 model Artist {
   id          Int     @id @default(autoincrement())
   name        String
-  description String
   album       Album[]
 }
 
@@ -94,6 +94,18 @@ model Favorite {
   user     User   @relation(fields: [userId], references: [id])
 
   @@index([userId], map: "Favorite_userId_fkey")
+}
+
+model AlbumOfTheDay {
+  id        Int      @id @default(autoincrement())
+  date      DateTime @default(now())
+  albumId   Int
+  album     Album    @relation(fields: [albumId], references: [id])
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([albumId], map: "AlbumOfTheDay_albumId_fkey")
+  @@index([userId], map: "AlbumOfTheDay_userId_fkey")
 }
 
 enum Entity {
