@@ -10,7 +10,7 @@ const router = express.Router();
 router.route('/search/:search').get(searchController.handleSearch);
 
 router.route('albums/:albumId/review').post(reviewsController.createReview)
-router.route('albums/:albumId/review').delete(reviewsController.deleteReview)
+router.route('albums/:albumId/review/:id').delete(reviewsController.deleteReview)
 // albumOfTheDayController
 router.route('/album-of-the-day').post(albumOfTheDayController.setAlbumOfTheDay);
 
