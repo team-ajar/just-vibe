@@ -2,6 +2,12 @@ import express, { Request, Response } from 'express';
 import { auth, requiresAuth } from 'express-openid-connect';
 import path from 'path';
 import dotenv from 'dotenv';
+// const ManagementClient = require('auth0').ManagementClient;
+import ManagementClient from 'auth0'
+
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
 const routes = require('./routers');
 
 dotenv.config();
@@ -39,6 +45,7 @@ app.use('/api', routes);
 
 // req.oidc.isAuthenticated is provided from the auth router
 app.get('/', (req: Request, res: Response) => {
+  console.log(JSON.stringify(req.oidc));
   res.send(
     req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out'
   );
@@ -46,6 +53,23 @@ app.get('/', (req: Request, res: Response) => {
 
 // The /profile route will show the user profile as JSON
 app.get('/profile', requiresAuth(), (req: Request, res: Response) => {
+  
+  const authUser = JSON.stringify(req.oidc.user, null, 2)
+  const authUserObj = JSON.parse(authUser);
+  console.log(authUserObj.nickname);
+  const user = {
+    username: authUserObj.nickname,
+    name: authUserObj.name || 'new user',
+    googleId: authUserObj.sub,
+    location: authUserObj.locale
+  }
+
+  prisma.user.create({
+    data: user
+  })
+    .then(data => console.log(data))
+    .catch(err => console.error(err));
+    
   res.send(JSON.stringify(req.oidc.user, null, 2));
 });
 
