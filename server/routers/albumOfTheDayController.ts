@@ -1,0 +1,7 @@
+// getAlbumOfTheDay
+
+// setAlbumOfTheDay
+
+// editAlbumOfTheDay
+
+// deleteAlbumOfTheDay

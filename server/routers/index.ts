@@ -7,4 +7,4 @@ const router = express.Router();
 
 router.route('/search/:search').get(searchController.handleSearch);
 
-export default router;
+module.exports = router;
