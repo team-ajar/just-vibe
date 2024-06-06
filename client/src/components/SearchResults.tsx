@@ -24,7 +24,10 @@ const SearchResults = () => {
   useEffect(() => {
     fetch(`/api/search/${query}`)
       .then(response => response.json())
-      .then(data => setSearchResults(data))
+      .then((data) => {
+        console.log('fetched data:', data);
+        setSearchResults(data);
+      })
       .catch(error => console.error('Error fetching search results:', error));
   }, [query]);
 
@@ -32,7 +35,6 @@ const SearchResults = () => {
     <div>
       <h1>Search Results for {query}</h1>
       <h2>Artists</h2>
-      {searchResults.artists.length > 0 && (
         <ul>
           {searchResults.artists.map((artist: Artist) => (
             <li key={artist.name}>
@@ -40,9 +42,7 @@ const SearchResults = () => {
             </li>
           ))}
         </ul>
-      )}
       <h2>Albums</h2>
-      {searchResults.albums.length > 0 && (
         <ul>
           {searchResults.albums.map((album: Album) => (
             <li key={album.name}>
@@ -50,7 +50,6 @@ const SearchResults = () => {
             </li>
           ))}
         </ul>
-      )}
     </div>
   );
 }
