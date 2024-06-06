@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Routes, Route } from 'react-router-dom';
-// import in other component files
+// import in component files
 import NavBar from './NavBar';
 import HomePage from './HomePage';
 import SearchResults from './SearchResults';
