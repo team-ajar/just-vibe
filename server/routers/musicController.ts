@@ -20,11 +20,12 @@ module.exports = {
   },
 
   saveArtist: (req: Request, res: Response) => {
-    const { name } = req.body;
+    const { artistName } = req.body;
 
     prisma.artist.create({
       data: {
-        name,
+        name: artistName,
+        description: 'N/A'
       }
     })
       .then((data: any) => console.log(data))
