@@ -1,4 +1,3 @@
-import axios, { AxiosResponse } from 'axios';
 import express, { Request, Response} from 'express';
 require('dotenv').config();
 import { PrismaClient } from '@prisma/client'
@@ -27,4 +26,12 @@ module.exports = {
       res.sendStatus(500)
     })
   },
+  deleteReview: (req: Request, res: Response) => {
+
+    prisma.review.delete({
+      where: {
+        
+      }
+    })
+  }
 };
