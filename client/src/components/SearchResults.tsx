@@ -25,11 +25,16 @@ const SearchResults = () => {
     fetch(`/api/search/${query}`)
       .then(response => response.json())
       .then((data) => {
-        console.log('fetched data:', data);
-        setSearchResults(data);
+        // console.log('fetched data:', data);
+        setSearchResults({
+          artists: data.artists.artist,
+          albums: data.albums.album
+        });
       })
       .catch(error => console.error('Error fetching search results:', error));
   }, [query]);
+
+  // console.log('searchResults:', searchResults);
 
   return (
     <div>
