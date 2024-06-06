@@ -43,7 +43,7 @@ const SearchResults = () => {
       .catch(error => console.error('Error fetching search results:', error));
   }, [query]);
 
-  // console.log('searchResults:', searchResults);
+  console.log('searchResults:', searchResults);
 
   return (
     <div>
@@ -54,7 +54,7 @@ const SearchResults = () => {
           {searchResults.albums.map((album: Album) => (
             <li key={album.name}>
                 <a href={album.url}>
-                  {album.image[0] && <img src={album.image[0]['#text']} />}
+                  {album.image[1] && <img src={album.image[1]['#text']} />}
                   {album.name}
               </a>
             </li>
@@ -66,7 +66,6 @@ const SearchResults = () => {
           {searchResults.artists.map((artist: Artist) => (
             <li key={artist.name}>
               <a href={artist.url}>
-                {artist.image[0] && <img src={artist.image[0]['#text']} />}
                 {artist.name}
               </a>
             </li>
