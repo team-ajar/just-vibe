@@ -52,7 +52,6 @@ model Category {
 model Album {
   id            Int              @id @default(autoincrement())
   name          String
-  releaseDate   DateTime
   artistId      Int
   artist        Artist           @relation(fields: [artistId], references: [id])
   reviews       Review[]
@@ -65,7 +64,6 @@ model Album {
 model Artist {
   id          Int     @id @default(autoincrement())
   name        String
-  description String
   album       Album[]
 }
 
