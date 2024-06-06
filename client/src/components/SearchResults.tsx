@@ -43,7 +43,7 @@ const SearchResults = () => {
       .catch(error => console.error('Error fetching search results:', error));
   }, [query]);
 
-  // console.log('searchResults:', searchResults);
+  console.log('searchResults:', searchResults);
 
   return (
     <div>
