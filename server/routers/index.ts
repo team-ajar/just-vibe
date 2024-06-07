@@ -22,5 +22,7 @@ router.route('/music/album').post(musicController.saveAlbum);
 
 // profileController
 router.route('/user').get(profileController.readUser);
+router.route('/user/:userId').put(profileController.updateUser);
+router.route('/user/:userId').delete(profileController.deleteUser);
 
 module.exports = router;

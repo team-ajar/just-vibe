@@ -11,9 +11,9 @@ module.exports = {
     prisma.user
       .findMany()
       .then((found) => {
-        console.log(found);
+        // console.log(found);
         if (found) {
-          res.status(200).send(found);
+          res.status(200).send(found[0]);
         } else {
           res.status(404).send("User not found");
         }
@@ -21,7 +21,38 @@ module.exports = {
       .catch((err) => res.sendStatus(500));
   },
 
-  updateUser: (req: Request, res: Response) => {},
+  updateUser: (req: Request, res: Response) => {
+    const { userId } = req.params;
 
-  deleteUser: (req: Request, res: Response) => {},
+    const { updateType, updateVal } = req.body;
+    // update type can be either name (for now), username (?), or location (?)
+    if (updateType === 'name') {
+      prisma.user.update({
+        where: {
+          id: Number(userId),
+        },
+        data: {
+          name: updateVal
+        }
+      })
+        .then(updUser => {
+          console.log(updUser);
+          res.status(201).send(updUser);
+        })
+        .catch(err => res.sendStatus(404));
+
+    }
+  },
+
+  deleteUser: (req: Request, res: Response) => {
+    const { userId } = req.params;
+
+    prisma.user.delete({
+      where: {
+        id: Number(userId)
+      }
+    })
+      .then(data => res.sendStatus(201))
+      .catch(err => res.sendStatus(500));
+  },
 };
