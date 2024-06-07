@@ -1,25 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 
 // define interfaces for Artist, Album, and SearchResultsData
 interface Artist {
   image: any;
   name: string;
   url: string;
-}
+};
 
 interface Album {
+  id: number;
   image: any;
   name: string;
   artist: string;
   url: string;
-}
+};
 
 interface SearchResultsData {
   artists: Artist[];
   albums: Album[];
-}
+};
 
 const SearchResults = () => {
   // get query from the url using useParams
@@ -36,8 +37,8 @@ const SearchResults = () => {
     })
       .then(data => console.log('button: ', data))
       .catch(err => console.error(err));
-  }
-  
+  };
+
   const saveArtist = (artist: any) => {
     console.log(artist);
     axios.post('/api/music/artist', {
@@ -45,7 +46,27 @@ const SearchResults = () => {
     })
       .then(data => console.log(data))
       .catch(err => console.error(err));
-  }
+  };
+
+  const saveAlbumOfTheDay = (album: any) => {
+    console.log('album:', album);
+
+    const { name: albumName, artist: artistName} = album;
+
+    axios.post('/api/album-id', {
+      albumName, artistName
+    })
+    .then((response) => {
+      const albumId = response.data.albumId;
+      console.log('got albumId:', albumId);
+
+      axios.post('/api/album-of-the-day', { albumId })
+        .then(data => console.log(data))
+        .catch(err => console.error('Error setting album of the day', err));
+    })
+    .catch(err => console.error('Error getting albumId', err));
+  };
+
   useEffect(() => {
     // get data from /api/search/${query}
     fetch(`/api/search/${query}`)
@@ -77,6 +98,7 @@ const SearchResults = () => {
                   {album.name}
               </a>
               <button onClick={() => saveAlbum(album)}>Save Album</button>
+              <button onClick={() => saveAlbumOfTheDay(album)}>Set as Album of the Day</button>
             </li>
           ))}
         </ul>
