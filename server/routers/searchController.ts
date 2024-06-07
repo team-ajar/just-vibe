@@ -1,6 +1,10 @@
 // const axios = require("axios");
 import axios, { AxiosResponse } from 'axios';
 import express, { Request, Response} from 'express';
+
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
 require('dotenv').config();
 
 const LAST_FM_API_KEY = process.env.LAST_FM_API_KEY;
@@ -25,13 +29,27 @@ module.exports = {
         .then((data: AxiosResponse) => {
 
           searchResults.artists = data.data.results.artistmatches;
-          
-          axios.get()
-          .then((data: AxiosResponse) => {
 
-            searchResults.events = data.data
-
+          // console.log(data.data.results.artistmatches.artist);
+          data.data.results.artistmatches.artist.forEach((artistObj: any) => {
+            // console.log(artist.name);
+            prisma.artist.findFirst({where:{ name: artistObj.name}})
+              .then(found => {
+                // console.log(data)
+                if (!found) {
+                  prisma.artist.create({
+                    data: {
+                      name: artistObj.name,
+                      description: 'N/A'
+                    }
+                  })
+                    .then(data => console.log(data))
+                    .catch(err => console.log(err));
+                }
+              })
+              .catch(err => console.error(err));
           })
+          // prisma.artist.findFirst({ where: { name: }})
           // respond w {artists: artist.search, albums: album.search}
           res.status(200).send(searchResults);
         })

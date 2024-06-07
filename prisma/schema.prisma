@@ -64,6 +64,7 @@ model Album {
 model Artist {
   id          Int     @id @default(autoincrement())
   name        String
+  description String
   album       Album[]
 }
 
