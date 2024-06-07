@@ -56,9 +56,11 @@ app.get('/', (req: Request, res: Response) => {
 
 // The /profile route will show the user profile as JSON
 app.get('/profile', requiresAuth(), (req: Request, res: Response) => {
-  
+
   const authUser = JSON.stringify(req.oidc.user, null, 2)
   const authUserObj = JSON.parse(authUser);
+  const userId = authUserObj.sub;
+
   const user = {
     username: authUserObj.nickname,
     name: authUserObj.nickname || 'new user',
@@ -72,6 +74,7 @@ app.get('/profile', requiresAuth(), (req: Request, res: Response) => {
     .then(data => console.log(data))
     .catch(err => console.error(err));
 
+  console.log('userId:', userId);
   res.send(JSON.stringify(req.oidc.user, null, 2));
 });
 
