@@ -41,7 +41,18 @@ module.exports = {
   },
 
   editAlbumOfTheDay: (req: Request, res: Response) => {
-
+    const { id, albumId, userId } = req.body;
+    prisma.albumOfTheDay.update({
+      where: { id },
+      data: { albumId, userId }
+    })
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.error('Error editing album of the day', err);
+      res.sendStatus(500);
+    })
   },
 
   deleteAlbumOfTheDay: (req: Request, res: Response) => {
