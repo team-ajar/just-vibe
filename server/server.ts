@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import { auth, requiresAuth } from 'express-openid-connect';
 import path from 'path';
 import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
 // const ManagementClient = require('auth0').ManagementClient;
 import ManagementClient from 'auth0'
 
@@ -36,6 +37,9 @@ const config = {
 // The `auth` router attaches /login, /logout
 // and /callback routes to the baseURL
 app.use(auth(config));
+
+// middleware to parse JSON bodies
+app.use(bodyParser.json());
 
 // serve client to server
 app.use(express.static(DIST_PATH));
