@@ -49,7 +49,6 @@ app.use('/api', routes);
 
 // req.oidc.isAuthenticated is provided from the auth router
 app.get('/', (req: Request, res: Response) => {
-  console.log(JSON.stringify(req.oidc));
   res.send(
     req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out'
   );
@@ -60,7 +59,6 @@ app.get('/profile', requiresAuth(), (req: Request, res: Response) => {
   
   const authUser = JSON.stringify(req.oidc.user, null, 2)
   const authUserObj = JSON.parse(authUser);
-  console.log(authUserObj.nickname);
   const user = {
     username: authUserObj.nickname,
     name: authUserObj.nickname || 'new user',
