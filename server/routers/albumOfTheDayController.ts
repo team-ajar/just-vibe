@@ -56,6 +56,16 @@ module.exports = {
   },
 
   deleteAlbumOfTheDay: (req: Request, res: Response) => {
-
+    const { id } = req.params;
+    prisma.albumOfTheDay.delete({
+      where: { id: Number(id) }
+    })
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.error('Error deleting album of the day', err);
+      res.sendStatus(500);
+    })
   },
 }
