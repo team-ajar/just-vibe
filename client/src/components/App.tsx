@@ -4,8 +4,14 @@ import { Routes, Route } from 'react-router-dom';
 import NavBar from './NavBar';
 import HomePage from './HomePage';
 import SearchResults from './SearchResults';
+import Reviews from './Reviews'
 
 const App = () => {
+
+  
+
+
+
   return (
     <div>
       {/* show NavBar in every view of app */}
@@ -14,9 +20,11 @@ const App = () => {
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path='/search-results/:query' element={<SearchResults />} />
+        <Route path='/' element={<Reviews />} />
       </Routes>
     </div>
   )
+
 };
 
 export default App;
