@@ -5,7 +5,22 @@ const prisma = new PrismaClient();
 
 module.exports = {
   getAlbumOfTheDay: (req: Request, res: Response) => {
-
+    prisma.albumOfTheDay.findFirst({
+      orderBy: {
+        date: 'desc'
+      },
+      include: {
+        album: true,
+        user: true
+      }
+    })
+    .then((albumOfTheDay) => {
+      res.json(albumOfTheDay);
+    })
+    .catch((err) => {
+      console.error('Error getting album of the day', err);
+      res.sendStatus(500);
+    })
   },
 
   setAlbumOfTheDay: (req: Request, res: Response) => {
@@ -16,8 +31,8 @@ module.exports = {
         userId
       },
     })
-    .then((newAlbumOfTheDay: any) => {
-      res.json(newAlbumOfTheDay);
+    .then(() => {
+      res.sendStatus(201);
     })
     .catch((err: any) => {
       console.error('Error setting album of the day', err);
