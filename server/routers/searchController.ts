@@ -12,7 +12,7 @@ module.exports = {
     const { search } = req.params;
     // create storage for search results
     // store results in an obj -> {artists: artist.search, albums: album.search}
-    const searchResults = {artists: Object, albums: Object};
+    const searchResults = {artists: Object, albums: Object, events: Object};
     // pass search query
     // axios req to album search
     axios.get(`http://ws.audioscrobbler.com/2.0/?method=album.search&album=${search}&api_key=${LAST_FM_API_KEY}&format=json`)
@@ -25,7 +25,13 @@ module.exports = {
         .then((data: AxiosResponse) => {
 
           searchResults.artists = data.data.results.artistmatches;
+          
+          axios.get()
+          .then((data: AxiosResponse) => {
 
+            searchResults.events = data.data
+
+          })
           // respond w {artists: artist.search, albums: album.search}
           res.status(200).send(searchResults);
         })
