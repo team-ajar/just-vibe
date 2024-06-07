@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import axios, { AxiosResponse } from 'axios';
 
 // define interfaces for Artist, Album, and SearchResultsData
 interface Artist {
@@ -26,6 +27,16 @@ const SearchResults = () => {
   // useState used to declare searchResults and setSearchResults
   // searchResults initialized to object w artists and albums as keys and empty arrays as values
   const [searchResults, setSearchResults] = useState<SearchResultsData>({ artists: [], albums: [] });
+
+  const saveAlbum  = (album: any) => {
+    // console.log(album.artist)
+    axios.post('/api/music/album', {
+      albumName: album.name,
+      artistName: album.artist,
+    })
+      .then(data => console.log('button: ', data))
+      .catch(err => console.error(err));
+  }
 
   useEffect(() => {
     // get data from /api/search/${query}
@@ -57,6 +68,7 @@ const SearchResults = () => {
                   {album.image[1] && <img src={album.image[1]['#text']} />}
                   {album.name}
               </a>
+              <button onClick={() => saveAlbum(album)}>Save Album</button>
             </li>
           ))}
         </ul>
