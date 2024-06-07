@@ -2,6 +2,7 @@ const express = require('express');
 const searchController = require('./searchController');
 const albumOfTheDayController = require('./albumOfTheDayController');
 const musicController = require('./musicController');
+const albumIdController = require('./albumIdController');
 // const eventsController = require('./eventsController');
 // const profileController = require('./profileController');
 const reviewsController = require('./reviewsController');
@@ -24,5 +25,8 @@ router.route('/album-of-the-day/:id').delete(albumOfTheDayController.deleteAlbum
 // musicController
 router.route('/music/artist').post(musicController.saveArtist);
 router.route('/music/album').post(musicController.saveAlbum);
+
+// albumIdController
+router.route('/album-id').post(albumIdController.getAlbumId);
 
 module.exports = router;
