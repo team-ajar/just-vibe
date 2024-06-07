@@ -37,7 +37,15 @@ const SearchResults = () => {
       .then(data => console.log('button: ', data))
       .catch(err => console.error(err));
   }
-
+  
+  const saveArtist = (artist: any) => {
+    console.log(artist);
+    axios.post('/api/music/artist', {
+      artistName: artist.name
+    })
+      .then(data => console.log(data))
+      .catch(err => console.error(err));
+  }
   useEffect(() => {
     // get data from /api/search/${query}
     fetch(`/api/search/${query}`)
@@ -80,6 +88,7 @@ const SearchResults = () => {
               <a href={artist.url}>
                 {artist.name}
               </a>
+              <button onClick={() => saveArtist(artist) }>Save Artist</button>
             </li>
           ))}
         </ul>
