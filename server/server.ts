@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import { auth, requiresAuth } from 'express-openid-connect';
 import path from 'path';
 import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
 // const ManagementClient = require('auth0').ManagementClient;
 //import ManagementClient from 'auth0';
 
@@ -37,6 +38,9 @@ const config = {
 // and /callback routes to the baseURL
 app.use(auth(config));
 
+// middleware to parse JSON bodies
+app.use(bodyParser.json());
+
 // serve client to server
 app.use(express.static(DIST_PATH));
 
@@ -45,7 +49,6 @@ app.use('/api', routes);
 
 // req.oidc.isAuthenticated is provided from the auth router
 app.get('/', (req: Request, res: Response) => {
-  console.log(JSON.stringify(req.oidc));
   res.send(
     req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out'
   );
@@ -56,7 +59,6 @@ app.get('/profile', requiresAuth(), (req: Request, res: Response) => {
   
   const authUser = JSON.stringify(req.oidc.user, null, 2)
   const authUserObj = JSON.parse(authUser);
-  console.log(authUserObj.nickname);
   const user = {
     username: authUserObj.nickname,
     name: authUserObj.nickname || 'new user',
