@@ -16,9 +16,9 @@ module.exports = {
     //prisma crud operation
     prisma.review.create({
       data: {
-        albumId,
-        text,
-        rating,
+        albumId: Number(albumId),
+        text: String(text),
+        rating: Number(rating),
       },
     })
     .then((response: any) => {
@@ -38,7 +38,7 @@ module.exports = {
     const { id } = req.params;
     prisma.review.delete({
       where: {
-        id,
+        id: Number(id),
       }
     })
     .then((response: any) => {
@@ -54,10 +54,14 @@ module.exports = {
   },
   updateReview: (req: Request, res: Response) => {
     const { id } = req.params;
-
+    const { text, rating } = req.body;
     prisma.review.update({
       where: {
-        id,
+        id: Number(id),
+      }, 
+      data: {
+        text: String(text),
+        rating: Number(rating),
       }
     })
     .then((response: any) => {
