@@ -19,7 +19,7 @@ router.route('/search/:search').get(searchController.handleSearch);
 router.route('/album-of-the-day').get(albumOfTheDayController.getAlbumOfTheDay);
 router.route('/album-of-the-day').post(albumOfTheDayController.setAlbumOfTheDay);
 router.route('/album-of-the-day').put(albumOfTheDayController.editAlbumOfTheDay);
-router.route('/album-of-the-day/:id').put(albumOfTheDayController.deleteAlbumOfTheDay);
+router.route('/album-of-the-day/:id').delete(albumOfTheDayController.deleteAlbumOfTheDay);
 
 // musicController
 router.route('/music/artist').post(musicController.saveArtist);
