@@ -1,7 +1,8 @@
 import express, { Request, Response} from 'express';
 require('dotenv').config();
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, Prisma } from '@prisma/client'
 const prisma = new PrismaClient()
+//import AsyncHandler from "../middleware/AsyncHandler";
 
 const LAST_FM_API_KEY = process.env.LAST_FM_API_KEY;
 
@@ -11,7 +12,7 @@ module.exports = {
 
     //use req.body for data sent in the request body
     //this is a post
-    const { albumId, text, rating } = req.body;
+    const { albumId, text, rating, userId, id } = req.body;
     
     //prisma crud operation
     prisma.review.create({
@@ -19,6 +20,8 @@ module.exports = {
         albumId: Number(albumId),
         text: String(text),
         rating: Number(rating),
+        id: Number(id),
+        userId: Number(userId),
       },
     })
     .then((response: any) => {
