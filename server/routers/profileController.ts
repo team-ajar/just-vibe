@@ -1,41 +1,58 @@
-import express, { Express, Request, Response } from 'express'
-import axios, { AxiosResponse } from 'axios';
+import express, { Express, Request, Response } from "express";
+import axios, { AxiosResponse } from "axios";
 
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
 module.exports = {
-createUser: (req: Request, res: Response) => {
-  /* LAST RESORT
-   make req to '/profile' + use response's data to create user
-   nickname -> username + name
-  sub -> googleId ?
-  locale ->  location
-  */
+  // createUser: (req: Request, res: Response) => {},
 
-  axios.get('/prisma')
-    .then(data => console.log(data))
-    .catch(err => console.error(err));
+  readUser: (req: Request, res: Response) => {
+    prisma.user
+      .findMany()
+      .then((found) => {
+        // console.log(found);
+        if (found) {
+          res.status(200).send(found[0]);
+        } else {
+          res.status(404).send("User not found");
+        }
+      })
+      .catch((err) => res.sendStatus(500));
+  },
 
-  // const user = prisma.user.create({
-  //   data: {
-  //     name: '',
-  //     username: '',
-  //     googleId: '',
-  //     location: ''
-  //   }
-  // })
-},
+  updateUser: (req: Request, res: Response) => {
+    const { userId } = req.params;
 
-readUser: (req: Request, res: Response) => {
-  
-},
+    const { updateType, updateVal } = req.body;
+    // update type can be either name (for now), username (?), or location (?)
+    if (updateType === 'name') {
+      prisma.user.update({
+        where: {
+          id: Number(userId),
+        },
+        data: {
+          name: updateVal
+        }
+      })
+        .then(updUser => {
+          console.log(updUser);
+          res.status(201).send(updUser);
+        })
+        .catch(err => res.sendStatus(404));
 
-updateUser: (req: Request, res: Response) => {
+    }
+  },
 
-},
+  deleteUser: (req: Request, res: Response) => {
+    const { userId } = req.params;
 
-deleteUser: (req: Request, res: Response) => {
-
-}
+    prisma.user.delete({
+      where: {
+        id: Number(userId)
+      }
+    })
+      .then(data => res.sendStatus(201))
+      .catch(err => res.sendStatus(500));
+  },
 };
