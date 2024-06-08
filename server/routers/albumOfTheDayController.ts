@@ -4,6 +4,7 @@ import { Request, Response } from "express";
 const prisma = new PrismaClient();
 
 module.exports = {
+  // get request handling
   getAlbumOfTheDay: (req: Request, res: Response) => {
     prisma.albumOfTheDay.findFirst({
       orderBy: {
@@ -23,10 +24,9 @@ module.exports = {
     })
   },
 
+  // post request handling
   setAlbumOfTheDay: (req: Request, res: Response) => {
     const { albumId, userId } = req.body;
-    console.log('received albumId:', albumId);
-    console.log('received userId:', userId);
     prisma.albumOfTheDay.create({
       data: {
         album: { connect: { id: albumId } },
@@ -42,6 +42,7 @@ module.exports = {
     })
   },
 
+  // put request handling
   editAlbumOfTheDay: (req: Request, res: Response) => {
     const { id, albumId, userId } = req.body;
     prisma.albumOfTheDay.update({
@@ -57,6 +58,7 @@ module.exports = {
     })
   },
 
+  // delete request handling
   deleteAlbumOfTheDay: (req: Request, res: Response) => {
     const { id } = req.params;
     prisma.albumOfTheDay.delete({

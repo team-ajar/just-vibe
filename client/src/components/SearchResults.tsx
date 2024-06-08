@@ -51,17 +51,22 @@ const SearchResults = () => {
   const saveAlbumOfTheDay = (album: any) => {
     const { name: albumName, artist: artistName} = album;
 
+    // make a post request to endpoint
     axios.post('/api/album-id', {
       albumName,
       artistName
     })
+    // get back the albumId
     .then((response) => {
       const albumId = response.data.albumId;
 
+      // make a get request to '/api/user'
       axios.get('/api/user')
+        // get back the userId of the user that is logged in
         .then((profileResponse) => {
           const userId = profileResponse.data.id;
 
+          // make a post request to the endpoint to set the album of the day
           axios.post('/api/album-of-the-day', { albumId, userId })
             .then(data => console.log('album of the day response:', data))
             .catch(err => console.error('Error setting album of the day', err));
