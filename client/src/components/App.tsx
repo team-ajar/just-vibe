@@ -5,7 +5,11 @@ import { BrowserRouter as Router, Routes, Route }
 import NavBar from './NavBar';
 import HomePage from './HomePage';
 import SearchResults from './SearchResults';
+
 import Reviews from './Reviews'
+
+import Profile from './Profile';
+
 
 const App = () => {
 
@@ -22,7 +26,8 @@ const App = () => {
         <Route path='/' element={<HomePage />} />
         <Route path='/reviews' element={<Reviews />} />
         <Route path='/search-results/:query' element={<SearchResults />} />
-        {/* <Route path='/' element={<Reviews />} /> */}
+        <Route path='/user' element={<Profile />} />
+
       </Routes>
     </div>
   )

@@ -29,13 +29,19 @@ const SearchResults = () => {
   // searchResults initialized to an object with artists and albums as keys and empty arrays as values
   const [searchResults, setSearchResults] = useState<SearchResultsData>({ artists: [], albums: [] });
 
-  const saveAlbum = (album: Album) => {
-    axios.post('/api/music/album', {
-      albumName: album.name,
+
+
+  const saveAlbum  = (album: any) => {
+    // console.log(album.artist)
+    // console.log(album.image[3]['#text']);
+     axios.post('/api/music/album', {
+       albumName: album.name,
       artistName: album.artist,
-    })
-      .then(data => console.log('Album saved:', data))
-      .catch(err => console.error(err));
+      image: album.image[3]['#text'],
+     })
+       .then(data => console.log('button: ', data))
+       .catch(err => console.error(err));
+
   }
 
   const saveArtist = (artist: Artist) => {
