@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import NavBar from './NavBar';
 import HomePage from './HomePage';
 import SearchResults from './SearchResults';
+import Profile from './Profile';
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path='/search-results/:query' element={<SearchResults />} />
+        <Route path='/user' element={<Profile />} />
       </Routes>
     </div>
   )
