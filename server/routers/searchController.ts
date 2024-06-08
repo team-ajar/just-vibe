@@ -30,6 +30,29 @@ module.exports = {
 
           searchResults.artists = data.data.results.artistmatches;
             // console.log(artist.name);
+            prisma.artist.findFirst({where:{ name: artistObj.name}})
+              .then(found => {
+                // console.log(data)
+                if (!found) {
+                  prisma.artist.create({
+                    data: {
+                      name: artistObj.name,
+                      description: 'N/A'
+                    }
+                  })
+                    .then(data => console.log(data))
+                    .catch(err => console.log(err));
+                }
+              })
+              .catch(err => console.error(err));
+          })
+          axios.get(`https://concerts-artists-events-tracker.p.rapidapi.com/location`)
+          .then((data: AxiosResponse) => {
+
+            searchResults.events = data.data.results.eventmatches;
+          })
+          .catch((err: AxiosResponse) => console.error('err: ', err));
+          // prisma.artist.findFirst({ where: { name: }})
           // respond w {artists: artist.search, albums: album.search}
           res.status(200).send(searchResults);
         })
