@@ -22,12 +22,13 @@ module.exports = {
 
   // save album to the db
   saveAlbum: (req: Request, res: Response) => {
-    const { albumName, artistName }: { albumName: string, artistName: string} = req.body;
+    const { albumName, artistName, image }: { albumName: string, artistName: string, image: string} = req.body;
 
     prisma.album.create({
       data: {
         albumName,
         artistName,
+        image,
       }
     })
     .then((data: any) => res.sendStatus(201))

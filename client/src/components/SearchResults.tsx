@@ -31,14 +31,16 @@ const SearchResults = () => {
 
   const saveAlbum  = (album: any) => {
     // console.log(album.artist)
-    axios.post('/api/music/album', {
-      albumName: album.name,
+    // console.log(album.image[3]['#text']);
+     axios.post('/api/music/album', {
+       albumName: album.name,
       artistName: album.artist,
-    })
-      .then(data => console.log('button: ', data))
-      .catch(err => console.error(err));
-  };
-
+      image: album.image[3]['#text'],
+     })
+       .then(data => console.log('button: ', data))
+       .catch(err => console.error(err));
+  }
+  
   const saveArtist = (artist: any) => {
     console.log(artist);
     axios.post('/api/music/artist', {
