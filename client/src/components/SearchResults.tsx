@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import moment from 'moment';
 
 // define interfaces for Artist, Album, and SearchResultsData
 interface Artist {
@@ -28,6 +29,9 @@ const SearchResults = () => {
   // useState used to declare searchResults and setSearchResults
   // searchResults initialized to object w artists and albums as keys and empty arrays as values
   const [searchResults, setSearchResults] = useState<SearchResultsData>({ artists: [], albums: [] });
+  // albumOfTheDaySet initially set to false
+  // setAlbumOfTheDaySet used to update albumOfTheDaySet
+  const [albumOfTheDaySet, setAlbumOfTheDaySet] = useState<boolean>(false);
 
   const saveAlbum  = (album: any) => {
     // console.log(album.artist)
@@ -51,13 +55,15 @@ const SearchResults = () => {
   };
 
   const saveAlbumOfTheDay = (album: any) => {
+    if (albumOfTheDaySet) {
+      alert('You have already set an album of the day for today.');
+      return;
+    }
+
     const { name: albumName, artist: artistName} = album;
 
     // make a post request to endpoint
-    axios.post('/api/album-id', {
-      albumName,
-      artistName
-    })
+    axios.post('/api/album-id', { albumName, artistName })
     // get back the albumId
     .then((response) => {
       const albumId = response.data.albumId;
@@ -70,7 +76,10 @@ const SearchResults = () => {
 
           // make a post request to the endpoint to set the album of the day
           axios.post('/api/album-of-the-day', { albumId, userId })
-            .then(data => console.log('album of the day response:', data))
+            .then((data) => {
+              console.log('album of the day response:', data);
+              setAlbumOfTheDaySet(true);
+            })
             .catch(err => console.error('Error setting album of the day', err));
         })
         .catch(err => console.error('Error getting userId', err));
@@ -92,9 +101,16 @@ const SearchResults = () => {
         });
       })
       .catch(error => console.error('Error fetching search results:', error));
-  }, [query]);
 
-  console.log('searchResults:', searchResults);
+      // check if the album of the day is already set for today
+      axios.get('/api/album-of-the-day')
+        .then((response) => {
+          if (response.data && moment(response.data.date).isSame(moment(), 'day')) {
+            setAlbumOfTheDaySet(true);
+          }
+        })
+        .catch(err => console.error('Error checking album of the day', err));
+  }, [query]);
 
   return (
     <div>
@@ -109,7 +125,7 @@ const SearchResults = () => {
                   {album.name}
               </a>
               <button onClick={() => saveAlbum(album)}>Save Album</button>
-              <button onClick={() => saveAlbumOfTheDay(album)}>Set as Album of the Day</button>
+              <button onClick={() => saveAlbumOfTheDay(album)} disabled={albumOfTheDaySet}>Set as Album of the Day</button>
             </li>
           ))}
         </ul>
