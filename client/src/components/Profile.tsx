@@ -11,8 +11,8 @@ interface User {
 
 const Profile = () => {
 
-  const [username, setUsername] = useState('username');
-  const [displayName, setDisplayName] = useState('name');
+  // const [username, setUsername] = useState('username');
+  // const [displayName, setDisplayName] = useState('name');
   const [user, setUser] = useState<User>({id: 0, googleId: '', location: '', name: '', username: '' });
 
   const loadPage = () => {
@@ -20,8 +20,8 @@ const Profile = () => {
       .then(({ data }: any) => {
         console.log(data);
         setUser(data);
-        setUsername(data.username);
-        setDisplayName(data.name);
+        // setUsername(data.username);
+        // setDisplayName(data.name);
       })
       .catch(err => console.error(err));
   };
@@ -35,22 +35,39 @@ const Profile = () => {
     })
       .then(({ data }: any) =>{
         console.log('update', data)
-        setDisplayName(data.name);
+        // setDisplayName(data.name);
+        setUser(data)
         })
       .catch(err => console.error(err));
       
   };
 
+  const deleteProfile = () => {
+    let answer = prompt('enter your username to delete:');
+    const delUser = {
+      id: 0,
+      googleId: '',
+      location: '',
+      name: '',
+      username: '',
+    }
+    if (answer === user.username) {
+      axios.delete(`/api/user/${user.id}`)
+        .then(() => setUser(delUser));
+    }
+  };
+
   useEffect(() => {
     loadPage()
-  }, [username])
+  }, [])
 
   return (
     <div>
       <h1>Profile</h1>
       <button onClick={() => editProfile()}>Edit profile</button>
-      <h3>Username: {username}</h3>
-      <h4>Name: {displayName}</h4>
+      <button onClick={() => deleteProfile()}>Delete profile</button>
+      <h3>Username: {user.username}</h3>
+      <h4>Name: {user.name}</h4>
     </div>
   )
 }
