@@ -23,7 +23,7 @@ router.route('/album-of-the-day').post(albumOfTheDayController.setAlbumOfTheDay)
 // musicController
 router.route('/music/artist').post(musicController.saveArtist);
 router.route('/music/album').post(musicController.saveAlbum);
-
+router.route('/music/albums').get(musicController.readAlbums);
 // profileController
 router.route('/user').get(profileController.readUser);
 router.route('/user/:userId').put(profileController.updateUser);
