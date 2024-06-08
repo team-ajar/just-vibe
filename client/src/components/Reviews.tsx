@@ -21,7 +21,7 @@ const Reviews = () => {
     axios.post(`/albums/${review.albumId}/review`, review)
       .then(response => {
         setReviews(response.data);
-        setReview({ albumId: '1', text: '', rating: '5', userId: '', id: '' }); // Reset review form
+        setReview({ albumId: '', text: '', rating: '5', userId: '', id: '1' }); // Reset review form
       })
       .catch(error => {
         console.error('Error creating review:', error);
@@ -72,7 +72,7 @@ const Reviews = () => {
       </div>
       <div>
         <h2>All Reviews</h2>
-        {reviews.length > 0 ? (
+        {reviews.length ? (
           reviews.map((rev) => (
             <div key={rev.id}>
               <p>{rev.text}</p>
