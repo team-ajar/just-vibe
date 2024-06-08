@@ -25,10 +25,12 @@ module.exports = {
 
   setAlbumOfTheDay: (req: Request, res: Response) => {
     const { albumId, userId } = req.body;
+    console.log('received albumId:', albumId);
+    console.log('received userId:', userId);
     prisma.albumOfTheDay.create({
       data: {
-        albumId,
-        userId
+        album: { connect: { id: albumId } },
+        user: { connect: { id: userId } }
       },
     })
     .then(() => {

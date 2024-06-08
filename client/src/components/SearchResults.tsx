@@ -49,20 +49,24 @@ const SearchResults = () => {
   };
 
   const saveAlbumOfTheDay = (album: any) => {
-    console.log('album:', album);
-
     const { name: albumName, artist: artistName} = album;
 
     axios.post('/api/album-id', {
-      albumName, artistName
+      albumName,
+      artistName
     })
     .then((response) => {
       const albumId = response.data.albumId;
-      console.log('got albumId:', albumId);
 
-      axios.post('/api/album-of-the-day', { albumId })
-        .then(data => console.log(data))
-        .catch(err => console.error('Error setting album of the day', err));
+      axios.get('/api/user')
+        .then((profileResponse) => {
+          const userId = profileResponse.data.id;
+
+          axios.post('/api/album-of-the-day', { albumId, userId })
+            .then(data => console.log('album of the day response:', data))
+            .catch(err => console.error('Error setting album of the day', err));
+        })
+        .catch(err => console.error('Error getting userId', err));
     })
     .catch(err => console.error('Error getting albumId', err));
   };

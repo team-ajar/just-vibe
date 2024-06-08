@@ -71,11 +71,10 @@ app.get('/profile', requiresAuth(), (req: Request, res: Response) => {
   prisma.user.create({
     data: user
   })
-    .then(data => console.log(data))
-    .catch(err => console.error(err));
+    // .then(data => console.log(data))
+    // .catch(err => console.error(err));
 
-  console.log('userId:', userId);
-  res.send(JSON.stringify(req.oidc.user, null, 2));
+  res.status(200).send(JSON.stringify(req.oidc.user, null, 2));
 });
 
 app.listen(PORT, function() {
