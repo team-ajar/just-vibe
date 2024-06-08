@@ -22,7 +22,7 @@ const Reviews = () => {
     console.log("ALBUM ID CHECK:", review.albumId); // 
     axios.post(`/api/albums/${review.albumId}/review`, review)
       .then(response => {
-        console.log('REPONSE HERE', response.data)
+        console.log('RESPONSE HERE', response.data)
         setReviews(response.data);
         setReview({ albumId: '1', text: '', rating: '5', userId: '', id: '1' }); // Reset review form
       })

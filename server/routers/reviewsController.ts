@@ -12,8 +12,9 @@ module.exports = {
 
     //use req.body for data sent in the request body
     //this is a post
-    const { text, rating, userId } = req.body;
-    const { albumId } = req.params;
+    console.log('REQ BODY HEREE!', req.body);
+    const { text, rating } = req.body;
+    const { albumId, userId } = req.params;
     //prisma crud operation
     prisma.review.create({
       data: {
@@ -37,7 +38,7 @@ module.exports = {
   deleteReview: (req: Request, res: Response) => {
     //destructure the id from the req.params
     //parameters being available paths in the URL
-    const { id } = req.params;
+    const { id, userId, albumId } = req.params;
     prisma.review.delete({
       where: {
         id: Number(id),
@@ -55,11 +56,13 @@ module.exports = {
     })
   },
   updateReview: (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { id, albumId, userId } = req.params;
     const { text, rating } = req.body;
     prisma.review.update({
       where: {
         id: Number(id),
+        albumId: Number(albumId),
+        userId: Number(userId),
       }, 
       data: {
         text: text,
