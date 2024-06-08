@@ -59,7 +59,8 @@ const SearchResults = () => {
       })
       .catch(error => console.error('Error fetching search results:', error));
   }, [query]);
-
+  //save the album.id to the Reviews
+  //pass the album info to the Reviews
   return (
     <div>
       <h1>Search Results for {query}</h1>
@@ -73,7 +74,11 @@ const SearchResults = () => {
               {album.name}
             </a>
             <button onClick={() => saveAlbum(album)}>Save Album</button>
-            <Link to={`/reviews`}>
+            {console.log('ALBUM HERE!!', album)}
+            <Link to={{
+              pathname:`/reviews`,              
+              }}
+              state = {album}>
               <button>Write Review</button>
             </Link>
           </li>

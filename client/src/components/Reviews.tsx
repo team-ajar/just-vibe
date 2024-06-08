@@ -1,30 +1,35 @@
-import React, { useState, useEffect, SetStateAction, Dispatch } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation, Link } from 'react-router-dom';
 
 interface Review {
-  albumId: string;
   text: string;
-  rating: string;
-  userId: string;
-  id: string;
+  rating: number;
+  userId: number;
+  id: number;
 }
 
+
+
 const Reviews = () => {
-  const { albumId } = useParams<{ albumId: string }>(); 
-  // State hook to store the created review information
-  const [review, setReview] = useState<Review>({ albumId: "1", text: '', rating: '5', userId: '1', id: '' });
-  // State hook to store ALL created reviews
+  const { albumId } = useParams<{ albumId: string }>();
+  //const location = useLocation();
+  //destruct the state from the Link in search results
+  const { state } = useLocation();
+  console.log('LOCATION STATE HERE', state);
+ 
+
+  const [review, setReview] = useState<Review>({ text: "", rating: 5, userId: 1, id: 1 });
   const [reviews, setReviews] = useState<Review[]>([]);
 
   const createReview = () => {
-    // Log review data for debugging
-    console.log("ALBUM ID CHECK:", review.albumId); // 
-    axios.post(`/api/albums/${review.albumId}/review`, review)
+    console.log("ALBUM ID CHECKSSSSS:", review);
+    //end point and the body being sent
+    axios.post(`/api/albums/${review.albumId}/review/${review.userId}`, review)
       .then(response => {
         console.log('RESPONSE HERE', response.data)
         setReviews(response.data);
-        setReview({ albumId: '1', text: '', rating: '5', userId: '', id: '1' }); // Reset review form
+        setReview({ text: "", rating: 5, userId: 1, id: 1 });
       })
       .catch(error => {
         console.error('Error creating review:', error);
@@ -42,10 +47,8 @@ const Reviews = () => {
   };
 
   const updateReview = () => {
-    //put post endpoint from index.ts , varied with each album
     axios.put(`/api/albums/${review.albumId}/review/${review.id}`, review)
       .then(response => {
-        //use map to update the response long as the id matches the chosen review
         setReviews(reviews.map(existingReview => existingReview.id === review.id ? response.data : existingReview));
       })
       .catch(error => {
@@ -57,6 +60,9 @@ const Reviews = () => {
     <div>
       <div>
         <h1>Reviews</h1>
+        {state.name}
+        <br />
+        <img src={state.image[2]["#text"]} />
       </div>
       <div>
         <label>What did you think of the album?</label>
@@ -67,7 +73,6 @@ const Reviews = () => {
           placeholder='Write review here'
           rows={6}
           value={review.text}
-          //update the text with the value from the input field in review
           onChange={(e) => setReview({ ...review, text: e.target.value })}
         ></textarea>
       </div>
@@ -81,7 +86,7 @@ const Reviews = () => {
             <div key={rev.id}>
               <p>{rev.text}</p>
               <button onClick={() => deleteReview(rev.albumId, rev.id)}>Delete</button>
-              <button onClick={() => updateReview()}>Update</button>
+              <button onClick={() => setReview(rev)}>Update</button>
             </div>
           ))
         ) : (
