@@ -60,7 +60,7 @@ const HomePage = () => {
       <h2>Your Album of The Day</h2>
       {albumOfTheDay ? (
         <div>
-          <img src={albumOfTheDay.album.imageUrl} />
+          <img src={albumOfTheDay.album.image} />
           <h3>{albumOfTheDay.album.albumName}</h3>
           <p>{albumOfTheDay.album.artistName}</p>
           <button onClick={() => deleteAlbumOfTheDay(albumOfTheDay.id)}>Delete</button>
