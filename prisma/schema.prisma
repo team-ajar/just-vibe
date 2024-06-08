@@ -51,26 +51,23 @@ model Category {
 
 model Album {
   id            Int              @id @default(autoincrement())
-  name          String
-  artistId      Int
-  artist        Artist           @relation(fields: [artistId], references: [id])
+  albumName     String
+  artistName    String
+  image         String    @db.VarChar(300)
   reviews       Review[]
   song          Song[]
   albumsOfTheDay AlbumOfTheDay[]
-
-  @@index([artistId], map: "Album_artistId_fkey")
 }
 
 model Artist {
   id          Int     @id @default(autoincrement())
-  name        String
+  name        String  @db.VarChar(300)
   description String
-  album       Album[]
 }
 
 model Song {
   id      Int    @id @default(autoincrement())
-  name    String
+  name    String 
   albumId Int
   album   Album  @relation(fields: [albumId], references: [id])
 
