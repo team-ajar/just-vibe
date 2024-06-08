@@ -49,10 +49,6 @@ const HomePage = () => {
       });
   };
 
-  useEffect(() => {
-    console.log(albumOfTheDay);
-  }, [albumOfTheDay]); // Log only when albumOfTheDay changes
-
   return (
     <div className="home-page">
       <h1>Welcome to Just Vibe!</h1>
