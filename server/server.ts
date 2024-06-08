@@ -59,7 +59,6 @@ app.get('/profile', requiresAuth(), (req: Request, res: Response) => {
 
   const authUser = JSON.stringify(req.oidc.user, null, 2)
   const authUserObj = JSON.parse(authUser);
-  const userId = authUserObj.sub;
 
   const user = {
     username: authUserObj.nickname,
@@ -71,8 +70,6 @@ app.get('/profile', requiresAuth(), (req: Request, res: Response) => {
   prisma.user.create({
     data: user
   })
-    // .then(data => console.log(data))
-    // .catch(err => console.error(err));
 
   res.status(200).send(JSON.stringify(req.oidc.user, null, 2));
 });
