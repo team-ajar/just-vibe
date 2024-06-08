@@ -32,9 +32,10 @@ module.exports = {
           searchResults.artists = data.data.results.artistmatches;
             // console.log(artist.name);
           // respond w {artists: artist.search, albums: album.search}
-          axios.get(`https://app.ticketmaster.com/discovery/v2/attractions.json?apikey=${TICKETMASTER_API_KEY}&keyword=${search}`, {headers: {"Content-Type": "application/json"}})
+          axios.get(`https://app.ticketmaster.com/discovery/v2/events.json?apikey=${TICKETMASTER_API_KEY}&keyword=${search}`, {headers: {"Content-Type": "application/json"}})
           .then((data: any) => {
-          searchResults.events = data.data._embedded.attractions;
+          
+          searchResults.events = data.data._embedded.events[0]._embeded.venues;
 
           res.status(200).send(searchResults);
           })
