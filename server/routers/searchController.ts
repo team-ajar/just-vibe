@@ -8,6 +8,7 @@ const prisma = new PrismaClient();
 require('dotenv').config();
 
 const LAST_FM_API_KEY = process.env.LAST_FM_API_KEY;
+const TICKETMASTER_API_KEY = process.env.TICKETMASTER_API_KEY;
 
 module.exports = {
   handleSearch: (req: Request, res: Response) => {
@@ -31,7 +32,13 @@ module.exports = {
           searchResults.artists = data.data.results.artistmatches;
             // console.log(artist.name);
           // respond w {artists: artist.search, albums: album.search}
+          axios.get(`https://app.ticketmaster.com/discovery/v2/attractions.json?apikey=${TICKETMASTER_API_KEY}&keyword=${search}`, {headers: {"Content-Type": "application/json"}})
+          .then((data: any) => {
+          searchResults.events = data.data._embedded.attractions;
+
           res.status(200).send(searchResults);
+          })
+          .catch((err: AxiosResponse) => console.error('err: ', err));
         })
         .catch((err: AxiosResponse) => console.error('err: ', err));
       })
