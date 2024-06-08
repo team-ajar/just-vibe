@@ -4,7 +4,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 // const ManagementClient = require('auth0').ManagementClient;
-import ManagementClient from 'auth0'
+//import ManagementClient from 'auth0';
 
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
