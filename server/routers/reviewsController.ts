@@ -12,15 +12,14 @@ module.exports = {
 
     //use req.body for data sent in the request body
     //this is a post
-    const { albumId, text, rating, userId, id } = req.body;
-    
+    const { text, rating, userId } = req.body;
+    const { albumId } = req.params;
     //prisma crud operation
     prisma.review.create({
       data: {
         albumId: Number(albumId),
-        text: String(text),
-        rating: Number(rating),
-        id: Number(id),
+        text,
+        rating,
         userId: Number(userId),
       },
     })
@@ -63,8 +62,8 @@ module.exports = {
         id: Number(id),
       }, 
       data: {
-        text: String(text),
-        rating: Number(rating),
+        text: text,
+        rating: rating,
       }
     })
     .then((response: any) => {
