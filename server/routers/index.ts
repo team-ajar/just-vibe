@@ -5,6 +5,7 @@ const musicController = require('./musicController');
 // const eventsController = require('./eventsController');
 const profileController = require('./profileController');
 // const reviewsController = require('./reviewsController');
+const getAlbumId = require('./albumIdController');
 const router = express.Router();
 
 //searchController
@@ -24,5 +25,9 @@ router.route('/music/album').post(musicController.saveAlbum);
 router.route('/user').get(profileController.readUser);
 router.route('/user/:userId').put(profileController.updateUser);
 router.route('/user/:userId').delete(profileController.deleteUser);
+
+// getAlbumIdController
+router.route('/album-id').post(albumIdController.getAlbumId);
+
 
 module.exports = router;
