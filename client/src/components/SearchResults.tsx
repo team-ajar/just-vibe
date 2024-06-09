@@ -1,26 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
+import moment from 'moment';
 
 // Define interfaces for Artist, Album, and SearchResultsData
 interface Artist {
   image: any;
   name: string;
   url: string;
-}
+};
 
 interface Album {
+  id: number;
   image: any;
   name: string;
   artist: string;
   url: string;
-  id: string; // Assume that each album has a unique id
-}
+};
 
 interface SearchResultsData {
   artists: Artist[];
   albums: Album[];
-}
+};
 
 const SearchResults = () => {
   // Get query from the URL using useParams
@@ -28,14 +29,21 @@ const SearchResults = () => {
   // useState used to declare searchResults and setSearchResults
   // searchResults initialized to an object with artists and albums as keys and empty arrays as values
   const [searchResults, setSearchResults] = useState<SearchResultsData>({ artists: [], albums: [] });
+  // albumOfTheDaySet initially set to false
+  // setAlbumOfTheDaySet used to update albumOfTheDaySet
+  const [albumOfTheDaySet, setAlbumOfTheDaySet] = useState<boolean>(false);
 
-  const saveAlbum = (album: Album) => {
-    axios.post('/api/music/album', {
-      albumName: album.name,
+  const saveAlbum  = (album: any) => {
+    // console.log(album.artist)
+    // console.log(album.image[3]['#text']);
+     axios.post('/api/music/album', {
+       albumName: album.name,
       artistName: album.artist,
-    })
-      .then(data => console.log('Album saved:', data))
-      .catch(err => console.error(err));
+      image: album.image[3]['#text'],
+     })
+       .then(data => console.log('button: ', data))
+       .catch(err => console.error(err));
+
   }
 
   const saveArtist = (artist: Artist) => {
@@ -44,20 +52,64 @@ const SearchResults = () => {
     })
       .then(data => console.log('Artist saved:', data))
       .catch(err => console.error(err));
-  }
+  };
+
+  const saveAlbumOfTheDay = (album: any) => {
+    if (albumOfTheDaySet) {
+      alert('You have already set an album of the day for today.');
+      return;
+    }
+
+    const { name: albumName, artist: artistName} = album;
+
+    // make a post request to endpoint
+    axios.post('/api/album-id', { albumName, artistName })
+    // get back the albumId
+    .then((response) => {
+      const albumId = response.data.albumId;
+
+      // make a get request to '/api/user'
+      axios.get('/api/user')
+        // get back the userId of the user that is logged in
+        .then((profileResponse) => {
+          const userId = profileResponse.data.id;
+
+          // make a post request to the endpoint to set the album of the day
+          axios.post('/api/album-of-the-day', { albumId, userId })
+            .then((data) => {
+              console.log('album of the day response:', data);
+              setAlbumOfTheDaySet(true);
+            })
+            .catch(err => console.error('Error setting album of the day', err));
+        })
+        .catch(err => console.error('Error getting userId', err));
+    })
+    .catch(err => console.error('Error getting albumId', err));
+  };
 
   useEffect(() => {
     // Get data from /api/search/${query}
     fetch(`/api/search/${query}`)
+      // convert response to data
       .then(response => response.json())
       .then((data) => {
-        // Update searchResults with the fetched data using setSearchResults
+        // console.log('fetched data:', data);
+        // update searchResults with the fetched data using setSearchResults
         setSearchResults({
           artists: data.artists.artist,
           albums: data.albums.album
         });
       })
       .catch(error => console.error('Error fetching search results:', error));
+
+      // check if the album of the day is already set for today
+      axios.get('/api/album-of-the-day')
+        .then((response) => {
+          if (response.data && moment(response.data.date).isSame(moment(), 'day')) {
+            setAlbumOfTheDaySet(true);
+          }
+        })
+        .catch(err => console.error('Error checking album of the day', err));
   }, [query]);
   //save the album.id to the Reviews
   //pass the album info to the Reviews
@@ -65,24 +117,25 @@ const SearchResults = () => {
     <div>
       <h1>Search Results for {query}</h1>
       <h2>Albums</h2>
-      <ul>
-        {/* Map over searchResults.albums to make a list item of each album */}
-        {searchResults.albums.map((album: Album) => (
-          <li key={album.id}>
-            <a href={album.url}>
-              {album.image[1] && <img src={album.image[1]['#text']} alt={album.name} />}
-              {album.name}
-            </a>
-            <button onClick={() => saveAlbum(album)}>Save Album</button>
-            <Link to={{
+        <ul>
+          {/* map over searchResults.albums to make a list item of each album */}
+          {searchResults.albums.map((album: Album) => (
+            <li key={album.name}>
+                <a href={album.url}>
+                  {album.image[1] && <img src={album.image[1]['#text']} />}
+                  {album.name}
+              </a>
+              <button onClick={() => saveAlbum(album)}>Save Album</button>
+              <button onClick={() => saveAlbumOfTheDay(album)} disabled={albumOfTheDaySet}>Set as Album of the Day</button>
+              <Link to={{
               pathname:`/reviews`,              
               }}
               state = {album}>
               <button>Write Review</button>
             </Link>
-          </li>
-        ))}
-      </ul>
+            </li>
+          ))}
+        </ul>
       <h2>Artists</h2>
       <ul>
         {/* Map over searchResults.artists to make a list item of each artist */}

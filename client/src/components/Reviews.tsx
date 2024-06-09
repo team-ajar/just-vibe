@@ -9,6 +9,7 @@ interface Review {
   id: number;
 }
 
+//make albumId a Number instead of a string of the album name + artist
 const Reviews = () => {
   const { albumId } = useParams<{ albumId: string }>();
   const { state } = useLocation();

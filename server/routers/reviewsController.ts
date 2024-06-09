@@ -4,7 +4,7 @@ import { PrismaClient, Prisma } from '@prisma/client'
 const prisma = new PrismaClient()
 //import AsyncHandler from "../middleware/AsyncHandler";
 
-const LAST_FM_API_KEY = process.env.LAST_FM_API_KEY;
+// const LAST_FM_API_KEY = process.env.LAST_FM_API_KEY;
 
 //methods that serves as request handlers
 module.exports = {

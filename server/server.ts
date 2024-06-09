@@ -3,14 +3,9 @@ import { auth, requiresAuth } from 'express-openid-connect';
 import path from 'path';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
-// const ManagementClient = require('auth0').ManagementClient;
-//import ManagementClient from 'auth0';
-
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
-
 const routes = require('./routers');
-
 dotenv.config();
 
 const app = express();
@@ -56,9 +51,10 @@ app.get('/', (req: Request, res: Response) => {
 
 // The /profile route will show the user profile as JSON
 app.get('/profile', requiresAuth(), (req: Request, res: Response) => {
-  
+
   const authUser = JSON.stringify(req.oidc.user, null, 2)
   const authUserObj = JSON.parse(authUser);
+
   const user = {
     username: authUserObj.nickname,
     name: authUserObj.nickname || 'new user',
@@ -69,10 +65,8 @@ app.get('/profile', requiresAuth(), (req: Request, res: Response) => {
   prisma.user.create({
     data: user
   })
-    .then(data => console.log(data))
-    .catch(err => console.error(err));
 
-  res.send(JSON.stringify(req.oidc.user, null, 2));
+  res.status(200).send(JSON.stringify(req.oidc.user, null, 2));
 });
 
 app.listen(PORT, function() {
