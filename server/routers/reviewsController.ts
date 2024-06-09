@@ -4,11 +4,11 @@ import { PrismaClient, Prisma } from '@prisma/client'
 const prisma = new PrismaClient()
 //import AsyncHandler from "../middleware/AsyncHandler";
 
-const LAST_FM_API_KEY = process.env.LAST_FM_API_KEY;
+// const LAST_FM_API_KEY = process.env.LAST_FM_API_KEY;
 
-//methods that serves as request handlers
-module.exports = {
-  createReview: (req: Request, res: Response) => {
+// //methods that serves as request handlers
+// module.exports = {
+//   createReview: (req: Request, res: Response) => {
 
     //use req.body for data sent in the request body
     //this is a post
