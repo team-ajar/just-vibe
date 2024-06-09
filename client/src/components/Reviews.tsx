@@ -1,62 +1,112 @@
-import React, { useState, useEffect, SetStateAction, Dispatch } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 
 interface Review {
-  albumId: string;
   text: string;
-  rating: string;
-  userId: string;
-  id: string;
+  rating: number;
+  userId: number;
+  id: number;
 }
 
+//make albumId a Number instead of a string of the album name + artist
 const Reviews = () => {
-  const { albumId } = useParams<{ albumId: string }>(); 
-  // State hook to store the created review information
-  const [review, setReview] = useState<Review>({ albumId: "1", text: '', rating: '5', userId: '1', id: '' });
-  // State hook to store ALL created reviews
+ // const { albumId } = useParams<{ albumId: string }>();
+  const { state } = useLocation();
+  console.log('STATE LOG HERE', state)
+ 
+  const [userId, setUserId] = useState<null | number>(null)
+
+  const [review, setReview] = useState<{text: string, rating: number, id?: number}>({ text: "", rating: 5, id: undefined });
+
   const [reviews, setReviews] = useState<Review[]>([]);
 
-  const createReview = () => {
-    // Log review data for debugging
-    console.log("ALBUM ID CHECK:", review.albumId); // 
-    axios.post(`/api/albums/${review.albumId}/review`, review)
+  const showReviews = () => {
+    axios.get(`/api/albums/${state.artist}/${state.name}/reviews`)
       .then(response => {
-        console.log('RESPONSE HERE', response.data)
+        console.log(response.data);
+        if (response.data.error){
+          alert("Save album!")
+          return
+        }
         setReviews(response.data);
-        setReview({ albumId: '1', text: '', rating: '5', userId: '', id: '1' }); // Reset review form
       })
       .catch(error => {
+        console.error('Error retrieving reviews:', error);
+      });
+  };
+
+  const createReview = () => {
+    if (!userId){
+      return
+    }
+    axios.post(`/api/albums/${state.artist}/${state.name}/review/${userId}`, review)
+      .then(response => {
+        console.log('RESPONSE HERE', response.data);
+        setReviews(prev => [...prev, response.data]);
+        setReview({ text: "", rating: 5 }); // Resetting id to 0 to prepare for the next new review
+      })
+      .catch(error => {
+        if (error.response.status === 404){
+          alert(error.response.data)
+        }
         console.error('Error creating review:', error);
       });
   };
 
-  const deleteReview = (albumId: string, id: string) => {
-    axios.delete(`/api/albums/${albumId}/review/${id}`)
+  const deleteReview = ( reviewId: number) => {
+    if (!userId){
+      return
+    }
+    axios.delete(`/api/albums/review/${reviewId}/${userId}`)
       .then(() => {
-        setReviews(reviews.filter(review => review.id !== id));
+        setReviews(reviews.filter(review => review.id !== reviewId));
       })
       .catch(error => {
         console.error('Error deleting review:', error);
       });
   };
 
-  const updateReview = () => {
-    //put post endpoint from index.ts , varied with each album
-    axios.put(`/api/albums/${review.albumId}/review/${review.id}`, review)
+  const updateReview = (reviewId?: number) => {
+    if (!reviewId || !userId){
+      return
+    }
+    axios.put(`/api/albums/review/${reviewId}/${userId}`, review)
       .then(response => {
-        //use map to update the response long as the id matches the chosen review
-        setReviews(reviews.map(existingReview => existingReview.id === review.id ? response.data : existingReview));
+        setReviews(reviews.map(existingReview => existingReview.id === reviewId ? response.data : existingReview));
+        setReview({ text: "", rating: 5 }); // Resetting form after update
       })
       .catch(error => {
         console.error('Error updating review:', error);
       });
   };
 
+  useEffect(() => {
+    if (!state) return;
+    showReviews();
+    return () => {
+       setReviews([])
+    }
+  }, [state]);
+
+  useEffect(() => {
+    axios.get(`api/user`)
+    .then((response) => {
+      if (response.status === 404){
+        return 
+      } 
+      setUserId(response.data.id)
+    })
+    
+  }, [])
+
   return (
     <div>
       <div>
         <h1>Reviews</h1>
+        {state.name}
+        <br />
+        <img src={state.image[2]["#text"]} alt={`${state.name} album cover`} />
       </div>
       <div>
         <label>What did you think of the album?</label>
@@ -67,12 +117,12 @@ const Reviews = () => {
           placeholder='Write review here'
           rows={6}
           value={review.text}
-          //update the text with the value from the input field in review
           onChange={(e) => setReview({ ...review, text: e.target.value })}
         ></textarea>
       </div>
       <div>
         <button onClick={createReview}>Submit Review</button>
+        {review.id && <button onClick={() => updateReview(review.id)}>Update Review</button>}
       </div>
       <div>
         <h2>All Reviews</h2>
@@ -80,8 +130,8 @@ const Reviews = () => {
           reviews.map((rev) => (
             <div key={rev.id}>
               <p>{rev.text}</p>
-              <button onClick={() => deleteReview(rev.albumId, rev.id)}>Delete</button>
-              <button onClick={() => updateReview()}>Update</button>
+              <button onClick={() => deleteReview( rev.id )}>Delete</button>
+              <button onClick={() => setReview(rev)}>Update</button>
             </div>
           ))
         ) : (

@@ -8,14 +8,14 @@ datasource db {
 }
 
 model User {
-  id            Int              @id @default(autoincrement())
-  name          String
-  username      String
-  googleId      String
-  location      String
-  favorite      Favorite[]
-  reviews       Review[]
-  userEvents    UserEvent[]
+  id             Int             @id @default(autoincrement())
+  name           String
+  username       String
+  googleId       String
+  location       String
+  favorite       Favorite[]
+  reviews        Review[]
+  userEvents     UserEvent[]
   albumsOfTheDay AlbumOfTheDay[]
 }
 
@@ -25,8 +25,8 @@ model Review {
   rating  Int
   userId  Int
   albumId Int
-  album   Album  @relation(fields: [albumId], references: [id])
   user    User   @relation(fields: [userId], references: [id])
+  Album   Album  @relation(fields: [albumId], references: [id])
 
   @@index([albumId], map: "Review_albumId_fkey")
   @@index([userId], map: "Review_userId_fkey")
@@ -40,24 +40,24 @@ model Event {
 }
 
 model Album {
-  id            Int              @id @default(autoincrement())
-  albumName     String
-  artistName    String
-  image         String    @db.VarChar(300)
-  reviews       Review[]
-  song          Song[]
+  id             Int             @id @default(autoincrement())
+  albumName      String
+  artistName     String
+  image          String          @db.VarChar(300)
+  reviews        Review[]
+  song           Song[]
   albumsOfTheDay AlbumOfTheDay[]
 }
 
 model Artist {
-  id          Int     @id @default(autoincrement())
-  name        String  @db.VarChar(300)
+  id          Int    @id @default(autoincrement())
+  name        String @db.VarChar(300)
   description String
 }
 
 model Song {
   id      Int    @id @default(autoincrement())
-  name    String 
+  name    String
   albumId Int
   album   Album  @relation(fields: [albumId], references: [id])
 
@@ -85,12 +85,12 @@ model Favorite {
 }
 
 model AlbumOfTheDay {
-  id        Int      @id @default(autoincrement())
-  date      DateTime @default(now())
-  albumId   Int
-  album     Album    @relation(fields: [albumId], references: [id])
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  id      Int      @id @default(autoincrement())
+  date    DateTime @default(now())
+  albumId Int
+  album   Album    @relation(fields: [albumId], references: [id])
+  userId  Int
+  user    User     @relation(fields: [userId], references: [id])
 
   @@index([albumId], map: "AlbumOfTheDay_albumId_fkey")
   @@index([userId], map: "AlbumOfTheDay_userId_fkey")
