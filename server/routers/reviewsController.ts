@@ -92,7 +92,7 @@ module.exports = {
       console.log(response);
       //200 status code for updated resource
       //sendStatus to send the status and send it to client
-      res.sendStatus(200)
+      res.status(200).json(response)
     })
     .catch((error: any) => {
       console.log('Error initiated while updating:', error)

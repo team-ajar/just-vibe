@@ -24,8 +24,7 @@ model Review {
   text    String
   rating  Int
   userId  Int
-  albumId Int
-  album   Album  @relation(fields: [albumId], references: [id])
+  albumId String
   user    User   @relation(fields: [userId], references: [id])
 
   @@index([albumId], map: "Review_albumId_fkey")
@@ -53,7 +52,6 @@ model Album {
   id            Int              @id @default(autoincrement())
   albumName     String
   artistName    String
-  reviews       Review[]
   song          Song[]
   albumsOfTheDay AlbumOfTheDay[]
 }
