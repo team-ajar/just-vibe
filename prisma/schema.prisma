@@ -34,19 +34,9 @@ model Review {
 
 model Event {
   id         Int         @id @default(autoincrement())
-  categoryId Int
   venue      String
   location   String
-  category   Category    @relation(fields: [categoryId], references: [id])
   userEvents UserEvent[]
-
-  @@index([categoryId], map: "Event_categoryId_fkey")
-}
-
-model Category {
-  id    Int     @id @default(autoincrement())
-  name  String
-  event Event[]
 }
 
 model Album {
