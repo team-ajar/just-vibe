@@ -29,4 +29,9 @@ router.route('/user').get(profileController.readUser);
 router.route('/user/:userId').put(profileController.updateUser);
 router.route('/user/:userId').delete(profileController.deleteUser);
 
+// // eventsController
+// router.route('/events').post(eventsController.saveEvent);
+// router.route('/events').delete(eventsController.deleteEvent);
+
+
 module.exports = router;

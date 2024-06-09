@@ -1,16 +1,21 @@
 import { Request, Response } from 'express'
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
+import axios, { AxiosResponse } from 'axios';
+require('dotenv').config();
+
+
 
 module.exports = {
+
   saveEvent: (req: Request, res: Response) => {
-    const { artistName, location, description } = req.body;
+    const { location, venue }: { location: string, venue: string } = req.body;
       
-      prisma.userEvent.create({
+      prisma.event.create({
         data: {
-          name: artistName,
-          location,
-          description
+         location,
+         venue 
+
         }
       })
         .then((data: any) => res.sendStatus(201))
@@ -21,7 +26,7 @@ module.exports = {
     const { id } = req.params;
     prisma.review.delete({
       where: {
-        id,
+        id: Number(id),
       }
     })
     .then((response: any) => { res.sendStatus(204) })

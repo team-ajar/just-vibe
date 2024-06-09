@@ -3,14 +3,9 @@ import { auth, requiresAuth } from 'express-openid-connect';
 import path from 'path';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
-// const ManagementClient = require('auth0').ManagementClient;
-//import ManagementClient from 'auth0';
-
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
-
 const routes = require('./routers');
-
 dotenv.config();
 
 const app = express();
