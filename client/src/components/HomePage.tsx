@@ -18,6 +18,9 @@ const HomePage = () => {
   // setNewAlbumId = used to update newAlbumId
   // newAlbumId can be a number or null
   const [newAlbumId, setNewAlbumId] = useState<number | null>(null);
+  // albums = initially set to an empty array
+  // setAlbums = used to update albums
+  const [albums, setAlbums] = useState<any[]>([]);
   // date formatting
   const today = moment().format('dddd, MMMM D, YYYY');
 
@@ -38,6 +41,16 @@ const HomePage = () => {
       .catch(error => {
         console.error('Error fetching album of the day', error);
         setErrorMessage('Error fetching album of the day');
+      });
+
+    // get all saved albums
+    axios.get('/api/music/albums')
+      .then(response => {
+        setAlbums(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching albums', error);
+        setErrorMessage('Error fetching albums');
       });
   }, []);
 
@@ -100,13 +113,15 @@ const HomePage = () => {
           <button onClick={() => setIsEditing(true)}>Edit</button>
           {isEditing && (
             <div>
-              <input
-                type="number"
-                placeholder="New Album ID"
-                value={newAlbumId || ''}
-                onChange={(e) => setNewAlbumId(Number(e.target.value))}
-              />
-              <button onClick={() => editAlbumOfTheDay(albumOfTheDay.id, newAlbumId as number)}>Save</button>
+              <select onChange={(e) => setNewAlbumId(Number(e.target.value))} value={newAlbumId || ''}>
+                <option value="" disabled>Select an album</option>
+                {albums.map(album => (
+                  <option key={album.id} value={album.id}>
+                    {album.albumName} by {album.artistName}
+                  </option>
+                ))}
+              </select>
+              <button onClick={() => newAlbumId && editAlbumOfTheDay(albumOfTheDay.id, newAlbumId)}>Save</button>
             </div>
           )}
         </div>
