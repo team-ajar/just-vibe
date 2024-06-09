@@ -11,6 +11,13 @@ const HomePage = () => {
   // setErrorMessage = function used to update errorMessage
   // errorMessage can be a string or null
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  // isEditing = initially set to false
+  // setIsEditing = used to update isEditing
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  // newAlbumId = initially set to null
+  // setNewAlbumId = used to update newAlbumId
+  // newAlbumId can be a number or null
+  const [newAlbumId, setNewAlbumId] = useState<number | null>(null);
   // date formatting
   const today = moment().format('dddd, MMMM D, YYYY');
 
@@ -49,6 +56,36 @@ const HomePage = () => {
       });
   };
 
+  const editAlbumOfTheDay = (id: number, newAlbumId: number) => {
+    // put request to the endpoint
+    axios.put(`/api/album-of-the-day/${id}`, { id, albumId: newAlbumId, userId: albumOfTheDay.user.id })
+      .then(() => {
+        // after successful update, get the updated album of the day
+        axios.get('/api/album-of-the-day')
+          .then(response => {
+            if (response.data) {
+              // set album of the day to the response data
+              setAlbumOfTheDay(response.data);
+              // set isEditing to false
+              setIsEditing(false);
+              // set the Error message
+              setErrorMessage('Album of the day has been updated.');
+            } else {
+              setErrorMessage('Error fetching updated album of the day');
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching updated album of the day', error);
+            setErrorMessage('Error fetching updated album of the day');
+          });
+      })
+      .catch(error => {
+        console.error('Error editing album of the day', error);
+        setErrorMessage('Error editing album of the day');
+      });
+  };
+
+
   return (
     <div className="home-page">
       <h1>Welcome to Just Vibe!</h1>
@@ -60,6 +97,18 @@ const HomePage = () => {
           <h3>{albumOfTheDay.album.albumName}</h3>
           <p>{albumOfTheDay.album.artistName}</p>
           <button onClick={() => deleteAlbumOfTheDay(albumOfTheDay.id)}>Delete</button>
+          <button onClick={() => setIsEditing(true)}>Edit</button>
+          {isEditing && (
+            <div>
+              <input
+                type="number"
+                placeholder="New Album ID"
+                value={newAlbumId || ''}
+                onChange={(e) => setNewAlbumId(Number(e.target.value))}
+              />
+              <button onClick={() => editAlbumOfTheDay(albumOfTheDay.id, newAlbumId as number)}>Save</button>
+            </div>
+          )}
         </div>
       ) : (
         <p>{errorMessage}</p>
