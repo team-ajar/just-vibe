@@ -39,11 +39,6 @@ model Event {
   userEvents UserEvent[]
 }
 
-model Category {
-  id    Int     @id @default(autoincrement())
-  name  String
-}
-
 model Album {
   id            Int              @id @default(autoincrement())
   albumName     String
