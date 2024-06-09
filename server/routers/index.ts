@@ -2,7 +2,7 @@ const express = require('express');
 const searchController = require('./searchController');
 const albumOfTheDayController = require('./albumOfTheDayController');
 const musicController = require('./musicController');
-// const eventsController = require('./eventsController');
+const eventsController = require('./eventsController');
 const profileController = require('./profileController');
 const reviewsController = require('./reviewsController');
 const router = express.Router();
@@ -28,5 +28,10 @@ router.route('/music/albums').get(musicController.readAlbums);
 router.route('/user').get(profileController.readUser);
 router.route('/user/:userId').put(profileController.updateUser);
 router.route('/user/:userId').delete(profileController.deleteUser);
+
+// // eventsController
+// router.route('/events').post(eventsController.saveEvent);
+// router.route('/events').delete(eventsController.deleteEvent);
+
 
 module.exports = router;
