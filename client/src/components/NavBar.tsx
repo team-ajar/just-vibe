@@ -11,6 +11,7 @@ const NavBar = () => {
     <nav className="nav-bar">
       <div className="logo">
         <Link to="/">Just Vibe</Link>
+        <Link to="/user">Profile</Link>
       </div>
       <div className="search-bar">
         <input

@@ -53,6 +53,7 @@ model Album {
   id            Int              @id @default(autoincrement())
   albumName     String
   artistName    String
+  image         String    @db.VarChar(300)
   reviews       Review[]
   song          Song[]
   albumsOfTheDay AlbumOfTheDay[]
