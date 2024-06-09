@@ -11,16 +11,22 @@ interface Review {
 
 //make albumId a Number instead of a string of the album name + artist
 const Reviews = () => {
-  const { albumId } = useParams<{ albumId: string }>();
+ // const { albumId } = useParams<{ albumId: string }>();
   const { state } = useLocation();
+  console.log('STATE LOG HERE', state)
  
-  const [review, setReview] = useState<Review>({ text: "", rating: 5, userId: 1, id: 0 });
+  const [review, setReview] = useState<{text: string, rating: number, id?: number}>({ text: "", rating: 5, id: undefined });
+
   const [reviews, setReviews] = useState<Review[]>([]);
 
   const showReviews = () => {
-    axios.get(`/api/albums/${state.name + state.artist}/reviews`)
+    axios.get(`/api/albums/${state.artist}/${state.name}/reviews`)
       .then(response => {
         console.log(response.data);
+        if (response.data.error){
+          alert("Save album!")
+          return
+        }
         setReviews(response.data);
       })
       .catch(error => {
@@ -29,19 +35,22 @@ const Reviews = () => {
   };
 
   const createReview = () => {
-    axios.post(`/api/albums/${state.name + state.artist}/review/${review.userId}`, review)
+    axios.post(`/api/albums/${state.artist}/${state.name}/review/1`, review)
       .then(response => {
         console.log('RESPONSE HERE', response.data);
         setReviews(prev => [...prev, response.data]);
-        setReview({ text: "", rating: 5, userId: 1, id: 0 }); // Resetting id to 0 to prepare for the next new review
+        setReview({ text: "", rating: 5 }); // Resetting id to 0 to prepare for the next new review
       })
       .catch(error => {
+        if (error.response.status === 404){
+          alert(error.response.data)
+        }
         console.error('Error creating review:', error);
       });
   };
 
-  const deleteReview = (albumId: string, reviewId: number, userId: number) => {
-    axios.delete(`/api/albums/${albumId}/review/${reviewId}/${userId}`)
+  const deleteReview = ( reviewId: number, userId: number) => {
+    axios.delete(`/api/albums/review/${reviewId}/${userId}`)
       .then(() => {
         setReviews(reviews.filter(review => review.id !== reviewId));
       })
@@ -50,11 +59,14 @@ const Reviews = () => {
       });
   };
 
-  const updateReview = () => {
-    axios.put(`/api/albums/${state.name + state.artist}/review/${review.id}/${review.userId}`, review)
+  const updateReview = (reviewId?: number, userId: number = 1) => {
+    if (!reviewId){
+      return
+    }
+    axios.put(`/api/albums/review/${reviewId}/${userId}`, review)
       .then(response => {
-        setReviews(reviews.map(existingReview => existingReview.id === review.id ? response.data : existingReview));
-        setReview({ text: "", rating: 5, userId: 1, id: 0 }); // Resetting form after update
+        setReviews(reviews.map(existingReview => existingReview.id === reviewId ? response.data : existingReview));
+        setReview({ text: "", rating: 5 }); // Resetting form after update
       })
       .catch(error => {
         console.error('Error updating review:', error);
@@ -88,7 +100,7 @@ const Reviews = () => {
       </div>
       <div>
         <button onClick={createReview}>Submit Review</button>
-        {review.id !== 0 && <button onClick={updateReview}>Update Review</button>}
+        {review.id && <button onClick={() => updateReview(review.id)}>Update Review</button>}
       </div>
       <div>
         <h2>All Reviews</h2>
@@ -96,7 +108,7 @@ const Reviews = () => {
           reviews.map((rev) => (
             <div key={rev.id}>
               <p>{rev.text}</p>
-              <button onClick={() => deleteReview(state.name + state.artist, rev.id, rev.userId)}>Delete</button>
+              <button onClick={() => deleteReview( rev.id, rev.userId)}>Delete</button>
               <button onClick={() => setReview(rev)}>Update</button>
             </div>
           ))
