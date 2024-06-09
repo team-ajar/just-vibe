@@ -7,7 +7,7 @@ require('dotenv').config();
 
 
 module.exports = {
-
+  
   saveEvent: (req: Request, res: Response) => {
     const { location, venue }: { location: string, venue: string } = req.body;
       
