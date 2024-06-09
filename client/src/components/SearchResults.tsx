@@ -74,7 +74,6 @@ const SearchResults = () => {
               {album.name}
             </a>
             <button onClick={() => saveAlbum(album)}>Save Album</button>
-            {console.log('ALBUM HERE!!', album)}
             <Link to={{
               pathname:`/reviews`,              
               }}

@@ -10,6 +10,7 @@ const router = express.Router();
 //searchController
 router.route('/search/:search').get(searchController.handleSearch);
 
+router.route('/albums/:albumId/reviews').get(reviewsController.getReviews);
 router.route('/albums/:albumId/review/:userId').post(reviewsController.createReview);
 router.route('/albums/:albumId/review/:id/:userId').delete(reviewsController.deleteReview);
 router.route('/albums/:albumId/review/:id/:userId').put(reviewsController.updateReview);

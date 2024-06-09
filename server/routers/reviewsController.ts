@@ -8,6 +8,25 @@ const LAST_FM_API_KEY = process.env.LAST_FM_API_KEY;
 
 //methods that serves as request handlers
 module.exports = {
+  getReviews: (req: Request, res: Response) => {
+
+    console.log('REQUEST RECEIVED')
+    const { albumId } = req.params;
+
+    prisma.review.findMany({
+      where : { albumId }
+    })
+    .then((response) => {
+      console.log('GET REVIEWS RESPONSE HERE', response)
+      console.log('GET REVIEWS ALBUM ID', albumId)
+      res.status(200).json(response)
+    })
+    .catch((error) => {
+      console.error('Error retrieving list:', error)
+      res.sendStatus(500)
+    });
+    return
+  }, 
   createReview: (req: Request, res: Response) => {
 
     //use req.body for data sent in the request body
@@ -18,7 +37,7 @@ module.exports = {
     //prisma crud operation
     prisma.review.create({
       data: {
-        albumId: Number(albumId),
+        albumId,
         text,
         rating,
         userId: Number(userId),
@@ -27,7 +46,7 @@ module.exports = {
     .then((response: any) => {
       console.log(response);
       //sendStatus sets the status AND send it to the client
-      res.sendStatus(201)
+      res.status(201).json(response)
     })
     .catch((error: any) => {
       console.error('Error adding review:', error)
@@ -61,7 +80,7 @@ module.exports = {
     prisma.review.update({
       where: {
         id: Number(id),
-        albumId: Number(albumId),
+        albumId,
         userId: Number(userId),
       }, 
       data: {

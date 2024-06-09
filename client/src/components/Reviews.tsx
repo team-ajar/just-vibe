@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios, { all } from 'axios';
 import { useParams, useLocation, Link } from 'react-router-dom';
 
 interface Review {
@@ -9,26 +9,41 @@ interface Review {
   id: number;
 }
 
-
+//SELECT * FROM Review; shows the saved reviews
 
 const Reviews = () => {
   const { albumId } = useParams<{ albumId: string }>();
   //const location = useLocation();
   //destruct the state from the Link in search results
   const { state } = useLocation();
-  console.log('LOCATION STATE HERE', state);
+  //console.log('LOCATION STATE HERE', state);
  
 
   const [review, setReview] = useState<Review>({ text: "", rating: 5, userId: 1, id: 1 });
   const [reviews, setReviews] = useState<Review[]>([]);
 
+
+  
+  const showReviews = () => {
+    //get requests cannot have body like post
+    axios.get(`/api/albums/${state.name + state.artist}/reviews`)
+    .then(response => {
+      //we want the response to be an array of every review made
+      console.log(response.data)
+      setReviews(response.data)
+    })
+    .catch(error => {
+      console.error('Error retrieving reviews:', error);
+    });
+  }
+
   const createReview = () => {
-    console.log("ALBUM ID CHECKSSSSS:", review);
+    //console.log("ALBUM ID CHECKSSSSS:", review);
     //end point and the body being sent
-    axios.post(`/api/albums/${review.albumId}/review/${review.userId}`, review)
+    axios.post(`/api/albums/${state.name + state.artist}/review/${review.userId}`, review)
       .then(response => {
         console.log('RESPONSE HERE', response.data)
-        setReviews(response.data);
+        setReviews(prev => [...prev, response.data]);
         setReview({ text: "", rating: 5, userId: 1, id: 1 });
       })
       .catch(error => {
@@ -56,6 +71,13 @@ const Reviews = () => {
       });
   };
 
+  //Like componentDidMount()
+  useEffect(() => {
+    if (!state) return
+    showReviews();
+    
+  }, [state]);
+
   return (
     <div>
       <div>
@@ -82,7 +104,7 @@ const Reviews = () => {
       <div>
         <h2>All Reviews</h2>
         {reviews.length ? (
-          reviews.map((rev) => (
+          reviews?.map((rev) => (
             <div key={rev.id}>
               <p>{rev.text}</p>
               <button onClick={() => deleteReview(rev.albumId, rev.id)}>Delete</button>
