@@ -66,10 +66,12 @@ module.exports = {
 
   // put request handling
   editAlbumOfTheDay: (req: Request, res: Response) => {
-    const { id, albumId, userId } = req.body;
+    const { id } = req.params;
+    const { albumId } = req.body;
+
     prisma.albumOfTheDay.update({
-      where: { id },
-      data: { albumId, userId }
+      where: { id: Number(id) },
+      data: { albumId: Number(albumId) },
     })
     .then(() => {
       res.sendStatus(200);
@@ -77,7 +79,7 @@ module.exports = {
     .catch((err) => {
       console.error('Error editing album of the day', err);
       res.sendStatus(500);
-    })
+    });
   },
 
   // delete request handling
