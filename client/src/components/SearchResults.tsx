@@ -111,7 +111,8 @@ const SearchResults = () => {
         })
         .catch(err => console.error('Error checking album of the day', err));
   }, [query]);
-
+  //save the album.id to the Reviews
+  //pass the album info to the Reviews
   return (
     <div>
       <h1>Search Results for {query}</h1>
@@ -126,9 +127,12 @@ const SearchResults = () => {
               </a>
               <button onClick={() => saveAlbum(album)}>Save Album</button>
               <button onClick={() => saveAlbumOfTheDay(album)} disabled={albumOfTheDaySet}>Set as Album of the Day</button>
-              <Link to={`/reviews`}>
-                <button>Write Review</button>
-              </Link>
+              <Link to={{
+              pathname:`/reviews`,              
+              }}
+              state = {album}>
+              <button>Write Review</button>
+            </Link>
             </li>
           ))}
         </ul>

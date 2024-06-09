@@ -12,9 +12,10 @@ const router = express.Router();
 router.route('/search/:search').get(searchController.handleSearch);
 
 // reviewsController
-router.route('/albums/:albumId/review/:userId').post(reviewsController.createReview);
-router.route('/albums/:albumId/review/:id/:userId').delete(reviewsController.deleteReview);
-router.route('/albums/:albumId/review/:id/:userId').put(reviewsController.updateReview);
+router.route('/albums/:artistName/:albumName/reviews').get(reviewsController.getReviews);
+router.route('/albums/:artistName/:albumName/review/:userId').post(reviewsController.createReview);
+router.route('/albums/review/:id/:userId').delete(reviewsController.deleteReview);
+router.route('/albums/review/:id/:userId').put(reviewsController.updateReview);
 
 // albumOfTheDayController
 router.route('/album-of-the-day').post(albumOfTheDayController.setAlbumOfTheDay);
