@@ -9,13 +9,13 @@ require('dotenv').config();
 module.exports = {
 
   saveEvent: (req: Request, res: Response) => {
-    const { location, date } = req.body;
+    const { location, venue }: { location: string, venue: string } = req.body;
       
       prisma.event.create({
         data: {
-         location: String(location),
-         date: String(date), 
-         
+         location,
+         venue 
+
         }
       })
         .then((data: any) => res.sendStatus(201))
