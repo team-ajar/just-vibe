@@ -35,7 +35,7 @@ model Review {
 model Event {
   id         Int         @id @default(autoincrement())
   categoryId Int
-  date       DateTime
+  venue      String
   location   String
   category   Category    @relation(fields: [categoryId], references: [id])
   userEvents UserEvent[]

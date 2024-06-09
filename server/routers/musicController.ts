@@ -37,5 +37,9 @@ module.exports = {
       res.sendStatus(500);
     });
   },
-
+  readAlbums: (req: Request, res: Response) => {
+    prisma.album.findMany()
+      .then(albums => res.status(201).send(albums))
+      .catch(err => res.sendStatus(500));
+  }
 }
