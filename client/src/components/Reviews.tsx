@@ -15,6 +15,8 @@ const Reviews = () => {
   const { state } = useLocation();
   console.log('STATE LOG HERE', state)
  
+  const [userId, setUserId] = useState<null | number>(null)
+
   const [review, setReview] = useState<{text: string, rating: number, id?: number}>({ text: "", rating: 5, id: undefined });
 
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -35,7 +37,10 @@ const Reviews = () => {
   };
 
   const createReview = () => {
-    axios.post(`/api/albums/${state.artist}/${state.name}/review/1`, review)
+    if (!userId){
+      return
+    }
+    axios.post(`/api/albums/${state.artist}/${state.name}/review/${userId}`, review)
       .then(response => {
         console.log('RESPONSE HERE', response.data);
         setReviews(prev => [...prev, response.data]);
@@ -49,7 +54,10 @@ const Reviews = () => {
       });
   };
 
-  const deleteReview = ( reviewId: number, userId: number) => {
+  const deleteReview = ( reviewId: number) => {
+    if (!userId){
+      return
+    }
     axios.delete(`/api/albums/review/${reviewId}/${userId}`)
       .then(() => {
         setReviews(reviews.filter(review => review.id !== reviewId));
@@ -59,8 +67,8 @@ const Reviews = () => {
       });
   };
 
-  const updateReview = (reviewId?: number, userId: number = 1) => {
-    if (!reviewId){
+  const updateReview = (reviewId?: number) => {
+    if (!reviewId || !userId){
       return
     }
     axios.put(`/api/albums/review/${reviewId}/${userId}`, review)
@@ -76,7 +84,21 @@ const Reviews = () => {
   useEffect(() => {
     if (!state) return;
     showReviews();
+    return () => {
+       setReviews([])
+    }
   }, [state]);
+
+  useEffect(() => {
+    axios.get(`api/user`)
+    .then((response) => {
+      if (response.status === 404){
+        return 
+      } 
+      setUserId(response.data.id)
+    })
+    
+  }, [])
 
   return (
     <div>
@@ -108,7 +130,7 @@ const Reviews = () => {
           reviews.map((rev) => (
             <div key={rev.id}>
               <p>{rev.text}</p>
-              <button onClick={() => deleteReview( rev.id, rev.userId)}>Delete</button>
+              <button onClick={() => deleteReview( rev.id )}>Delete</button>
               <button onClick={() => setReview(rev)}>Update</button>
             </div>
           ))
