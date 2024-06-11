@@ -10,13 +10,8 @@ dotenv.config();
 
 const app = express();
 
-// CONSTANTS
-// path to dist folder
 const DIST_PATH = path.resolve(__dirname, '../dist');
-// port
 const PORT = 3000;
-// GOOGLE CLIENT keys from .env
-const GOOGLE_CLIENT_ID= process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const AUTH0_CLIENT_ID = process.env.AUTH0_CLIENT_ID;
 
