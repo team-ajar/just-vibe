@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { BrowserRouter as Router, Routes, Route }
+import { BrowserRouter as Routes, Route }
     from "react-router-dom";
-// import in component files
 import NavBar from './NavBar';
 import HomePage from './HomePage';
 import SearchResults from './SearchResults';
@@ -19,9 +18,7 @@ const App = () => {
 
   return (
     <div>
-      {/* show NavBar in every view of app */}
       <NavBar />
-      {/* routes to each view */}
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path='/reviews' element={<Reviews />} />

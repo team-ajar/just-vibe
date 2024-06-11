@@ -3,38 +3,19 @@ import axios from "axios";
 import moment from "moment";
 
 const HomePage = () => {
-  // albumOfTheDay = initially set to null
-  // setAlbumOfTheDay = function used to update albumOfTheDay
-  // albumOfTheDay can be any type
   const [albumOfTheDay, setAlbumOfTheDay] = useState<any>(null);
-  // errorMessage = initially set to null if there is one
-  // setErrorMessage = function used to update errorMessage
-  // errorMessage can be a string or null
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  // isEditing = initially set to false
-  // setIsEditing = used to update isEditing
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  // newAlbumId = initially set to null
-  // setNewAlbumId = used to update newAlbumId
-  // newAlbumId can be a number or null
   const [newAlbumId, setNewAlbumId] = useState<number | null>(null);
-  // albums = initially set to an empty array
-  // setAlbums = used to update albums
   const [albums, setAlbums] = useState<any[]>([]);
-  // date formatting
   const today = moment().format('dddd, MMMM D, YYYY');
 
   useEffect(() => {
-    // get request to endpoint
     axios.get('/api/album-of-the-day')
       .then(response => {
-        // if there is data
         if (response.data) {
-          // set albumOfTheDay with the data
           setAlbumOfTheDay(response.data);
-          // if there isn't any data
         } else {
-          // set the error message
           setErrorMessage('No album of the day set for today. Search for an album and set it as your album of the day!');
         }
       })
@@ -55,12 +36,9 @@ const HomePage = () => {
   }, []);
 
   const deleteAlbumOfTheDay = (id: number) => {
-    // delete request to endpoint
     axios.delete(`/api/album-of-the-day/${id}`)
       .then(() => {
-        // once deleted, set albumOfTheDay as null
         setAlbumOfTheDay(null);
-        // set the error message
         setErrorMessage('Album of the day has been deleted.');
       })
       .catch(error => {
@@ -70,18 +48,13 @@ const HomePage = () => {
   };
 
   const editAlbumOfTheDay = (id: number, newAlbumId: number) => {
-    // put request to the endpoint
     axios.put(`/api/album-of-the-day/${id}`, { id, albumId: newAlbumId, userId: albumOfTheDay.user.id })
       .then(() => {
-        // after successful update, get the updated album of the day
         axios.get('/api/album-of-the-day')
           .then(response => {
             if (response.data) {
-              // set album of the day to the response data
               setAlbumOfTheDay(response.data);
-              // set isEditing to false
               setIsEditing(false);
-              // set the Error message
               setErrorMessage('Album of the day has been updated.');
             } else {
               setErrorMessage('Error fetching updated album of the day');

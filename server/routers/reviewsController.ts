@@ -1,16 +1,10 @@
-import express, { Request, Response} from 'express';
+import { Request, Response} from 'express';
 require('dotenv').config();
-import { PrismaClient, Prisma } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
-//import AsyncHandler from "../middleware/AsyncHandler";
 
-// const LAST_FM_API_KEY = process.env.LAST_FM_API_KEY;
-
-//methods that serves as request handlers
 module.exports = {
   getReviews: (req: Request, res: Response) => {
-
-    console.log('REQUEST RECEIVED')
 
     const { albumName, artistName } = req.params;
     prisma.album.findFirst({
@@ -24,9 +18,6 @@ module.exports = {
         where : { albumId: album.id }
       })
       .then((response) => {
-        console.log('GET REVIEWS RESPONSE HERE', response)
-        console.log('GET REVIEWS ALBUM ID', albumName)
-        console.log('')
         return res.status(200).json(response)
       })
       .catch((error) => {
@@ -36,13 +27,9 @@ module.exports = {
     })
   }, 
   createReview: (req: Request, res: Response) => {
-
-    //use req.body for data sent in the request body
-    //this is a post
-    console.log('REQ BODY HEREE!', req.body);
-    const { text, rating, albumId } = req.body;
+    const { text, rating } = req.body;
     const { albumName, artistName, userId } = req.params;
-    //prisma crud operation
+
     prisma.album.findFirst({
       where: { albumName, artistName }
     })
@@ -59,32 +46,23 @@ module.exports = {
         },
       })
       .then((response: any) => {
-        console.log(response);
-        //sendStatus sets the status AND send it to the client
         res.status(201).json(response)
       })
       .catch((error: any) => {
         console.error('Error adding review:', error)
-        //set status and send to client
         res.sendStatus(500)
       })
     })
   },
   deleteReview: (req: Request, res: Response) => {
-    //destructure the id from the req.params
-    //parameters being available paths in the URL
     const { id, userId } = req.params;
     prisma.review.delete({
       where: {
-        //all params are strings so convert to number!!!
         userId: Number(userId),
         id: Number(id),
       }
     })
-    .then((response: any) => {
-      console.log(response)
-      //204 status code if the action has been enacted
-      //and no further info is needed
+    .then(() => {
       res.sendStatus(204)
     })
     .catch((error: any) => {
@@ -106,9 +84,6 @@ module.exports = {
       }
     })
     .then((response: any) => {
-      console.log(response);
-      //200 status code for updated resource
-      //sendStatus to send the status and send it to client
       res.status(200).json(response)
     })
     .catch((error: any) => {
