@@ -1,11 +1,10 @@
 import { Request, Response } from 'express'
+import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
-require('dotenv').config();
+dotenv.config();
 
-
-
-module.exports = {
+const eventsController = {
   
   saveEvent: (req: Request, res: Response) => {
     const { location, venue } = req.body;
@@ -32,3 +31,5 @@ module.exports = {
     .catch(() => res.sendStatus(500));
   }
 };
+
+export default eventsController;

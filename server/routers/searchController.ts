@@ -8,7 +8,7 @@ require('dotenv').config();
 const LAST_FM_API_KEY = process.env.LAST_FM_API_KEY;
 const TICKETMASTER_API_KEY = process.env.TICKETMASTER_API_KEY;
 
-module.exports = {
+const searchController = {
   handleSearch: (req: Request, res: Response) => {
     const { search } = req.params;
     const searchResults = {artists: Object, albums: Object};
@@ -34,3 +34,5 @@ module.exports = {
       .catch((err: AxiosResponse) => console.error('err: ', err));
   }
 };
+
+export default searchController;

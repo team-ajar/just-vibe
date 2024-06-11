@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
-module.exports = {
+const musicController = {
   saveArtist: (req: Request, res: Response) => {
     const { artistName } = req.body;
 
@@ -41,3 +41,5 @@ module.exports = {
       .catch(() => res.sendStatus(500));
   }
 }
+
+export default musicController;

@@ -1,11 +1,12 @@
-const express = require('express');
-const searchController = require('./searchController');
-const albumOfTheDayController = require('./albumOfTheDayController');
-const musicController = require('./musicController');
-const eventsController = require('./eventsController');
-const profileController = require('./profileController');
-const albumIdController = require('./albumIdController');
-const reviewsController = require('./reviewsController');
+import express from "express";
+import searchController from "./searchController";
+import albumOfTheDayController from "./albumOfTheDayController";
+import musicController from "./musicController";
+import eventsController from "./eventsController";
+import profileController from "./profileController";
+import albumIdController from "./albumIdController";
+import reviewsController from "./reviewsController";
+
 const router = express.Router();
 
 router.route('/search/:search').get(searchController.handleSearch);

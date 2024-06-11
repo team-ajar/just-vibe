@@ -3,7 +3,7 @@ require('dotenv').config();
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
-module.exports = {
+const reviewsController = {
   getReviews: (req: Request, res: Response) => {
 
     const { albumName, artistName } = req.params;
@@ -92,3 +92,5 @@ module.exports = {
     })
   }
 };
+
+export default reviewsController;
