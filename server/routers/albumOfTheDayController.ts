@@ -1,11 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import moment from "moment";
+import dayjs from 'dayjs';
 
 const prisma = new PrismaClient();
 
 module.exports = {
-  // get request handling
   getAlbumOfTheDay: (req: Request, res: Response) => {
     prisma.albumOfTheDay.findFirst({
       orderBy: {
@@ -25,13 +24,11 @@ module.exports = {
     })
   },
 
-  // post request handling
   setAlbumOfTheDay: (req: Request, res: Response) => {
     const { albumId, userId } = req.body;
-    const startOfDay = moment().startOf('day').toISOString();
-    const endOfDay = moment().endOf('day').toISOString();
+    const startOfDay = dayjs().startOf('day').toISOString();
+    const endOfDay = dayjs().endOf('day').toISOString();
 
-    // check if an album of the day has already been set for today
     prisma.albumOfTheDay.findFirst({
       where: {
         userId,
@@ -47,7 +44,6 @@ module.exports = {
       }
     })
 
-    // if no existing entry, create a new album of the day
     prisma.albumOfTheDay.create({
       data: {
         album: { connect: { id: albumId } },
@@ -64,7 +60,6 @@ module.exports = {
     })
   },
 
-  // put request handling
   editAlbumOfTheDay: (req: Request, res: Response) => {
     const { id } = req.params;
     const { albumId } = req.body;
@@ -82,7 +77,6 @@ module.exports = {
     });
   },
 
-  // delete request handling
   deleteAlbumOfTheDay: (req: Request, res: Response) => {
     const { id } = req.params;
     prisma.albumOfTheDay.delete({

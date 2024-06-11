@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 interface Review {
   text: string;
@@ -9,22 +9,15 @@ interface Review {
   id: number;
 }
 
-//make albumId a Number instead of a string of the album name + artist
 const Reviews = () => {
- // const { albumId } = useParams<{ albumId: string }>();
   const { state } = useLocation();
-  console.log('STATE LOG HERE', state)
- 
   const [userId, setUserId] = useState<null | number>(null)
-
   const [review, setReview] = useState<{text: string, rating: number, id?: number}>({ text: "", rating: 5, id: undefined });
-
   const [reviews, setReviews] = useState<Review[]>([]);
 
   const showReviews = () => {
     axios.get(`/api/albums/${state.artist}/${state.name}/reviews`)
       .then(response => {
-        console.log(response.data);
         if (response.data.error){
           alert("Save album!")
           return
@@ -42,9 +35,8 @@ const Reviews = () => {
     }
     axios.post(`/api/albums/${state.artist}/${state.name}/review/${userId}`, review)
       .then(response => {
-        console.log('RESPONSE HERE', response.data);
         setReviews(prev => [...prev, response.data]);
-        setReview({ text: "", rating: 5 }); // Resetting id to 0 to prepare for the next new review
+        setReview({ text: "", rating: 5 });
       })
       .catch(error => {
         if (error.response.status === 404){
@@ -74,7 +66,7 @@ const Reviews = () => {
     axios.put(`/api/albums/review/${reviewId}/${userId}`, review)
       .then(response => {
         setReviews(reviews.map(existingReview => existingReview.id === reviewId ? response.data : existingReview));
-        setReview({ text: "", rating: 5 }); // Resetting form after update
+        setReview({ text: "", rating: 5 });
       })
       .catch(error => {
         console.error('Error updating review:', error);
@@ -93,11 +85,10 @@ const Reviews = () => {
     axios.get(`api/user`)
     .then((response) => {
       if (response.status === 404){
-        return 
-      } 
+        return
+      }
       setUserId(response.data.id)
     })
-    
   }, [])
 
   return (
