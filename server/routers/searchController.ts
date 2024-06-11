@@ -1,4 +1,3 @@
-// const axios = require("axios");
 import axios, { AxiosResponse } from 'axios';
 import { Request, Response} from 'express';
 

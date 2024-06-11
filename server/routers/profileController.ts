@@ -34,7 +34,6 @@ const profileController = {
           res.status(201).send(updUser);
         })
         .catch(() => res.sendStatus(404));
-
     }
   },
 

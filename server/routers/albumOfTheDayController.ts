@@ -1,10 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import moment from "moment";
+import dayjs from 'dayjs';
 
 const prisma = new PrismaClient();
 
+
 const albumOfTheDayController = {
+
   getAlbumOfTheDay: (req: Request, res: Response) => {
     prisma.albumOfTheDay.findFirst({
       orderBy: {
@@ -26,8 +28,8 @@ const albumOfTheDayController = {
 
   setAlbumOfTheDay: (req: Request, res: Response) => {
     const { albumId, userId } = req.body;
-    const startOfDay = moment().startOf('day').toISOString();
-    const endOfDay = moment().endOf('day').toISOString();
+    const startOfDay = dayjs().startOf('day').toISOString();
+    const endOfDay = dayjs().endOf('day').toISOString();
 
     prisma.albumOfTheDay.findFirst({
       where: {

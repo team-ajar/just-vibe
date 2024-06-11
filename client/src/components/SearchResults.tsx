@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 interface Artist {
   image: any;
@@ -35,7 +35,6 @@ const SearchResults = () => {
       image: album.image[3]['#text'],
      })
        .catch(err => console.error(err));
-
   }
 
   const saveArtist = (artist: Artist) => {
@@ -54,21 +53,22 @@ const SearchResults = () => {
     const { name: albumName, artist: artistName} = album;
 
     axios.post('/api/album-id', { albumName, artistName })
-    .then((response) => {
-      const albumId = response.data.albumId;
-      axios.get('/api/user')
-        .then((profileResponse) => {
-          const userId = profileResponse.data.id;
+      .then((response) => {
+        const albumId = response.data.albumId;
 
-          axios.post('/api/album-of-the-day', { albumId, userId })
-            .then((data) => {
-              setAlbumOfTheDaySet(true);
-            })
-            .catch(err => console.error('Error setting album of the day', err));
-        })
-        .catch(err => console.error('Error getting userId', err));
-    })
-    .catch(err => console.error('Error getting albumId', err));
+        axios.get('/api/user')
+          .then((profileResponse) => {
+            const userId = profileResponse.data.id;
+
+            axios.post('/api/album-of-the-day', { albumId, userId })
+              .then(() => {
+                setAlbumOfTheDaySet(true);
+              })
+              .catch(err => console.error('Error setting album of the day', err));
+          })
+          .catch(err => console.error('Error getting userId', err));
+      })
+      .catch(err => console.error('Error getting albumId', err));
   };
 
   useEffect(() => {
@@ -84,7 +84,7 @@ const SearchResults = () => {
 
       axios.get('/api/album-of-the-day')
         .then((response) => {
-          if (response.data && moment(response.data.date).isSame(moment(), 'day')) {
+          if (response.data && dayjs(response.data.date).isSame(dayjs(), 'day')) {
             setAlbumOfTheDaySet(true);
           }
         })
@@ -104,7 +104,7 @@ const SearchResults = () => {
               <button onClick={() => saveAlbum(album)}>Save Album</button>
               <button onClick={() => saveAlbumOfTheDay(album)} disabled={albumOfTheDaySet}>Set as Album of the Day</button>
               <Link to={{
-              pathname:`/reviews`,              
+              pathname:`/reviews`,
               }}
               state = {album}>
               <button>Write Review</button>

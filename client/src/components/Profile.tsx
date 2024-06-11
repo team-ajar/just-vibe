@@ -10,7 +10,6 @@ interface User {
 }
 
 const Profile = () => {
-
   const [user, setUser] = useState<User>({id: 0, googleId: '', location: '', name: '', username: '' });
 
   const loadPage = () => {
@@ -27,11 +26,10 @@ const Profile = () => {
       updateType: "name",
       updateVal: updateName
     })
-      .then(({ data }: any) =>{;
+      .then(({ data }: any) =>{
         setUser(data)
         })
       .catch(err => console.error(err));
-      
   };
 
   const deleteProfile = () => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import moment from "moment";
+import dayjs from 'dayjs';
 
 const HomePage = () => {
   const [albumOfTheDay, setAlbumOfTheDay] = useState<any>(null);
@@ -8,7 +8,7 @@ const HomePage = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [newAlbumId, setNewAlbumId] = useState<number | null>(null);
   const [albums, setAlbums] = useState<any[]>([]);
-  const today = moment().format('dddd, MMMM D, YYYY');
+  const today = dayjs().format('dddd, MMMM D, YYYY');
 
   useEffect(() => {
     axios.get('/api/album-of-the-day')
@@ -24,7 +24,6 @@ const HomePage = () => {
         setErrorMessage('Error fetching album of the day');
       });
 
-    // get all saved albums
     axios.get('/api/music/albums')
       .then(response => {
         setAlbums(response.data);
@@ -70,7 +69,6 @@ const HomePage = () => {
         setErrorMessage('Error editing album of the day');
       });
   };
-
 
   return (
     <div className="home-page">

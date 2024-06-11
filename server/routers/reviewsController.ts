@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 const reviewsController = {
+// const LAST_FM_API_KEY = process.env.LAST_FM_API_KEY;
   getReviews: (req: Request, res: Response) => {
 
     const { albumName, artistName } = req.params;
@@ -25,9 +26,9 @@ const reviewsController = {
         return res.sendStatus(500)
       });
     })
-  }, 
+  },
   createReview: (req: Request, res: Response) => {
-    const { text, rating } = req.body;
+    const { text, rating, albumId } = req.body;
     const { albumName, artistName, userId } = req.params;
 
     prisma.album.findFirst({
@@ -62,7 +63,7 @@ const reviewsController = {
         id: Number(id),
       }
     })
-    .then(() => {
+    .then((response: any) => {
       res.sendStatus(204)
     })
     .catch((error: any) => {
@@ -77,7 +78,7 @@ const reviewsController = {
       where: {
         id: Number(id),
         userId: Number(userId),
-      }, 
+      },
       data: {
         text: text,
         rating: rating,

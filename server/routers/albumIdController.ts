@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 
 const prisma = new PrismaClient();
 
+
 const albumIdController = {
   getAlbumId: (req: Request, res: Response) => {
     const { albumName, artistName } = req.body;

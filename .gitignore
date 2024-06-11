@@ -11,7 +11,3 @@ jspm_packages/
 
 # dist
 dist
-
-# cypress
-cypress
-cypress.config.ts

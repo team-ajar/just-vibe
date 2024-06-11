@@ -31,7 +31,8 @@ router.route('/user/:userId').delete(profileController.deleteUser);
 
 router.route('/album-id').post(albumIdController.getAlbumId);
 
-router.route('/events').post(eventsController.saveEvent);
-router.route('/events').delete(eventsController.deleteEvent);
+// eventsController
+// router.route('/events').post(eventsController.saveEvent);
+// router.route('/events').delete(eventsController.deleteEvent);
 
 export default router;

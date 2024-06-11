@@ -11,11 +11,9 @@ interface Review {
 
 const Reviews = () => {
   const { state } = useLocation();
- 
+
   const [userId, setUserId] = useState<null | number>(null)
-
   const [review, setReview] = useState<{text: string, rating: number, id?: number}>({ text: "", rating: 5, id: undefined });
-
   const [reviews, setReviews] = useState<Review[]>([]);
 
   const showReviews = () => {
@@ -88,11 +86,10 @@ const Reviews = () => {
     axios.get(`api/user`)
     .then((response) => {
       if (response.status === 404){
-        return 
-      } 
+        return
+      }
       setUserId(response.data.id)
     })
-    
   }, [])
 
   return (

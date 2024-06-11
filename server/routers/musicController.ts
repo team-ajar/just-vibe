@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const musicController = {
+
   saveArtist: (req: Request, res: Response) => {
     const { artistName } = req.body;
 
