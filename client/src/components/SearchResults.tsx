@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 // Define interfaces for Artist, Album, and SearchResultsData
 interface Artist {
@@ -105,7 +105,7 @@ const SearchResults = () => {
       // check if the album of the day is already set for today
       axios.get('/api/album-of-the-day')
         .then((response) => {
-          if (response.data && moment(response.data.date).isSame(moment(), 'day')) {
+          if (response.data && dayjs(response.data.date).isSame(dayjs(), 'day')) {
             setAlbumOfTheDaySet(true);
           }
         })

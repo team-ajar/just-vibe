@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import moment from "moment";
+import dayjs from 'dayjs';
 
 const prisma = new PrismaClient();
 
@@ -28,8 +28,8 @@ module.exports = {
   // post request handling
   setAlbumOfTheDay: (req: Request, res: Response) => {
     const { albumId, userId } = req.body;
-    const startOfDay = moment().startOf('day').toISOString();
-    const endOfDay = moment().endOf('day').toISOString();
+    const startOfDay = dayjs().startOf('day').toISOString();
+    const endOfDay = dayjs().endOf('day').toISOString();
 
     // check if an album of the day has already been set for today
     prisma.albumOfTheDay.findFirst({

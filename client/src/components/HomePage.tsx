@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import moment from "moment";
+import dayjs from 'dayjs';
 
 const HomePage = () => {
   // albumOfTheDay = initially set to null
@@ -22,7 +22,7 @@ const HomePage = () => {
   // setAlbums = used to update albums
   const [albums, setAlbums] = useState<any[]>([]);
   // date formatting
-  const today = moment().format('dddd, MMMM D, YYYY');
+  const today = dayjs().format('dddd, MMMM D, YYYY');
 
   useEffect(() => {
     // get request to endpoint
