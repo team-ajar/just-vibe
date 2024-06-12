@@ -1,12 +1,10 @@
 import { Request, Response } from 'express'
+import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
-import axios, { AxiosResponse } from 'axios';
-require('dotenv').config();
+dotenv.config();
 
-
-
-module.exports = {
+const eventsController = {
   
   saveEvent: (req: Request, res: Response) => {
     const { location, venue } = req.body;
@@ -18,8 +16,8 @@ module.exports = {
          
         }
       })
-        .then((data: any) => res.sendStatus(201))
-        .catch((err: any) => res.sendStatus(500));
+        .then(() => res.sendStatus(201))
+        .catch(() => res.sendStatus(500));
   },
 
   deleteEvent: (req: Request, res: Response) => {
@@ -29,7 +27,9 @@ module.exports = {
         id: Number(id),
       }
     })
-    .then((response: any) => { res.sendStatus(204) })
-    .catch((err: any) => res.sendStatus(500));
+    .then(() => { res.sendStatus(204) })
+    .catch(() => res.sendStatus(500));
   }
 };
+
+export default eventsController;
