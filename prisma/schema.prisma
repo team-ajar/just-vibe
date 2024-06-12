@@ -13,6 +13,13 @@ model User {
   username       String
   googleId       String
   location       String
+  email          String
+  password       String
+  passwordResetToken     String
+  passwordRestExpires    DateTime
+  google         String
+  tokens         Array
+  profile        Object
   favorite       Favorite[]
   reviews        Review[]
   userEvents     UserEvent[]

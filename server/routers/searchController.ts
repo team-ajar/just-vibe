@@ -29,7 +29,6 @@ module.exports = {
           `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${TICKETMASTER_API_KEY}&keyword=${search}`,
           { headers: { "Content-Type": "application/json" } }
         );
-        // .catch((err: AxiosResponse) => console.error('err: ', err));
       })
       .then(() => {
         res.status(200).send(searchResults);
