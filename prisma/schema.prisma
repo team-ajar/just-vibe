@@ -8,22 +8,45 @@ datasource db {
 }
 
 model User {
-  id             Int             @id @default(autoincrement())
-  name           String
-  username       String
-  googleId       String
-  location       String
-  email          String
-  password       String
-  passwordResetToken     String
-  passwordRestExpires    DateTime
-  google         String
-  tokens         Array
-  profile        Object
-  favorite       Favorite[]
-  reviews        Review[]
-  userEvents     UserEvent[]
-  albumsOfTheDay AlbumOfTheDay[]
+  id                  Int             @id @default(autoincrement())
+  name                String
+  username            String
+  googleId            String
+  location            String
+  email               String
+  password            String
+  passwordResetToken  String
+  passwordRestExpires DateTime
+  google              String
+  profilePicture      String          @db.VarChar(300)
+  bio                 String          @db.VarChar(300)
+  tokens              Tokens[]
+  profile             Profile[]
+  favorite            Favorite[]
+  reviews             Review[]
+  userEvents          UserEvent[]
+  albumsOfTheDay      AlbumOfTheDay[]
+}
+
+model Profile {
+  id       Int    @id @default(autoincrement())
+  name     String
+  gender   String
+  location String
+  website  String
+  picture  String
+  User     User?  @relation(fields: [userId], references: [id])
+  userId   Int?
+}
+
+model Tokens {
+  id           Int    @id @default(autoincrement())
+  accessToken  String
+  refreshToken String
+  User         User?  @relation(fields: [userId], references: [id])
+  userId       Int?
+
+  @@unique([userId, accessToken, refreshToken])
 }
 
 model Review {
