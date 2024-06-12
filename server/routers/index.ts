@@ -15,7 +15,7 @@ router.route('/search/:search').get(searchController.handleSearch);
 //topThreeController (Albums)
 
 router.route('/albums/:userId').get(topThreeController.getTopAlbums);
-router.route('/albums/:albumId/:position/:userId').post(topThreeController.showTopAlbums);
+router.route('/albums/:albumId/:position/:userId').post(topThreeController.createTopAlbum);
 router.route('/albums/:albumId/:position/:userId').put(topThreeController.updateTopAlbum);
 router.route('/albums/:albumId/:position/:userId').delete(topThreeController.deleteTopAlbum);
 
