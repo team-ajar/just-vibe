@@ -19,6 +19,13 @@ router.route('/albums/:albumId/:position/:userId').post(topThreeController.creat
 router.route('/albums/:albumId/:position/:userId').put(topThreeController.updateTopAlbum);
 router.route('/albums/:albumId/:position/:userId').delete(topThreeController.deleteTopAlbum);
 
+//topThreeController (Artists)
+
+router.route('/artists/:userId').get(topThreeController.getTopArtists);
+router.route('/artists/:artistId/:position/:userId').post(topThreeController.createTopArtist);
+router.route('/artists/:artistId/:position/:userId').put(topThreeController.updateTopArtist);
+router.route('/artists/:artistId/:position/:userId').delete(topThreeController.deleteTopArtist);
+
 
 // reviewsController
 router.route('/albums/:artistName/:albumName/reviews').get(reviewsController.getReviews);
