@@ -6,16 +6,25 @@ const eventsController = require('./eventsController');
 const profileController = require('./profileController');
 const albumIdController = require('./albumIdController');
 const reviewsController = require('./reviewsController');
+const topThreeController = require('./topThreeController');
 const router = express.Router();
 
 //searchController
 router.route('/search/:search').get(searchController.handleSearch);
 
+//topThreeController (Albums)
+
+router.route('/albums/:userId').get(topThreeController.getTopAlbums);
+router.route('/albums/:albumId/:position/:userId').post(topThreeController.showTopAlbums);
+router.route('/albums/:albumId/:position/:userId').put(topThreeController.updateTopAlbum);
+router.route('/albums/:albumId/:position/:userId').delete(topThreeController.deleteTopAlbum);
+
+
 // reviewsController
 router.route('/albums/:artistName/:albumName/reviews').get(reviewsController.getReviews);
 router.route('/albums/:artistName/:albumName/review/:userId').post(reviewsController.createReview);
-router.route('/albums/review/:id/:userId').delete(reviewsController.deleteReview);
 router.route('/albums/review/:id/:userId').put(reviewsController.updateReview);
+router.route('/albums/review/:id/:userId').delete(reviewsController.deleteReview);
 
 // albumOfTheDayController
 router.route('/album-of-the-day').post(albumOfTheDayController.setAlbumOfTheDay);
