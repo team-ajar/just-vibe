@@ -4,7 +4,9 @@ import dayjs from 'dayjs';
 
 const prisma = new PrismaClient();
 
-module.exports = {
+
+const albumOfTheDayController = {
+
   getAlbumOfTheDay: (req: Request, res: Response) => {
     prisma.albumOfTheDay.findFirst({
       orderBy: {
@@ -91,3 +93,5 @@ module.exports = {
     })
   },
 }
+
+export default albumOfTheDayController;

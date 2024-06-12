@@ -11,6 +11,7 @@ interface Review {
 
 const Reviews = () => {
   const { state } = useLocation();
+
   const [userId, setUserId] = useState<null | number>(null)
   const [review, setReview] = useState<{text: string, rating: number, id?: number}>({ text: "", rating: 5, id: undefined });
   const [reviews, setReviews] = useState<Review[]>([]);

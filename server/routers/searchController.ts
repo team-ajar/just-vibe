@@ -1,12 +1,13 @@
 import axios, { AxiosResponse } from 'axios';
 import { Request, Response} from 'express';
 
+
 require('dotenv').config();
 
 const LAST_FM_API_KEY = process.env.LAST_FM_API_KEY;
 const TICKETMASTER_API_KEY = process.env.TICKETMASTER_API_KEY;
 
-module.exports = {
+const searchController = {
   handleSearch: (req: Request, res: Response) => {
     const { search } = req.params;
     const searchResults = {artists: Object, albums: Object};
@@ -19,9 +20,11 @@ module.exports = {
         .then((data: AxiosResponse) => {
 
           searchResults.artists = data.data.results.artistmatches;
+
           axios.get(`https://app.ticketmaster.com/discovery/v2/events.json?apikey=${TICKETMASTER_API_KEY}&keyword=${search}`, {headers: {"Content-Type": "application/json"}})
           .then(() => {
-            res.status(200).send(searchResults);
+
+          res.status(200).send(searchResults);
           })
           .catch((err: AxiosResponse) => console.error('err: ', err));
         })
@@ -30,3 +33,5 @@ module.exports = {
       .catch((err: AxiosResponse) => console.error('err: ', err));
   }
 };
+
+export default searchController;
