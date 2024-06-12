@@ -3,7 +3,8 @@
     "build": "webpack",
     "start": "nodemon server/server.ts",
     "dev": "nodemon src/index.tsx",
-    "cy:open": "cypress open"
+    "cy:open": "cypress open",
+    "migrate": "prisma migrate dev"
   },
   "devDependencies": {
     "@babel/core": "^7.24.6",
