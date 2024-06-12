@@ -16,7 +16,6 @@ const App = () => {
         <Route path='/reviews' element={<Reviews />} />
         <Route path='/search-results/:query' element={<SearchResults />} />
         <Route path='/user' element={<Profile />} />
-
       </Routes>
     </div>
   )
