@@ -9,6 +9,7 @@ const NavBar = () => {
       <div className="logo">
         <Link to="/">Just Vibe</Link>
         <Link to="/user">Profile</Link>
+        <Link to="/feed">Feed</Link>
       </div>
       <div className="search-bar">
         <input
