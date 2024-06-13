@@ -3,7 +3,7 @@ require('dotenv').config();
 import { PrismaClient, Prisma } from '@prisma/client'
 const prisma = new PrismaClient();
 
-module.exports = {
+const topThreeController = {
   getTopAlbums: (req: Request, res: Response) => {
 
     //this request handler will retrieve all albums
@@ -247,3 +247,5 @@ module.exports = {
     })
   },
 }
+
+export default topThreeController;
