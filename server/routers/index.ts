@@ -13,17 +13,17 @@ router.route('/search/:search').get(searchController.handleSearch);
 
 //topThreeController (Albums)
 
-router.route('/albums/:userId').get(topThreeController.getTopAlbums);
-router.route('/albums/:albumId/:position/:userId').post(topThreeController.createTopAlbum);
-router.route('/albums/:albumId/:position/:userId').put(topThreeController.updateTopAlbum);
-router.route('/albums/:albumId/:position/:userId').delete(topThreeController.deleteTopAlbum);
+router.route('/top/albums/:userId').get(topThreeController.getTopAlbums);
+router.route('/top/albums/:albumId/:position/:userId').post(topThreeController.createTopAlbum);
+router.route('/top/albums/:albumId/:position/:userId').put(topThreeController.updateTopAlbum);
+router.route('/top/albums/:albumId/:position/:userId').delete(topThreeController.deleteTopAlbum);
 
 //topThreeController (Artists)
 
-router.route('/artists/:userId').get(topThreeController.getTopArtists);
-router.route('/artists/:artistId/:position/:userId').post(topThreeController.createTopArtist);
-router.route('/artists/:artistId/:position/:userId').put(topThreeController.updateTopArtist);
-router.route('/artists/:artistId/:position/:userId').delete(topThreeController.deleteTopArtist);
+router.route('/top/artists/:userId').get(topThreeController.getTopArtists);
+router.route('/top/artists/:artistId/:position/:userId').post(topThreeController.createTopArtist);
+router.route('/top/artists/:artistId/:position/:userId').put(topThreeController.updateTopArtist);
+router.route('/top/artists/:artistId/:position/:userId').delete(topThreeController.deleteTopArtist);
 
 
 // reviewsController

@@ -227,7 +227,7 @@ module.exports = {
       //doesn't have a id like review did,
       //so our id is defined by our @unique
       //position, artistId and userId
-      //position, userId, aritstId for request
+      //position, userId, artistId for request
       where: {
         position_artistId_userId: {
           position: Number(position),

@@ -6,13 +6,11 @@ import path from 'path';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import { PrismaClient } from '@prisma/client';
+import router from './routers';
 
 dotenv.config();
 
 const prisma = new PrismaClient();
-
-const routes = require('./routers');
-
 
 const app = express();
 
