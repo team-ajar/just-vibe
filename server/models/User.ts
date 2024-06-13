@@ -29,28 +29,28 @@ export interface AuthToken {
     kind: string;
 }
 
-const userSchema = new mongoose.Schema<UserDocument>(
-  {
-      email: { type: String, unique: true },
-      password: String,
-      passwordResetToken: String,
-      passwordResetExpires: Date,
+// const userSchema = new mongoose.Schema<UserDocument>(
+//   {
+//       email: { type: String, unique: true },
+//       password: String,
+//       passwordResetToken: String,
+//       passwordResetExpires: Date,
   
-      facebook: String,
-      twitter: String,
-      google: String,
-      tokens: Array,
+//       facebook: String,
+//       twitter: String,
+//       google: String,
+//       tokens: Array,
   
-      profile: {
-          name: String,
-          gender: String,
-          location: String,
-          website: String,
-          picture: String
-      }
-  },
-  { timestamps: true },
-);
+//       profile: {
+//           name: String,
+//           gender: String,
+//           location: String,
+//           website: String,
+//           picture: String
+//       }
+//   },
+//   { timestamps: true },
+// );
 
 /**
 * Password hash middleware.
