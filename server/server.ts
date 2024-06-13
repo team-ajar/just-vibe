@@ -11,8 +11,7 @@ dotenv.config();
 
 const prisma = new PrismaClient();
 
-const routes = require('./routers');
-
+import routes from './routers';
 
 const app = express();
 
@@ -75,7 +74,7 @@ app.use(bodyParser.json());
 
 app.use(express.static(DIST_PATH));
 
-app.use('/api', router);
+app.use('/api', routes);
 
 app.get('/', (req: Request, res: Response) => {
   res.send(
