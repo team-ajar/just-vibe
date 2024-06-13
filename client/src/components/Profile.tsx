@@ -9,11 +9,29 @@ interface User {
   username: string;
 }
 
+//define the structure of a Album Object 
+
+interface Album {
+  id: number;
+  albumName: string;
+  artistName: string;
+  image: string;
+}
+
 const Profile = () => {
 
   // const [username, setUsername] = useState('username');
   // const [displayName, setDisplayName] = useState('name');
   const [user, setUser] = useState<User>({id: 0, googleId: '', location: '', name: '', username: '' });
+
+  //create another useState hook that will manage all of our savedAlbums
+  //also use the typescript <[]> annotation to inform it's an array
+  /** savedAlbums is the initial value of the empty array,
+   * and setSavedAlbums is a function that will be used to update the savedAlbums array
+  */
+  const [albums, setAlbums] = useState<Album[]>([]); //Album is the interface defined above
+  
+
 
   const loadPage = () => {
     axios.get('/api/user')
@@ -68,6 +86,9 @@ const Profile = () => {
       <button onClick={() => deleteProfile()}>Delete profile</button>
       <h3>Username: {user.username}</h3>
       <h4>Name: {user.name}</h4>
+      <div>
+        <h2>Top 3 Albums</h2>
+      </div>
     </div>
   )
 }
