@@ -6,12 +6,11 @@ import path from 'path';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import { PrismaClient } from '@prisma/client';
+import router from './routers';
 
 dotenv.config();
 
 const prisma = new PrismaClient();
-
-import routes from './routers';
 
 const app = express();
 
@@ -74,7 +73,7 @@ app.use(bodyParser.json());
 
 app.use(express.static(DIST_PATH));
 
-app.use('/api', routes);
+app.use('/api', router);
 
 app.get('/', (req: Request, res: Response) => {
   res.send(
