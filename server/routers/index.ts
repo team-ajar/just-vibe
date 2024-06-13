@@ -1,40 +1,31 @@
-
-const express = require('express');
-const searchController = require('./searchController');
-const albumOfTheDayController = require('./albumOfTheDayController');
-const musicController = require('./musicController');
-const eventsController = require('./eventsController');
-const profileController = require('./profileController');
-const albumIdController = require('./albumIdController');
-const reviewsController = require('./reviewsController');
-const topThreeController = require('./topThreeController');
+import express from "express";
+import searchController from "./searchController";
+import albumOfTheDayController from "./albumOfTheDayController";
+import musicController from "./musicController";
+import eventsController from "./eventsController";
+import profileController from "./profileController";
+import albumIdController from "./albumIdController";
+import reviewsController from "./reviewsController";
+import topThreeController from "./topThreeController";
 
 const router = express.Router();
 
 router.route('/search/:search').get(searchController.handleSearch);
-
-
-//topThreeController (Albums)
 
 router.route('/albums/:userId').get(topThreeController.getTopAlbums);
 router.route('/albums/:albumId/:position/:userId').post(topThreeController.createTopAlbum);
 router.route('/albums/:albumId/:position/:userId').put(topThreeController.updateTopAlbum);
 router.route('/albums/:albumId/:position/:userId').delete(topThreeController.deleteTopAlbum);
 
-//topThreeController (Artists)
-
 router.route('/artists/:userId').get(topThreeController.getTopArtists);
 router.route('/artists/:artistId/:position/:userId').post(topThreeController.createTopArtist);
 router.route('/artists/:artistId/:position/:userId').put(topThreeController.updateTopArtist);
 router.route('/artists/:artistId/:position/:userId').delete(topThreeController.deleteTopArtist);
 
-
-// reviewsController
-
 router.route('/albums/:artistName/:albumName/reviews').get(reviewsController.getReviews);
 router.route('/albums/:artistName/:albumName/review/:userId').post(reviewsController.createReview);
-router.route('/albums/review/:id/:userId').put(reviewsController.updateReview);
 router.route('/albums/review/:id/:userId').delete(reviewsController.deleteReview);
+router.route('/albums/review/:id/:userId').put(reviewsController.updateReview);
 
 router.route('/album-of-the-day').post(albumOfTheDayController.setAlbumOfTheDay);
 router.route('/album-of-the-day').get(albumOfTheDayController.getAlbumOfTheDay);
