@@ -109,7 +109,7 @@ model TopAlbums {
 
   @@unique([position, albumId, userId])
 }
-
+//UPDATE TO PUSH IN COMMIT
 model TopArtists {
   position Int
   user     User   @relation(fields: [userId], references: [id])
