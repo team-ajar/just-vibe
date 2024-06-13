@@ -11,7 +11,7 @@ model User {
   id             Int             @id @default(autoincrement())
   name           String
   username       String
-  googleId       String
+  googleId       String          @unique
   location       String
   favorite       Favorite[]
   reviews        Review[]

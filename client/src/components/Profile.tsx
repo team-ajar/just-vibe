@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 
 interface User {
   id: number;
@@ -19,9 +19,6 @@ interface Album {
 }
 
 const Profile = () => {
-
-  // const [username, setUsername] = useState('username');
-  // const [displayName, setDisplayName] = useState('name');
   const [user, setUser] = useState<User>({id: 0, googleId: '', location: '', name: '', username: '' });
 
   //create another useState hook that will manage all of our savedAlbums
@@ -36,28 +33,21 @@ const Profile = () => {
   const loadPage = () => {
     axios.get('/api/user')
       .then(({ data }: any) => {
-        console.log(data);
         setUser(data);
-        // setUsername(data.username);
-        // setDisplayName(data.name);
       })
       .catch(err => console.error(err));
   };
 
   const editProfile = () => {
-    console.log(user);
     let updateName = prompt('enter new name');
     axios.put(`/api/user/${user.id}`, {
       updateType: "name",
       updateVal: updateName
     })
       .then(({ data }: any) =>{
-        console.log('update', data)
-        // setDisplayName(data.name);
         setUser(data)
         })
       .catch(err => console.error(err));
-      
   };
 
   const deleteProfile = () => {

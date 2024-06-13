@@ -1,73 +1,98 @@
 import express, { Request, Response } from 'express';
-import { auth, requiresAuth } from 'express-openid-connect';
+import session from 'express-session';
+import passport from 'passport';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import path from 'path';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
-const routes = require('./routers');
+
 dotenv.config();
+
+const prisma = new PrismaClient();
+
+const routes = require('./routers');
+
 
 const app = express();
 
-// CONSTANTS
-// path to dist folder
 const DIST_PATH = path.resolve(__dirname, '../dist');
-// port
+
 const PORT = 3000;
-// GOOGLE CLIENT keys from .env
-const GOOGLE_CLIENT_ID= process.env.GOOGLE_CLIENT_ID;
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-const AUTH0_CLIENT_ID = process.env.AUTH0_CLIENT_ID;
 
-const config = {
-  authRequired: false,
-  auth0Logout: true,
-  baseURL: `http://localhost:${PORT}/`,
-  clientID: AUTH0_CLIENT_ID,
-  issuerBaseURL: 'https://dev-gxg3okgf4h43jdrx.us.auth0.com',
-  secret: GOOGLE_CLIENT_SECRET
-};
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID as string;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET as string;
 
-// The `auth` router attaches /login, /logout
-// and /callback routes to the baseURL
-app.use(auth(config));
+app.use(session({ secret: 'your-secret', resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
 
-// middleware to parse JSON bodies
+passport.use(new GoogleStrategy({
+  clientID: GOOGLE_CLIENT_ID,
+  clientSecret: GOOGLE_CLIENT_SECRET,
+  callbackURL: '/auth/google/callback'
+}, (accessToken, refreshToken, profile, done) => {
+  prisma.user.findUnique({ where: { googleId: profile.id } })
+    .then(user => {
+      if (!user) {
+        return prisma.user.create({
+          data: {
+            googleId: profile.id,
+            name: profile.displayName,
+            username: '',
+            location: '',
+          },
+        });
+      }
+      return user;
+    })
+    .then(user => {
+      done(null, user);
+    })
+    .catch(err => {
+      done(err);
+    });
+}));
+
+
+passport.serializeUser(function(user: any, done: any) {
+  done(null, user.id);
+});
+
+
+passport.deserializeUser((id: any, done: any) => {
+  prisma.user.findUnique({ where: { id: id } })
+    .then(user => {
+      done(null, user);
+    })
+    .catch(err => {
+      done(err, null);
+    });
+});
+
+
 app.use(bodyParser.json());
 
-// serve client to server
 app.use(express.static(DIST_PATH));
 
-// routers
-app.use('/api', routes);
+app.use('/api', router);
 
-// req.oidc.isAuthenticated is provided from the auth router
 app.get('/', (req: Request, res: Response) => {
   res.send(
-    req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out'
+    req.isAuthenticated() ? 'Logged in' : 'Logged out'
   );
 });
 
-// The /profile route will show the user profile as JSON
-app.get('/profile', requiresAuth(), (req: Request, res: Response) => {
 
-  const authUser = JSON.stringify(req.oidc.user, null, 2)
-  const authUserObj = JSON.parse(authUser);
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-  const user = {
-    username: authUserObj.nickname,
-    name: authUserObj.nickname || 'new user',
-    googleId: authUserObj.sub,
-    location: authUserObj.locale || 'N/A',
-  }
 
-  prisma.user.create({
-    data: user
-  })
-
-  res.status(200).send(JSON.stringify(req.oidc.user, null, 2));
-});
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/' }),
+  (req, res) => {
+    res.redirect('/');
+  });
 
 app.listen(PORT, function() {
   console.log(`Listening on http://localhost:${PORT}`);
