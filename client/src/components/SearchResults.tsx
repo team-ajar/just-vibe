@@ -25,6 +25,7 @@ interface SearchResultsData {
 const SearchResults = () => {
   const { query } = useParams();
   const [searchResults, setSearchResults] = useState<SearchResultsData>({ artists: [], albums: [] });
+
   const [albumOfTheDaySet, setAlbumOfTheDaySet] = useState<boolean>(false);
 
   const saveAlbum  = (album: any) => {
@@ -89,7 +90,6 @@ const SearchResults = () => {
         })
         .catch(err => console.error('Error checking album of the day', err));
   }, [query]);
-
   return (
     <div>
       <h1>Search Results for {query}</h1>

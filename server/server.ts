@@ -10,12 +10,16 @@ import { PrismaClient } from '@prisma/client';
 dotenv.config();
 
 const prisma = new PrismaClient();
+
 const routes = require('./routers');
+
 
 const app = express();
 
 const DIST_PATH = path.resolve(__dirname, '../dist');
+
 const PORT = 3000;
+
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID as string;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET as string;
 
@@ -50,9 +54,11 @@ passport.use(new GoogleStrategy({
     });
 }));
 
+
 passport.serializeUser(function(user: any, done: any) {
   done(null, user.id);
 });
+
 
 passport.deserializeUser((id: any, done: any) => {
   prisma.user.findUnique({ where: { id: id } })
@@ -64,14 +70,12 @@ passport.deserializeUser((id: any, done: any) => {
     });
 });
 
-// middleware to parse JSON bodies
+
 app.use(bodyParser.json());
 
-// serve client to server
 app.use(express.static(DIST_PATH));
 
-// routers
-app.use('/api', routes);
+app.use('/api', router);
 
 app.get('/', (req: Request, res: Response) => {
   res.send(
@@ -79,8 +83,10 @@ app.get('/', (req: Request, res: Response) => {
   );
 });
 
+
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] }));
+
 
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),

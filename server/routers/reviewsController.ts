@@ -2,11 +2,9 @@ import { Request, Response} from 'express';
 require('dotenv').config();
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
-//import AsyncHandler from "../middleware/AsyncHandler";
 
+const reviewsController = {
 // const LAST_FM_API_KEY = process.env.LAST_FM_API_KEY;
-
-module.exports = {
   getReviews: (req: Request, res: Response) => {
 
     const { albumName, artistName } = req.params;
@@ -95,3 +93,5 @@ module.exports = {
     })
   }
 };
+
+export default reviewsController;

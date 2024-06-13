@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-module.exports = {
+const profileController = {
   readUser: (req: Request, res: Response) => {
     prisma.user
       .findMany()
@@ -31,7 +31,6 @@ module.exports = {
         }
       })
         .then(updUser => {
-          console.log(updUser);
           res.status(201).send(updUser);
         })
         .catch(() => res.sendStatus(404));
@@ -50,3 +49,5 @@ module.exports = {
       .catch(() => res.sendStatus(500));
   },
 };
+
+export default profileController;

@@ -3,7 +3,8 @@ import { Request, Response } from "express";
 
 const prisma = new PrismaClient();
 
-module.exports = {
+
+const albumIdController = {
   getAlbumId: (req: Request, res: Response) => {
     const { albumName, artistName } = req.body;
 
@@ -26,3 +27,5 @@ module.exports = {
     });
   }
 };
+
+export default albumIdController;
