@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { Request, Response} from 'express';
 
 
-require('dotenv').config();
+require("dotenv").config();
 
 const LAST_FM_API_KEY = process.env.LAST_FM_API_KEY;
 const TICKETMASTER_API_KEY = process.env.TICKETMASTER_API_KEY;
@@ -10,10 +10,13 @@ const TICKETMASTER_API_KEY = process.env.TICKETMASTER_API_KEY;
 const searchController = {
   handleSearch: (req: Request, res: Response) => {
     const { search } = req.params;
-    const searchResults = {artists: Object, albums: Object};
-    axios.get(`http://ws.audioscrobbler.com/2.0/?method=album.search&album=${search}&api_key=${LAST_FM_API_KEY}&format=json`)
+    console.log('handleSearch: ', search);
+    const searchResults = { artists: Object, albums: Object };
+    return axios
+      .get(
+        `http://ws.audioscrobbler.com/2.0/?method=album.search&album=${search}&api_key=${LAST_FM_API_KEY}&format=json`
+      )
       .then((data: AxiosResponse) => {
-
         searchResults.albums = data.data.results.albummatches;
 
         axios.get(`http://ws.audioscrobbler.com/2.0/?method=artist.search&artist=${search}&api_key=${LAST_FM_API_KEY}&format=json`)
@@ -30,8 +33,11 @@ const searchController = {
         })
         .catch((err: AxiosResponse) => console.error('err: ', err));
       })
-      .catch((err: AxiosResponse) => console.error('err: ', err));
-  }
+      .catch((err: AxiosResponse) => {
+        console.error("err: ", err);
+        res.sendStatus(500);
+      });
+  },
 };
 
 export default searchController;
