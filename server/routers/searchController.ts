@@ -33,7 +33,7 @@ module.exports = {
           axios.get(`https://app.ticketmaster.com/discovery/v2/events.json?apikey=${TICKETMASTER_API_KEY}&keyword=${search}`, {headers: {"Content-Type": "application/json"}})
           .then((data: any) => {
           
-          searchResults.events = data.data._embedded.events[0]._embedded.venues;
+          //searchResults.events = data.data._embedded.events[0]._embedded.venues;
             console.log(data)
           res.status(200).send(searchResults);
           })
