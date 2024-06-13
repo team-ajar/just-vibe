@@ -20,10 +20,22 @@ const Profile = () => {
       .catch(err => console.error(err));
   };
 
-  const editProfile = () => {
+  const editName = () => {
     let updateName = prompt('enter new name');
     axios.put(`/api/user/${user.id}`, {
       updateType: "name",
+      updateVal: updateName
+    })
+      .then(({ data }: any) =>{
+        setUser(data)
+        })
+      .catch(err => console.error(err));
+  };
+
+  const editUsername = () => {
+    let updateName = prompt('enter new username');
+    axios.put(`/api/user/${user.id}`, {
+      updateType: "username",
       updateVal: updateName
     })
       .then(({ data }: any) =>{
@@ -54,7 +66,8 @@ const Profile = () => {
   return (
     <div>
       <h1>Profile</h1>
-      <button onClick={() => editProfile()}>Edit profile</button>
+      <button onClick={() => editName()}>Edit Name</button>
+      <button onClick={() => editUsername()}>Edit Username</button>
       <button onClick={() => deleteProfile()}>Delete profile</button>
       <h3>Username: {user.username}</h3>
       <h4>Name: {user.name}</h4>
