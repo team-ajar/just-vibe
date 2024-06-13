@@ -13,12 +13,17 @@ model User {
   username       String
   googleId       String          @unique
   location       String
+  bio            String          @db.VarChar(300)
+  image          String          @db.VarChar(300)
+  followedBy     Follows[]       @relation("followedBy")
+  following      Follows[]       @relation("following")
   favorite       Favorite[]
   reviews        Review[]
   userEvents     UserEvent[]
   albumsOfTheDay AlbumOfTheDay[]
   TopAlbums      TopAlbums[]
   TopArtists     TopArtists[]
+  Post           Post[]
 }
 
 model Review {
@@ -47,7 +52,6 @@ model Album {
   artistName     String
   image          String          @db.VarChar(300)
   reviews        Review[]
-  song           Song[]
   albumsOfTheDay AlbumOfTheDay[]
   TopAlbums      TopAlbums[]
 }
@@ -57,15 +61,6 @@ model Artist {
   name        String       @db.VarChar(300)
   description String
   TopArtists  TopArtists[]
-}
-
-model Song {
-  id      Int    @id @default(autoincrement())
-  name    String
-  albumId Int
-  album   Album  @relation(fields: [albumId], references: [id])
-
-  @@index([albumId], map: "Song_albumId_fkey")
 }
 
 model UserEvent {
@@ -120,8 +115,31 @@ model TopArtists {
   @@unique([position, artistId, userId])
 }
 
+model Follows {
+  followedBy   User @relation("followedBy", fields: [followedById], references: [id])
+  followedById Int
+  following    User @relation("following", fields: [followingId], references: [id])
+  followingId  Int
+
+  @@id([followingId, followedById])
+}
+
+model Post {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id])
+  date      DateTime  @default(now())
+  postType  String
+  musicPost MusicPost
+}
+
 enum Entity {
   ALBUM
   ARTIST
   SONG
+}
+
+enum MusicPost {
+  REVIEW
+  ALBUMOFTHEDAY
 }
