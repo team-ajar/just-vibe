@@ -19,7 +19,6 @@ model User {
   following      Follows[]       @relation("following")
   favorite       Favorite[]
   reviews        Review[]
-  userEvents     UserEvent[]
   albumsOfTheDay AlbumOfTheDay[]
   TopAlbums      TopAlbums[]
   TopArtists     TopArtists[]
@@ -39,13 +38,6 @@ model Review {
   @@index([userId], map: "Review_userId_fkey")
 }
 
-model Event {
-  id         Int         @id @default(autoincrement())
-  venue      String
-  location   String
-  userEvents UserEvent[]
-}
-
 model Album {
   id             Int             @id @default(autoincrement())
   albumName      String
@@ -61,16 +53,6 @@ model Artist {
   name        String       @db.VarChar(300)
   description String
   TopArtists  TopArtists[]
-}
-
-model UserEvent {
-  userId  Int
-  eventId Int
-  event   Event @relation(fields: [eventId], references: [id])
-  user    User  @relation(fields: [userId], references: [id])
-
-  @@id([userId, eventId])
-  @@index([eventId], map: "UserEvent_eventId_fkey")
 }
 
 model Favorite {
