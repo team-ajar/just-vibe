@@ -34,6 +34,19 @@ const profileController = {
           res.status(201).send(updUser);
         })
         .catch(() => res.sendStatus(404));
+    } else if (updateType === 'username') {
+      prisma.user.update({
+        where: {
+          id: Number(userId),
+        },
+        data: {
+          username: updateVal
+        }
+      })
+        .then(updUser => {
+          res.status(201).send(updUser);
+        })
+        .catch(() => res.sendStatus(404));
     }
   },
 

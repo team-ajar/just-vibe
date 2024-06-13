@@ -45,6 +45,8 @@ passport.use(
                 name: profile.displayName,
                 username: "",
                 location: "",
+                bio: "",
+                image: ""
               },
             });
           }
