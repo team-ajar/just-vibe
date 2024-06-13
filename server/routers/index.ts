@@ -2,7 +2,6 @@ import express from "express";
 import searchController from "./searchController";
 import albumOfTheDayController from "./albumOfTheDayController";
 import musicController from "./musicController";
-import eventsController from "./eventsController";
 import profileController from "./profileController";
 import albumIdController from "./albumIdController";
 import reviewsController from "./reviewsController";
@@ -41,9 +40,5 @@ router.route('/user/:userId').put(profileController.updateUser);
 router.route('/user/:userId').delete(profileController.deleteUser);
 
 router.route('/album-id').post(albumIdController.getAlbumId);
-
-// eventsController
-// router.route('/events').post(eventsController.saveEvent);
-// router.route('/events').delete(eventsController.deleteEvent);
 
 export default router;
