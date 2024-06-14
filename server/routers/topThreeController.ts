@@ -26,7 +26,7 @@ const topThreeController = {
     })
     //we have all albums from the schemas
     .then((albums) => {
-      //console.log('ALBUMS HERE', albums)
+      console.log('ALBUMS HERE', albums)
       //lets get all the top albums for the user
       prisma.topAlbums.findMany({
         where: {
@@ -52,60 +52,61 @@ const topThreeController = {
 
   },
 
-  createTopAlbum: (req: Request, res: Response) => {
-    
-    const { position, albumId, userId } = req.params;
-    
-    
-    //CREATE top album at a specified position
-    prisma.topAlbums.create({
-      data: {
-        position: Number(position),
-        albumId: Number(albumId),
-        userId: Number(userId),
-      }
-    })
-    .then((topAlbum) => {
-      console.log(topAlbum);
-      res.status(201).json(topAlbum)
-    })
-    .catch((error) => {
-      console.error('Error posting topAlbum:', error)
-      res.sendStatus(500);
-    })
-  },
-
-  updateTopAlbum: (req: Request, res: Response) => {
-
-    const { position, albumId, userId } = req.params;
+  createOrUpdateTopAlbum: (req: Request, res: Response) => {
+    const { position, oldAlbumId, userId } = req.params;
     const { newAlbumId } = req.body;
 
+   
+
+    //if the album doesnt exist, we pass 0 as the oldAlbumId, to know we need to creare it
+
+    if (oldAlbumId === '0'){
+      prisma.topAlbums.create({
+        data: {
+          position: Number(position),
+          albumId: Number(newAlbumId),
+          userId: Number(userId),
+        },
+      })
+      //after creating it if it doesnt exist, we send the response to the front end
+      .then((topAlbum) => {
+        res.status(201).json(topAlbum);
+      })
+      .catch((error) => {
+        console.log(req.params);
+        // console.error('Error creating album:', error);
+        res.sendStatus(500);
+
+      })
+      //return is here, because after the promise is either successfully fulfilled or not, execution will stop
+      //after the then or catch
+      return
+
+    }
 
     prisma.topAlbums.update({
       where: {
-        position_albumId_userId : {
+        position_albumId_userId: {
           position: Number(position),
-          albumId: Number(albumId),
-          userId: Number(userId),
+          albumId: Number(oldAlbumId),
+          userId: Number(userId), 
         }
       },
-      //unlike the delete, we don't need data
-      //because we are completely removing it
-      //however in update we need to know exactly
-      //which data TO update
       data: {
+        //we want to update the albumId in the sql table, with the NEW albumId
         albumId: Number(newAlbumId)
       }
     })
     .then((topAlbum) => {
-      console.log(topAlbum);
-      res.status(200).json(topAlbum);
+      res.status(200).json(topAlbum)
     })
     .catch((error) => {
-      console.error('Error while updating:', error)
+      console.log(req.params)
+      // console.error('Error updating album:', error)
       res.sendStatus(500);
     })
   },
+
 
   deleteTopAlbum: (req: Request, res: Response) => {
 
@@ -169,7 +170,7 @@ const topThreeController = {
     })
   },
 
-  createTopArtist: (req: Request, res: Response) => {
+  createOrUpdateTopArtist: (req: Request, res: Response) => {
     const { position, artistId, userId } = req.params;
     
     
@@ -183,38 +184,11 @@ const topThreeController = {
     })
     .then((topAlbum) => {
       console.log(topAlbum);
+      //to
       res.status(201).json(topAlbum)
     })
     .catch((error) => {
       console.error('Error posting topAlbum:', error)
-      res.sendStatus(500);
-    })
-  },
-
-  updateTopArtist: (req: Request, res: Response) => {
-
-    const { position, artistId, userId } = req.params;
-    const { newArtistId } = req.body;
-
-
-    prisma.topArtists.update({
-      where: {
-        position_artistId_userId: {
-          position: Number(position),
-          artistId: Number(artistId),
-          userId: Number(userId),
-        }
-      },
-      data: {
-        artistId: Number(newArtistId)
-      }
-    })
-    .then((topArtist) => {
-      console.log(topArtist);
-      res.status(200).json(topArtist);
-    })
-    .catch((error) => {
-      console.error('Error while updating:', error)
       res.sendStatus(500);
     })
   },

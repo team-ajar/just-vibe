@@ -12,13 +12,11 @@ const router = express.Router();
 router.route('/search/:search').get(searchController.handleSearch);
 
 router.route('/top/albums/:userId').get(topThreeController.getTopAlbums);
-router.route('/top/albums/:albumId/:position/:userId').post(topThreeController.createTopAlbum);
-router.route('/top/albums/:albumId/:position/:userId').put(topThreeController.updateTopAlbum);
+router.route('/top/albums/:oldAlbumId/:position/:userId').post(topThreeController.createOrUpdateTopAlbum);
 router.route('/top/albums/:albumId/:position/:userId').delete(topThreeController.deleteTopAlbum);
 
 router.route('/top/artists/:userId').get(topThreeController.getTopArtists);
-router.route('/top/artists/:artistId/:position/:userId').post(topThreeController.createTopArtist);
-router.route('/top/artists/:artistId/:position/:userId').put(topThreeController.updateTopArtist);
+router.route('/top/artists/:artistId/:position/:userId').post(topThreeController.createOrUpdateTopArtist);
 router.route('/top/artists/:artistId/:position/:userId').delete(topThreeController.deleteTopArtist);
 
 router.route('/albums/:artistName/:albumName/reviews').get(reviewsController.getReviews);

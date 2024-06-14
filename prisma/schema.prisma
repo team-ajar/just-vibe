@@ -102,8 +102,8 @@ model AlbumOfTheDay {
 
 model TopAlbums {
   position Int
-  album    Album @relation(fields: [albumId], references: [id])
-  user     User  @relation(fields: [userId], references: [id])
+  album    Album @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  user     User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   albumId  Int
   userId   Int
 
@@ -112,8 +112,8 @@ model TopAlbums {
 //UPDATE TO PUSH IN COMMIT
 model TopArtists {
   position Int
-  user     User   @relation(fields: [userId], references: [id])
-  artist   Artist @relation(fields: [artistId], references: [id])
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  artist   Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
   userId   Int
   artistId Int
 
