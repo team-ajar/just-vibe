@@ -6,6 +6,7 @@ import SearchResults from './SearchResults';
 import Reviews from './Reviews'
 import Profile from './Profile';
 import Feed from './Feed';
+import SearchUsers from './SearchUserResults';
 
 const App = () => {
 
@@ -18,6 +19,7 @@ const App = () => {
         <Route path='/search-results/:query' element={<SearchResults />} />
         <Route path='/user' element={<Profile />} />
         <Route path='/feed' element={<Feed />} />
+        <Route path='/search/users/:query' element={< SearchUsers />} />
       </Routes>
     </div>
   )

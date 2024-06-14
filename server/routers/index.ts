@@ -9,7 +9,8 @@ import topThreeController from "./topThreeController";
 
 const router = express.Router();
 
-router.route('/search/:search').get(searchController.handleSearch);
+router.route('/search/:search').get(searchController.handleMusicSearch);
+router.route('/search/users/:query').get(searchController.handleUserSearch);
 
 router.route('/top/albums/:userId').get(topThreeController.getTopAlbums);
 router.route('/top/albums/:albumId/:position/:userId').post(topThreeController.createTopAlbum);
