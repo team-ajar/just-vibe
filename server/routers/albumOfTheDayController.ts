@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 
 const prisma = new PrismaClient();
 
-
 const albumOfTheDayController = {
 
   getAlbumOfTheDay: (req: Request, res: Response) => {
