@@ -12,8 +12,6 @@ interface User {
 const Profile = () => {
   const [user, setUser] = useState<User>({id: 0, googleId: '', location: '', name: '', username: '' });
 
-  console.log(localStorage);
-
   const loadPage = () => {
     axios.get('/api/user')
       .then(({ data }: any) => {
