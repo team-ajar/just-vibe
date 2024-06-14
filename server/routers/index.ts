@@ -16,7 +16,7 @@ router.route('/top/albums/:oldAlbumId/:position/:userId').post(topThreeControlle
 router.route('/top/albums/:albumId/:position/:userId').delete(topThreeController.deleteTopAlbum);
 
 router.route('/top/artists/:userId').get(topThreeController.getTopArtists);
-router.route('/top/artists/:artistId/:position/:userId').post(topThreeController.createOrUpdateTopArtist);
+router.route('/top/artists/:oldArtistId/:position/:userId').post(topThreeController.createOrUpdateTopArtist);
 router.route('/top/artists/:artistId/:position/:userId').delete(topThreeController.deleteTopArtist);
 
 router.route('/albums/:artistName/:albumName/reviews').get(reviewsController.getReviews);
