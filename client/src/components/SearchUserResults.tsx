@@ -36,11 +36,12 @@ const SearchUsers = () => {
   }, [query]);
 
   const followUser = (following: any) => {
-    axios.post(`/api/follow/${user.id}/${following}`)
-      .then(data => console.log)
-      .catch(err => console.error(err));
+    axios.post(`/api/follow/${user.id}/${following}`);
   };
 
+  const unfollowUser = (unfollowing: any) => {
+    axios.delete(`/api/follow/${user.id}/${unfollowing}`);
+  }
 
 return (
   <div>
@@ -49,6 +50,7 @@ return (
       {searchResults.map((user: any, index: number) => (
         <li key={index}>{`@${user.username} - ${user.name}`}
           <button onClick={() => followUser(user.id)}>Follow</button>
+          <button onClick={() => unfollowUser(user.id)}>Unfollow</button>
         </li>
       ))}
     </ul>
