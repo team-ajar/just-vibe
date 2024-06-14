@@ -19,8 +19,8 @@ return (
   <div>
     <h1>People:</h1>
     <ul>
-      {searchResults.map((user: any) => (
-        <li>{`@${user.username} - ${user.name}`}</li>
+      {searchResults.map((user: any, index: number) => (
+        <li key={index}>{`@${user.username} - ${user.name}`}</li>
       ))}
     </ul>
   </div>
