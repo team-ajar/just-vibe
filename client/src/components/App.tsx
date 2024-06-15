@@ -7,6 +7,7 @@ import Reviews from './Reviews'
 import Profile from './Profile';
 import Feed from './Feed';
 import SearchUsers from './SearchUserResults';
+import EditProfile from './EditProfile';
 
 const App = () => {
 
@@ -20,6 +21,7 @@ const App = () => {
         <Route path='/user' element={<Profile />} />
         <Route path='/feed' element={<Feed />} />
         <Route path='/search/users/:query' element={< SearchUsers />} />
+        <Route path='/user/edit/:id' element={<EditProfile/>} />
       </Routes>
     </div>
   )

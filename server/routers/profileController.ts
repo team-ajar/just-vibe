@@ -57,49 +57,6 @@ const profileController = {
     })
       .then((updUser: User) => res.status(201).send(updUser))
       .catch(() => res.sendStatus(500));
-    // if (updateType === "name") {
-    //   prisma.user
-    //     .update({
-    //       where: {
-    //         id: Number(userId),
-    //       },
-    //       data: {
-    //         name: updateVal,
-    //       },
-    //     })
-    //     .then((updUser) => {
-    //       res.status(201).send(updUser);
-    //     })
-    //     .catch(() => res.sendStatus(404));
-    // } else if (updateType === "username") {
-    //   prisma.user
-    //     .update({
-    //       where: {
-    //         id: Number(userId),
-    //       },
-    //       data: {
-    //         username: updateVal,
-    //       },
-    //     })
-    //     .then((updUser) => {
-    //       res.status(201).send(updUser);
-    //     })
-    //     .catch(() => res.sendStatus(404));
-    // } else if (updateType === "bio") {
-    //   prisma.user
-    //     .update({
-    //       where: {
-    //         id: Number(userId),
-    //       },
-    //       data: {
-    //         bio: updateVal,
-    //       },
-    //     })
-    //     .then((updUser) => {
-    //       res.status(201).send(updUser);
-    //     })
-    //     .catch(() => res.sendStatus(404));
-    // }
   },
 
   deleteUser: (req: Request, res: Response) => {

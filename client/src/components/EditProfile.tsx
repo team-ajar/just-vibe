@@ -1,0 +1,76 @@
+import { Request, Response } from "express";
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
+
+interface User {
+  id: number;
+  googleId: string;
+  location: string;
+  name: string;
+  username: string;
+  bio: string;
+  image: string;
+}
+
+const EditProfile = () => {
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [bio, setBio] = useState('');
+  const [user, setUser] = useState({});
+
+  const loadPage = () => {
+    axios
+      .get("/api/user")
+      .then(({ data }: any) => {
+        setUser(data);
+      })
+      .catch((err: any) => console.error(err));
+  };
+
+  const handleChange = (change: any, type: any) => {
+    if (type === "username") {
+      setUsername(change);
+    } else if (type === "name") {
+      setName(change);
+    } else if (type === "bio") {
+      setBio(change);
+    }
+  };
+
+  const handleSubmit = () => {
+    console.log('state: ', username, name, bio);
+  }
+
+  useEffect(() => {
+    loadPage();
+  }, [])
+
+  return (
+    <div>
+      <h1>Edit Profile</h1>
+      <form>
+        <label>Username</label>
+        <input
+          type="text"
+          placeholder="New username..."
+          onChange={(e) => handleChange(e.target.value, "username")}
+        ></input>
+        <label>Name</label>
+        <input
+          type="text"
+          placeholder="New name..."
+          onChange={(e) => handleChange(e.target.value, "name")}
+        ></input>
+        <label>Bio</label>
+        <textarea
+          placeholder="New bio..."
+          maxLength={300}
+          onChange={(e) => handleChange(e.target.value, "bio")}
+        ></textarea>
+      </form>
+      <button onClick={handleSubmit}>Submit</button>
+    </div>
+  );
+};
+
+export default EditProfile;
