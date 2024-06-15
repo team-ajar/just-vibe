@@ -7,6 +7,7 @@ import albumIdController from "./albumIdController";
 import reviewsController from "./reviewsController";
 import topThreeController from "./topThreeController";
 import followController from "./followController";
+import followedUsers from "./followedUsers";
 
 const router = express.Router();
 
@@ -45,5 +46,7 @@ router.route('/album-id').post(albumIdController.getAlbumId);
 
 router.route('/follow/:followedById/:followingId').post(followController.followUser);
 router.route('/follow/:followedById/:followingId').delete(followController.unfollowUser);
+
+router.route('/feed/reviews/:userId').get(followedUsers.getFollowedUsersReviews);
 
 export default router;
