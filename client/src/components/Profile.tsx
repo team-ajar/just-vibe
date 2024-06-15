@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { TopAlbums } from "@prisma/client";
+import { TopAlbumsComponent } from "./TopAlbums";
+import { TopArtistsComponent } from "./TopArtists";
 
 interface User {
   id: number;
@@ -9,15 +12,31 @@ interface User {
   username: string;
 }
 
+//define the structure of a Album Object
+
+interface Album {
+  id: number;
+  albumName: string;
+  artistName: string;
+  image: string;
+}
+
 const Profile = () => {
-  const [user, setUser] = useState<User>({id: 0, googleId: '', location: '', name: '', username: '' });
+  const [user, setUser] = useState<User>({
+    id: 0,
+    googleId: "",
+    location: "",
+    name: "",
+    username: "",
+  });
 
   const loadPage = () => {
-    axios.get('/api/user')
+    axios
+      .get("/api/user")
       .then(({ data }: any) => {
         setUser(data);
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
   };
 
   const editName = () => {
@@ -45,23 +64,22 @@ const Profile = () => {
   };
 
   const deleteProfile = () => {
-    let answer = prompt('enter your username to delete:');
+    let answer = prompt("enter your username to delete:");
     const delUser = {
       id: 0,
-      googleId: '',
-      location: '',
-      name: '',
-      username: '',
-    }
+      googleId: "",
+      location: "",
+      name: "",
+      username: "",
+    };
     if (answer === user.username) {
-      axios.delete(`/api/user/${user.id}`)
-        .then(() => setUser(delUser));
+      axios.delete(`/api/user/${user.id}`).then(() => setUser(delUser));
     }
   };
 
   useEffect(() => {
-    loadPage()
-  }, [])
+    loadPage();
+  }, []);
 
   return (
     <div>
@@ -71,8 +89,10 @@ const Profile = () => {
       <button onClick={() => deleteProfile()}>Delete profile</button>
       <h3>Username: {user.username}</h3>
       <h4>Name: {user.name}</h4>
+      {user.id > 0 && <TopAlbumsComponent userId={user.id} />}
+      {user.id > 0 && <TopArtistsComponent userId={user.id} />}
     </div>
-  )
-}
+  );
+};
 
 export default Profile;
