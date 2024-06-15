@@ -28,13 +28,9 @@ const reviewsController = {
     })
   },
   createReview: (req: Request, res: Response) => {
-    const { text, rating, albumId } = req.body;
+    const { text, rating } = req.body;
     const { albumName, artistName, userId } = req.params;
-    //prisma crud operation
-    //use the findFirst method on the album model
-    //if the album is found where the artistName and albumName
-    //it creates a new review for the album
-    //with provided text, and other keys it shows
+
     prisma.album.findFirst({
       where: { albumName, artistName }
     })
@@ -50,8 +46,22 @@ const reviewsController = {
           userId: Number(userId),
         },
       })
-      .then((response: any) => {
-        res.status(201).json(response)
+      .then((review: any) => {
+        prisma.post.create({
+          data: {
+            userId: review.userId,
+            postType: 'REVIEW',
+            albumId: review.albumId,
+            reviewId: review.id
+          }
+        })
+        .then(() => {
+          return res.status(201).send(review);
+        })
+        .catch((err) => {
+          console.error('Error creating post:', err);
+          return res.sendStatus(500);
+        })
       })
       .catch((error: any) => {
         console.error('Error adding review:', error)
