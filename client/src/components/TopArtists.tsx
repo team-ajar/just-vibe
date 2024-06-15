@@ -14,8 +14,6 @@ export const TopArtistsComponent = ({ userId }: { userId: number }) => {
   ]);
   const getArtists = () => {
     axios.get(`/api/top/artists/${userId}`).then((response) => {
-     
-      console.log(response.data)
       setArtists(response.data.artists);
       let topArtist1 = response.data.topArtists.find(
         (artist: TopArtists) => artist.position === 1
@@ -26,8 +24,6 @@ export const TopArtistsComponent = ({ userId }: { userId: number }) => {
       let topArtist3 = response.data.topArtists.find(
         (artist: TopArtists) => artist.position === 3
       );
-      //
-      console.log(topArtist1, topArtist2, topArtist3)
       setTopArtists([topArtist1, topArtist2, topArtist3]);
     });
   };
@@ -42,8 +38,6 @@ export const TopArtistsComponent = ({ userId }: { userId: number }) => {
         newArtistId,
       })
       .then((response) => {
-        console.log(response.data);
-
         setTopArtists((prev) => {
           prev[response.data.position - 1] = response.data;
           return [...prev];
@@ -60,8 +54,6 @@ export const TopArtistsComponent = ({ userId }: { userId: number }) => {
     axios
       .delete(`/api/top/artists/${artistId}/${position}/${userId}`)
       .then((response) => {
-        console.log("SHOW ARTIST", response);
-
         setTopArtists((prev) => {
           return prev.map((topArtist) => {
             if (topArtist?.artistId === artistId) {
@@ -98,7 +90,6 @@ export const TopArtistsComponent = ({ userId }: { userId: number }) => {
           <select
             value={topArtist1?.id || ""}
             onChange={(e) => {
-              console.log(e.target.value);
               if (e.target.value === "") return;
               showSelectedArtist(
                 Number(e.target.value),
@@ -131,7 +122,6 @@ export const TopArtistsComponent = ({ userId }: { userId: number }) => {
           <select
             value={topArtist2?.id || ""}
             onChange={(e) => {
-              console.log(e.target.value);
               if (e.target.value === "") return;
               showSelectedArtist(
                 Number(e.target.value),
@@ -163,7 +153,6 @@ export const TopArtistsComponent = ({ userId }: { userId: number }) => {
           <select
             value={topArtist3?.id || ""}
             onChange={(e) => {
-              console.log(e.target.value);
               if (e.target.value === "") return;
               showSelectedArtist(
                 Number(e.target.value),

@@ -26,7 +26,6 @@ const topThreeController = {
     })
     //we have all albums from the schemas
     .then((albums) => {
-      console.log('ALBUMS HERE', albums)
       //lets get all the top albums for the user
       prisma.topAlbums.findMany({
         where: {
@@ -73,7 +72,6 @@ const topThreeController = {
         res.status(201).json(topAlbum);
       })
       .catch((error) => {
-        console.log(req.params);
         // console.error('Error creating album:', error);
         res.sendStatus(500);
 
@@ -101,7 +99,6 @@ const topThreeController = {
       res.status(200).json(topAlbum)
     })
     .catch((error) => {
-      console.log(req.params)
       // console.error('Error updating album:', error)
       res.sendStatus(500);
     })
@@ -125,7 +122,6 @@ const topThreeController = {
       }
     })
     .then((topAlbum) => {
-      console.log(topAlbum)
       //SUCCESSFUL delete
       res.sendStatus(200)
     })
@@ -191,7 +187,6 @@ const topThreeController = {
         res.status(201).json(topArtist);
       })
       .catch((error) => {
-        console.log(req.params);
         // console.error('Error creating album:', error);
         res.sendStatus(500);
 
@@ -219,7 +214,6 @@ const topThreeController = {
       res.status(200).json(topArtist)
     })
     .catch((error) => {
-      console.log(req.params)
       // console.error('Error updating album:', error)
       res.sendStatus(500);
     })
@@ -243,7 +237,6 @@ const topThreeController = {
       }
     })
     .then((topArtist) => {
-      console.log(topArtist)
       //SUCCESSFUL delete
       res.sendStatus(200)
     })
