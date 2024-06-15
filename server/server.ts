@@ -47,6 +47,7 @@ passport.use(
       callbackURL: "/auth/google/callback",
     },
     (accessToken, refreshToken, profile, done) => {
+      console.log(profile);
       prisma.user
         .findUnique({ where: { googleId: profile.id } })
         .then((user) => {
@@ -58,7 +59,7 @@ passport.use(
                 username: "",
                 location: "",
                 bio: "",
-                image: ""
+                image: String(profile._json.picture)
               },
             });
           }
