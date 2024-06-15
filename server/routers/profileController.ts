@@ -43,50 +43,20 @@ const profileController = {
   updateUser: (req: Request, res: Response) => {
     const { userId } = req.params;
 
-    const { updateType, updateVal } = req.body;
-    if (updateType === "name") {
-      prisma.user
-        .update({
-          where: {
-            id: Number(userId),
-          },
-          data: {
-            name: updateVal,
-          },
-        })
-        .then((updUser) => {
-          res.status(201).send(updUser);
-        })
-        .catch(() => res.sendStatus(404));
-    } else if (updateType === "username") {
-      prisma.user
-        .update({
-          where: {
-            id: Number(userId),
-          },
-          data: {
-            username: updateVal,
-          },
-        })
-        .then((updUser) => {
-          res.status(201).send(updUser);
-        })
-        .catch(() => res.sendStatus(404));
-    } else if (updateType === "bio") {
-      prisma.user
-        .update({
-          where: {
-            id: Number(userId),
-          },
-          data: {
-            bio: updateVal,
-          },
-        })
-        .then((updUser) => {
-          res.status(201).send(updUser);
-        })
-        .catch(() => res.sendStatus(404));
-    }
+    const { username, name, bio } = req.body;
+
+    prisma.user.update({
+      where: {
+        id: Number(userId),
+      },
+      data: {
+        username,
+        name,
+        bio
+      }
+    })
+      .then((updUser: User) => res.status(201).send(updUser))
+      .catch(() => res.sendStatus(500));
   },
 
   deleteUser: (req: Request, res: Response) => {
