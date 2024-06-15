@@ -1,6 +1,7 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Reactions from "./Reactions";
 
 interface User {
   id: number;
@@ -43,6 +44,7 @@ const Feed = () => {
   const loadReviews = (userId: number) => {
     axios.get(`/api/feed/reviews/${userId}`)
       .then((response: any) => {
+        console.log('response before setting review:', response.data);
         setReviews(response.data);
       })
       .catch(err => console.error(err));
@@ -87,6 +89,7 @@ const Feed = () => {
                 <p>No album information available</p>
               )}
               <p>@{review.username}: {review.text}</p>
+              <Reactions userId={user.id} postId={review.id} />
             </div>
           ))
         ) : (
