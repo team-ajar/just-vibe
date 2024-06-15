@@ -7,7 +7,12 @@ const prisma = new PrismaClient();
 const albumOfTheDayController = {
 
   getAlbumOfTheDay: (req: Request, res: Response) => {
+    const userId = req.user?.id;
+
     prisma.albumOfTheDay.findFirst({
+      where: {
+        userId: userId,
+      },
       orderBy: {
         date: 'desc'
       },
@@ -26,7 +31,8 @@ const albumOfTheDayController = {
   },
 
   setAlbumOfTheDay: (req: Request, res: Response) => {
-    const { albumId, userId } = req.body;
+    const { albumId } = req.body;
+    const userId = req.user?.id;
     const startOfDay = dayjs().startOf('day').toISOString();
     const endOfDay = dayjs().endOf('day').toISOString();
 

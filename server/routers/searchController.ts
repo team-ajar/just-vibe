@@ -44,7 +44,6 @@ const searchController = {
         },
       })
       .then((found: any) => {
-        // console.log(found);
         if (found.length) {
           res.status(200).send(found);
         } else {

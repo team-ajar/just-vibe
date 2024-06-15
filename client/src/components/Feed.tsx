@@ -1,18 +1,66 @@
-import React, { useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+interface User {
+  id: number;
+  googleId: string;
+  location: string;
+  name: string;
+  username: string;
+}
+
+interface Album {
+  id: number;
+  albumName: string;
+  artistName: string;
+  image: string;
+}
+
+interface Review {
+  username: ReactNode;
+  Album: Album;
+  id: number;
+  text: string;
+  rating: number;
+  userId: number;
+  albumId: number;
+}
+
 const Feed = () => {
   const [query, setQuery] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-  // const searchUser = (q: any) => {
-  //   axios.get(`/api/search/users/${q}`)
-  //     .then((data: any) => setSearchResults(data))
-  //     .catch((err: any) => console.error(err));
-  // }
+  const [user, setUser] = useState<User>({id: 0, googleId: '', location: '', name: '', username: '' });
+  const [reviews, setReviews] = useState<Review[]>([]);
+
+  const loadUser = () => {
+    axios.get('/api/user')
+      .then(({ data }: any) => {
+        setUser(data);
+      })
+      .catch(err => console.error(err));
+  };
+
+  const loadReviews = (userId: number) => {
+    axios.get(`/api/feed/reviews/${userId}`)
+      .then((response: any) => {
+        setReviews(response.data);
+      })
+      .catch(err => console.error(err));
+  };
+
   const handleChange = (e: any) => {
     setQuery(e);
   };
+
+  useEffect(() => {
+    loadUser();
+  }, []);
+
+  useEffect(() => {
+    if (user.id !== 0) {
+      loadReviews(user.id);
+    }
+  }, [user]);
 
   return (
     <div>
@@ -23,8 +71,27 @@ const Feed = () => {
         placeholder='Search for a user by username'
         onChange={(e) => handleChange(e.target.value)}
         />
-        {/* <button onClick={() => searchUser(query)}>Search User</button> */}
         <Link to={`/search/users/${query}`}>Search Users</Link>
+      </div>
+      <div>
+        <h2>Following Reviews</h2>
+        {reviews.length > 0 ? (
+          reviews.map(review => (
+            <div key={review.id}>
+              {review.Album ? (
+                <>
+                  <h3>{review.Album.albumName} by {review.Album.artistName}</h3>
+                  <img src={review.Album.image} alt={review.Album.albumName} />=
+                </>
+              ) : (
+                <p>No album information available</p>
+              )}
+              <p>@{review.username}: {review.text}</p>
+            </div>
+          ))
+        ) : (
+          <p>No reviews to display</p>
+        )}
       </div>
     </div>
   )
