@@ -20,7 +20,6 @@ export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
   ]);
   const getAlbums = () => {
     axios.get(`/api/top/albums/${userId}`).then((response) => {
-      console.log("SETALBUMS DATA", response.data.topAlbums);
       //invoke the setAlbums function to update the albums array in the state to the data.albums content
       setAlbums(response.data.albums);
       let topAlbum1 = response.data.topAlbums.find(
@@ -49,8 +48,6 @@ export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
       })
       //once the content is posted to that location, we
       .then((response) => {
-        //console.log("SHOW ALBUM", response);
-        console.log(response.data);
 
         setTopAlbum((prev) => {
           prev[response.data.position - 1] = response.data;
@@ -70,7 +67,6 @@ export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
       .delete(`/api/top/albums/${albumId}/${position}/${userId}`)
       //once the content is posted to that location, we
       .then((response) => {
-        console.log("SHOW ALBUM", response);
 
         setTopAlbum((prev) => {
           return prev.map((topAlbum) => {
@@ -106,7 +102,6 @@ export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
           <select
             value={topAlbum1?.id || ""}
             onChange={(e) => {
-              console.log(e.target.value);
               if (e.target.value === "") return;
               showSelectedAlbum(Number(e.target.value), 1, topAlbum1?.id || 0);
             }}
@@ -137,7 +132,6 @@ export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
           <select
             value={topAlbum2?.id || ""}
             onChange={(e) => {
-              console.log(e.target.value);
               if (e.target.value === "") return;
               showSelectedAlbum(Number(e.target.value), 2, topAlbum2?.id || 0);
             }}
@@ -167,7 +161,6 @@ export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
           <select
             value={topAlbum3?.id || ""}
             onChange={(e) => {
-              console.log(e.target.value);
               if (e.target.value === "") return;
               showSelectedAlbum(Number(e.target.value), 3, topAlbum3?.id || 0);
             }}

@@ -1,6 +1,32 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Reactions from "./Reactions";
+
+interface User {
+  id: number;
+  googleId: string;
+  location: string;
+  name: string;
+  username: string;
+}
+
+interface Album {
+  id: number;
+  albumName: string;
+  artistName: string;
+  image: string;
+}
+
+interface Review {
+  username: ReactNode;
+  Album: Album;
+  id: number;
+  text: string;
+  rating: number;
+  userId: number;
+  albumId: number;
+}
 
 interface User {
   id: number;
@@ -74,19 +100,20 @@ const Feed = () => {
         <Link to={`/search/users/${query}`}>Search Users</Link>
       </div>
       <div>
-        <h2>Following Reviews</h2>
+        <h2>Reviews From People You Follow</h2>
         {reviews.length > 0 ? (
           reviews.map(review => (
             <div key={review.id}>
               {review.Album ? (
                 <>
                   <h3>{review.Album.albumName} by {review.Album.artistName}</h3>
-                  <img src={review.Album.image} alt={review.Album.albumName} />=
+                  <img src={review.Album.image} alt={review.Album.albumName} />
                 </>
               ) : (
                 <p>No album information available</p>
               )}
               <p>@{review.username}: {review.text}</p>
+              <Reactions userId={user.id} postId={review.id} />
             </div>
           ))
         ) : (

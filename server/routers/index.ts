@@ -8,6 +8,7 @@ import reviewsController from "./reviewsController";
 import topThreeController from "./topThreeController";
 import followController from "./followController";
 import followedUsers from "./followedUsers";
+import reactionsController from "./reactionsController";
 
 const router = express.Router();
 
@@ -46,5 +47,8 @@ router.route('/follow/:followedById/:followingId').post(followController.followU
 router.route('/follow/:followedById/:followingId').delete(followController.unfollowUser);
 
 router.route('/feed/reviews/:userId').get(followedUsers.getFollowedUsersReviews);
+
+router.route('/reactions').post(reactionsController.addOrUpdateReaction);
+router.route('/reactions/:userId/:postId').delete(reactionsController.removeReaction);
 
 export default router;

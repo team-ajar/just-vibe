@@ -23,6 +23,7 @@ model User {
   TopAlbums      TopAlbums[]
   TopArtists     TopArtists[]
   posts          Post[]
+  reactions      Reaction[]
 }
 
 model Review {
@@ -118,6 +119,20 @@ model Post {
   reviewId  Int?
   album     Album?    @relation(fields: [albumId], references: [id])
   review    Review?   @relation(fields: [reviewId], references: [id])
+  reactions Reaction[]
+}
+
+model Reaction {
+  id        Int      @id @default(autoincrement())
+  emoji     String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  postId    Int
+  post      Post     @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([postId])
 }
 
 enum Entity {
