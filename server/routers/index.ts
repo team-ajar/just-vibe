@@ -48,7 +48,7 @@ router.route('/follow/:followedById/:followingId').delete(followController.unfol
 
 router.route('/feed/reviews/:userId').get(followedUsers.getFollowedUsersReviews);
 
-router.route('/reactions').post(reactionsController.addReaction);
+router.route('/reactions').post(reactionsController.addOrUpdateReaction);
 router.route('/reactions/:userId/:postId').delete(reactionsController.removeReaction);
 
 export default router;

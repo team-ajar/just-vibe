@@ -4,22 +4,45 @@ import { Request, Response } from "express";
 const prisma = new PrismaClient();
 
 const reactionsController = {
-  addReaction: (req: Request, res: Response) => {
+  addOrUpdateReaction: (req: Request, res: Response) => {
     const { emoji, userId, postId } = req.body;
 
     prisma.reaction
-      .create({
-        data: {
-          emoji,
+      .findFirst({
+        where: {
           userId: parseInt(userId),
-          postId: Number(postId),
+          postId: parseInt(postId),
         },
       })
-      .then((response) => {
-        res.status(201).send(response);
+      .then((existingReaction) => {
+        if (existingReaction) {
+          return prisma.reaction.update({
+            where: {
+              id: existingReaction.id,
+            },
+            data: {
+              emoji,
+            },
+          });
+        } else {
+          return prisma.reaction.create({
+            data: {
+              emoji,
+              userId: parseInt(userId),
+              postId: Number(postId),
+            },
+          });
+        }
+      })
+      .then((updatedReaction) => {
+        if (updatedReaction) {
+          res.status(updatedReaction ? 200 : 201).send(updatedReaction);
+        } else {
+          res.sendStatus(500);
+        }
       })
       .catch((err) => {
-        console.error("Error adding reaction", err);
+        console.error("Error adding/updating reaction:", err);
         res.sendStatus(500);
       });
   },
