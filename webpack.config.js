@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const dotenv = require('dotenv');
+const CopyPlugin = require("copy-webpack-plugin");
 
 dotenv.config();
 
@@ -40,6 +41,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './client/index.html',
       filename: 'index.html'
-    })
+    }),
+    new CopyPlugin({
+      patterns: [{ from: "./client/styles.css", to: "styles.css" }],
+    }),
 ],
 };
