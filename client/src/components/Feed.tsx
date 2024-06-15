@@ -44,7 +44,6 @@ const Feed = () => {
   const loadReviews = (userId: number) => {
     axios.get(`/api/feed/reviews/${userId}`)
       .then((response: any) => {
-        console.log('response before setting review:', response.data);
         setReviews(response.data);
       })
       .catch(err => console.error(err));

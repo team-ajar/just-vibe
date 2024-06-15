@@ -6,7 +6,6 @@ const prisma = new PrismaClient();
 const reactionsController = {
   addReaction: (req: Request, res: Response) => {
     const { emoji, userId, postId } = req.body;
-    console.log("Received postid:", postId);
 
     prisma.reaction
       .create({
