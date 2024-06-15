@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import LightDarkMode from './LightDarkMode';
 
 const NavBar = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -20,6 +21,7 @@ const NavBar = () => {
         />
         <Link to={`/search-results/${searchQuery}`}>Search</Link>
       </div>
+      <LightDarkMode/>
     </nav>
   );
 };

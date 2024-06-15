@@ -72,6 +72,20 @@ const profileController = {
           res.status(201).send(updUser);
         })
         .catch(() => res.sendStatus(404));
+    } else if (updateType === "bio") {
+      prisma.user
+        .update({
+          where: {
+            id: Number(userId),
+          },
+          data: {
+            bio: updateVal,
+          },
+        })
+        .then((updUser) => {
+          res.status(201).send(updUser);
+        })
+        .catch(() => res.sendStatus(404));
     }
   },
 
