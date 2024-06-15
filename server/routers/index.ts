@@ -6,10 +6,12 @@ import profileController from "./profileController";
 import albumIdController from "./albumIdController";
 import reviewsController from "./reviewsController";
 import topThreeController from "./topThreeController";
+import followController from "./followController";
 
 const router = express.Router();
 
-router.route('/search/:search').get(searchController.handleSearch);
+router.route('/search/:search').get(searchController.handleMusicSearch);
+router.route('/search/users/:query').get(searchController.handleUserSearch);
 
 router.route('/top/albums/:userId').get(topThreeController.getTopAlbums);
 router.route('/top/albums/:oldAlbumId/:position/:userId').post(topThreeController.createOrUpdateTopAlbum);
@@ -38,5 +40,8 @@ router.route('/user/:userId').put(profileController.updateUser);
 router.route('/user/:userId').delete(profileController.deleteUser);
 
 router.route('/album-id').post(albumIdController.getAlbumId);
+
+router.route('/follow/:followedById/:followingId').post(followController.followUser);
+router.route('/follow/:followedById/:followingId').delete(followController.unfollowUser);
 
 export default router;

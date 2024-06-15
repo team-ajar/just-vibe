@@ -7,6 +7,8 @@ import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import { PrismaClient } from "@prisma/client";
 import router from "./routers";
+// let session = require('express-session');
+// session = session();
 
 dotenv.config();
 
@@ -27,6 +29,16 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+interface User {
+  id: number;
+  googleId: string;
+  location: string;
+  name: string;
+  username: string;
+  bio: string;
+  image: string;
+}
+
 passport.use(
   new GoogleStrategy(
     {
@@ -45,6 +57,8 @@ passport.use(
                 name: profile.displayName,
                 username: "",
                 location: "",
+                bio: "",
+                image: ""
               },
             });
           }
