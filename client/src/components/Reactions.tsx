@@ -17,9 +17,7 @@ const Reactions = ({ userId, postId }: Props) => {
       userId,
       postId
     })
-    .then((response) => {
-      console.log('Reaction added:', response.data);
-    })
+    .then(() => {})
     .catch((err) => {
       console.error('Error adding reaction:', err);
     })
@@ -31,7 +29,7 @@ const Reactions = ({ userId, postId }: Props) => {
         <span
           key={emoji}
           onClick={() => handleReaction(emoji)}
-          style={{ cursor: 'pointer', marginRight: 10 }}
+          style={{ cursor: 'pointer', marginRight: 10, opacity: selectedEmoji === emoji ? 1 : 0.25 }}
         >
           {emoji}
         </span>

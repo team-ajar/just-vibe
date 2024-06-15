@@ -75,7 +75,7 @@ const Feed = () => {
         <Link to={`/search/users/${query}`}>Search Users</Link>
       </div>
       <div>
-        <h2>Following Reviews</h2>
+        <h2>Reviews From People You Follow</h2>
         {reviews.length > 0 ? (
           reviews.map(review => (
             <div key={review.id}>
