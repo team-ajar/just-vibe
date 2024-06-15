@@ -16,7 +16,15 @@ const EditProfile = () => {
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [bio, setBio] = useState('');
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState<User>({
+    id: 0,
+    googleId: "",
+    location: "",
+    name: "",
+    username: "",
+    bio: "",
+    image: "",
+  });
 
   const loadPage = () => {
     axios
@@ -38,7 +46,14 @@ const EditProfile = () => {
   };
 
   const handleSubmit = () => {
-    console.log('state: ', username, name, bio);
+    // console.log(user);
+    axios.patch(`/api/user/${user.id}`, {
+      username: username.length ? username : user.username,
+      name: name.length ? name : user.name,
+      bio: bio.length ? bio : user.bio
+    })
+      .then(data => console.log(data))
+      .catch(err => console.error(err));
   }
 
   useEffect(() => {
