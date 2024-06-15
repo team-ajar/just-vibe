@@ -7,19 +7,14 @@ import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import { PrismaClient } from "@prisma/client";
 import router from "./routers";
-// let session = require('express-session');
-// session = session();
 
 dotenv.config();
 
 const prisma = new PrismaClient();
 
 const app = express();
-
 const DIST_PATH = path.resolve(__dirname, "../dist");
-
 const PORT = 3000;
-
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID as string;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET as string;
 
@@ -28,16 +23,6 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-
-interface User {
-  id: number;
-  googleId: string;
-  location: string;
-  name: string;
-  username: string;
-  bio: string;
-  image: string;
-}
 
 passport.use(
   new GoogleStrategy(
@@ -90,9 +75,7 @@ passport.deserializeUser((id: any, done: any) => {
 });
 
 app.use(bodyParser.json());
-
 app.use(express.static(DIST_PATH));
-
 app.use("/api", router);
 
 app.get("/", (req: Request, res: Response) => {

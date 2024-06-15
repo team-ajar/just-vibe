@@ -21,7 +21,6 @@ const prisma = new PrismaClient();
 
 const profileController = {
   readUser: (req: Request<{ user: User }>, res: Response) => {
-    // console.log(req.user);
 
     if (req.user && req.user.id) {
       prisma.user

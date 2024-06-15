@@ -22,7 +22,7 @@ model User {
   albumsOfTheDay AlbumOfTheDay[]
   TopAlbums      TopAlbums[]
   TopArtists     TopArtists[]
-  Post           Post[]
+  posts          Post[]
 }
 
 model Review {
@@ -33,6 +33,7 @@ model Review {
   albumId Int
   user    User   @relation(fields: [userId], references: [id])
   Album   Album  @relation(fields: [albumId], references: [id])
+  posts   Post[]
 
   @@index([albumId], map: "Review_albumId_fkey")
   @@index([userId], map: "Review_userId_fkey")
@@ -46,6 +47,7 @@ model Album {
   reviews        Review[]
   albumsOfTheDay AlbumOfTheDay[]
   TopAlbums      TopAlbums[]
+  posts          Post[]
 }
 
 model Artist {
@@ -111,8 +113,11 @@ model Post {
   userId    Int
   user      User      @relation(fields: [userId], references: [id])
   date      DateTime  @default(now())
-  postType  String
-  musicPost MusicPost
+  postType  PostType
+  albumId   Int?
+  reviewId  Int?
+  album     Album?    @relation(fields: [albumId], references: [id])
+  review    Review?   @relation(fields: [reviewId], references: [id])
 }
 
 enum Entity {
@@ -121,7 +126,7 @@ enum Entity {
   SONG
 }
 
-enum MusicPost {
+enum PostType {
   REVIEW
   ALBUMOFTHEDAY
 }
