@@ -82,7 +82,7 @@ const Feed = () => {
               {review.Album ? (
                 <>
                   <h3>{review.Album.albumName} by {review.Album.artistName}</h3>
-                  <img src={review.Album.image} alt={review.Album.albumName} />=
+                  <img src={review.Album.image} alt={review.Album.albumName} />
                 </>
               ) : (
                 <p>No album information available</p>
