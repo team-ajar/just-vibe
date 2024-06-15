@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { TopAlbums } from "@prisma/client";
+import { TopAlbumsComponent } from "./TopAlbums";
+import { TopArtistsComponent } from "./TopArtists";
 
 interface User {
   id: number;
@@ -8,6 +11,24 @@ interface User {
   name: string;
   username: string;
   bio: string;
+  image: string;
+}
+
+//define the structure of a Album Object
+
+interface Album {
+  id: number;
+  albumName: string;
+  artistName: string;
+  image: string;
+}
+
+//define the structure of a Album Object
+
+interface Album {
+  id: number;
+  albumName: string;
+  artistName: string;
   image: string;
 }
 
@@ -103,6 +124,8 @@ const Profile = () => {
         <button onClick={() => editBio()}>Edit Bio</button>
         <button onClick={() => deleteProfile()}>Delete profile</button>
       </div>
+      {user.id > 0 && <TopAlbumsComponent userId={user.id} />}
+      {user.id > 0 && <TopArtistsComponent userId={user.id} />}
     </div>
   );
 };

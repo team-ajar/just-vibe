@@ -30,13 +30,11 @@ const reviewsController = {
   createReview: (req: Request, res: Response) => {
     const { text, rating, albumId } = req.body;
     const { albumName, artistName, userId } = req.params;
-
     //prisma crud operation
     //use the findFirst method on the album model
     //if the album is found where the artistName and albumName
     //it creates a new review for the album
     //with provided text, and other keys it shows
-
     prisma.album.findFirst({
       where: { albumName, artistName }
     })
