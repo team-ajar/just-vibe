@@ -23,7 +23,6 @@ const followedUsers = {
         },
       })
       .then((follows: any) => {
-        console.log("follows", follows);
         const reviews = follows.flatMap(
           (follow: {
             following: {

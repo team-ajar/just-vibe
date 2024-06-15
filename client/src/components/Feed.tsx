@@ -44,7 +44,6 @@ const Feed = () => {
     axios.get(`/api/feed/reviews/${userId}`)
       .then((response: any) => {
         setReviews(response.data);
-        console.log('response data:', response.data);
       })
       .catch(err => console.error(err));
   };
@@ -59,7 +58,6 @@ const Feed = () => {
 
   useEffect(() => {
     if (user.id !== 0) {
-      console.log('User ID after load:', user.id);
       loadReviews(user.id);
     }
   }, [user]);
