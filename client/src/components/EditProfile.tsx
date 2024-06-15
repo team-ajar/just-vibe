@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 interface User {
   id: number;
@@ -46,7 +47,6 @@ const EditProfile = () => {
   };
 
   const handleSubmit = () => {
-    // console.log(user);
     axios.patch(`/api/user/${user.id}`, {
       username: username.length ? username : user.username,
       name: name.length ? name : user.name,
@@ -83,7 +83,7 @@ const EditProfile = () => {
           onChange={(e) => handleChange(e.target.value, "bio")}
         ></textarea>
       </form>
-      <button onClick={handleSubmit}>Submit</button>
+      <Link to="/user" onClick={handleSubmit}>Submit</Link>
     </div>
   );
 };
