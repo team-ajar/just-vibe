@@ -3,15 +3,14 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 export const TopArtistsComponent = ({ userId }: { userId: number }) => {
- //replace the TopAlbums.tsx now, it's the same but we will only show the name instead of the pictures
-  const [artists, setArtists] = useState<Artist[]>([]); 
+  const [artists, setArtists] = useState<Artist[]>([]);
 
-  
   const [topArtists, setTopArtists] = useState<(TopArtists | undefined)[]>([
     undefined,
     undefined,
     undefined,
   ]);
+
   const getArtists = () => {
     axios.get(`/api/top/artists/${userId}`).then((response) => {
       setArtists(response.data.artists);
@@ -53,7 +52,7 @@ export const TopArtistsComponent = ({ userId }: { userId: number }) => {
     if (artistId === undefined) return;
     axios
       .delete(`/api/top/artists/${artistId}/${position}/${userId}`)
-      .then((response) => {
+      .then(() => {
         setTopArtists((prev) => {
           return prev.map((topArtist) => {
             if (topArtist?.artistId === artistId) {
@@ -78,13 +77,14 @@ export const TopArtistsComponent = ({ userId }: { userId: number }) => {
   let topArtist3 = artists.find(
     (artist) => artist.id === topArtists[2]?.artistId
   );
+
   return (
     <div>
       <h2>Top 3 Artists</h2>
       <div style={{ display: "flex", gap: "10px" }}>
         <div>
           <h3>
-           {topArtist1?.name || "Select Artist"}
+          {topArtist1?.name || "Select Artist"}
           </h3>
           <label>#1</label>
           <select
@@ -98,7 +98,6 @@ export const TopArtistsComponent = ({ userId }: { userId: number }) => {
               );
             }}
           >
-            {/* if this top artist spot doesn't exist, show select album. if it does exist, dont show that option */}
             {!topArtist1 && <option value="">Select Artist</option>}
             {artists.map((artist) => (
               <option key={artist.id} value={artist.id}>
@@ -116,7 +115,7 @@ export const TopArtistsComponent = ({ userId }: { userId: number }) => {
 
         <div>
         <h3>
-           {topArtist2?.name || "Select Artist"}
+          {topArtist2?.name || "Select Artist"}
           </h3>
           <label>#2</label>
           <select
@@ -147,7 +146,7 @@ export const TopArtistsComponent = ({ userId }: { userId: number }) => {
 
         <div>
         <h3>
-           {topArtist3?.name || "Select Artist"}
+          {topArtist3?.name || "Select Artist"}
           </h3>
           <label>#3</label>
           <select

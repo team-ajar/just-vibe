@@ -1,4 +1,3 @@
-import { Request, Response } from "express";
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -52,8 +51,6 @@ const EditProfile = () => {
       name: name.length ? name : user.name,
       bio: bio.length ? bio : user.bio
     })
-      .then(data => console.log(data))
-      .catch(err => console.error(err));
   }
 
   useEffect(() => {

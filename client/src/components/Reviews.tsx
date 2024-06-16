@@ -78,7 +78,7 @@ const Reviews = () => {
     if (!state) return;
     showReviews();
     return () => {
-       setReviews([])
+      setReviews([])
     }
   }, [state]);
 
