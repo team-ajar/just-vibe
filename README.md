@@ -99,4 +99,4 @@ sudo service mysql start
 
 ### Authors & acknowledgements:
 
-`Operation Spark instructors` & 'Rodman L. Arina N. Allyn M.'
+'Rodman L. Arina N. Allyn M.'

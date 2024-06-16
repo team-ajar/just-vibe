@@ -4,7 +4,6 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 const reviewsController = {
-// const LAST_FM_API_KEY = process.env.LAST_FM_API_KEY;
   getReviews: (req: Request, res: Response) => {
 
     const { albumName, artistName } = req.params;
@@ -77,11 +76,11 @@ const reviewsController = {
         id: Number(id),
       }
     })
-    .then((response: any) => {
+    .then(() => {
       res.sendStatus(204)
     })
     .catch((error: any) => {
-      console.log('Error deleting review:', error)
+      console.error('Error deleting review:', error)
       res.sendStatus(500)
     })
   },
@@ -102,7 +101,7 @@ const reviewsController = {
       res.status(200).json(response)
     })
     .catch((error: any) => {
-      console.log('Error initiated while updating:', error)
+      console.error('Error initiated while updating:', error)
       res.sendStatus(500)
     })
   }

@@ -2,16 +2,6 @@ import React, {useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-interface User {
-  id: number;
-  googleId: string;
-  location: string;
-  name: string;
-  username: string;
-  bio: string;
-  image: string;
-}
-
 const SearchUsers = () => {
   const { query } = useParams();
   const [searchResults, setSearchResults] = useState([]);

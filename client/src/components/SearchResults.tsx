@@ -29,12 +29,12 @@ const SearchResults = () => {
   const [albumOfTheDaySet, setAlbumOfTheDaySet] = useState<boolean>(false);
 
   const saveAlbum  = (album: any) => {
-     axios.post('/api/music/album', {
-       albumName: album.name,
+    axios.post('/api/music/album', {
+      albumName: album.name,
       artistName: album.artist,
       image: album.image[3]['#text'],
-     })
-       .catch(err => console.error(err));
+    })
+      .catch(err => console.error(err));
   }
 
   const saveArtist = (artist: Artist) => {
