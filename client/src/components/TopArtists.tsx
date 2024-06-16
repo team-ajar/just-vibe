@@ -3,10 +3,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 export const TopArtistsComponent = ({ userId }: { userId: number }) => {
- //replace the TopAlbums.tsx now, it's the same but we will only show the name instead of the pictures
   const [artists, setArtists] = useState<Artist[]>([]); 
 
-  
   const [topArtists, setTopArtists] = useState<(TopArtists | undefined)[]>([
     undefined,
     undefined,
@@ -98,7 +96,6 @@ export const TopArtistsComponent = ({ userId }: { userId: number }) => {
               );
             }}
           >
-            {/* if this top artist spot doesn't exist, show select album. if it does exist, dont show that option */}
             {!topArtist1 && <option value="">Select Artist</option>}
             {artists.map((artist) => (
               <option key={artist.id} value={artist.id}>

@@ -3,16 +3,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
-  //create another useState hook that will manage all of our savedAlbums
-  //also use the typescript <[]> annotation to inform it's an array
-  /** savedAlbums is the initial value of the empty array,
-   * and setSavedAlbums is a function that will be used to update the savedAlbums array
-   */
-  const [albums, setAlbums] = useState<Album[]>([]); //Album is the interface defined above
+  const [albums, setAlbums] = useState<Album[]>([]);
 
-  /**
-   * we need a state that will set a TOP album
-   */
   const [topAlbum, setTopAlbum] = useState<(TopAlbums | undefined)[]>([
     undefined,
     undefined,
@@ -20,7 +12,6 @@ export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
   ]);
   const getAlbums = () => {
     axios.get(`/api/top/albums/${userId}`).then((response) => {
-      //invoke the setAlbums function to update the albums array in the state to the data.albums content
       setAlbums(response.data.albums);
       let topAlbum1 = response.data.topAlbums.find(
         (album: TopAlbums) => album.position === 1
@@ -41,12 +32,10 @@ export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
     position: number,
     albumId: number
   ) => {
-    //post request, at this location, we send a new albumId
     axios
       .post(`/api/top/albums/${albumId}/${position}/${userId}`, {
         newAlbumId,
       })
-      //once the content is posted to that location, we
       .then((response) => {
 
         setTopAlbum((prev) => {
@@ -60,12 +49,10 @@ export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
     position: number,
     albumId: number | undefined
   ) => {
-    //post request, at this location, we send a new albumId
 
     if (albumId === undefined) return;
     axios
       .delete(`/api/top/albums/${albumId}/${position}/${userId}`)
-      //once the content is posted to that location, we
       .then((response) => {
 
         setTopAlbum((prev) => {
@@ -106,7 +93,6 @@ export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
               showSelectedAlbum(Number(e.target.value), 1, topAlbum1?.id || 0);
             }}
           >
-            {/* if this top album spot doesn't exist, show select album. if it does exist, dont show that option */}
             {!topAlbum1 && <option value="">Select Album</option>}
             {albums.map((album) => (
               <option key={album.id} value={album.id}>

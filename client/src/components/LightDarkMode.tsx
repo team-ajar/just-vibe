@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-
-
 const LightDarkMode = () => {
 
   const [theme, setTheme] = useState('Dark Mode');
@@ -11,7 +9,6 @@ const LightDarkMode = () => {
     rootElement?.classList.toggle('dark-mode')
     setTheme(theme === "Light Mode" ? 'Dark Mode' : 'Light Mode')
   }
-
 
   return (
     <button onClick={toggleColor}>

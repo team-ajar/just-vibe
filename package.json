@@ -2,8 +2,7 @@
   "scripts": {
     "build": "webpack",
     "start": "nodemon server/server.ts",
-    "dev": "nodemon src/index.tsx",
-    "cy:open": "cypress open"
+    "dev": "nodemon src/index.tsx"
   },
   "devDependencies": {
     "@babel/core": "^7.24.6",

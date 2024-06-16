@@ -17,7 +17,6 @@ model User {
   image          String          @db.VarChar(300)
   followedBy     Follows[]       @relation("followedBy")
   following      Follows[]       @relation("following")
-  favorite       Favorite[]
   reviews        Review[]
   albumsOfTheDay AlbumOfTheDay[]
   TopAlbums      TopAlbums[]
@@ -56,16 +55,6 @@ model Artist {
   name        String       @db.VarChar(300)
   description String
   TopArtists  TopArtists[]
-}
-
-model Favorite {
-  id       Int    @id @default(autoincrement())
-  userId   Int
-  entity   Entity
-  entityId Int
-  user     User   @relation(fields: [userId], references: [id])
-
-  @@index([userId], map: "Favorite_userId_fkey")
 }
 
 model AlbumOfTheDay {
@@ -133,12 +122,6 @@ model Reaction {
 
   @@index([userId])
   @@index([postId])
-}
-
-enum Entity {
-  ALBUM
-  ARTIST
-  SONG
 }
 
 enum PostType {

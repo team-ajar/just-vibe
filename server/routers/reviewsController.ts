@@ -4,7 +4,6 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 const reviewsController = {
-// const LAST_FM_API_KEY = process.env.LAST_FM_API_KEY;
   getReviews: (req: Request, res: Response) => {
 
     const { albumName, artistName } = req.params;

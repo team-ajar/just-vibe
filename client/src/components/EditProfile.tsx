@@ -51,9 +51,7 @@ const EditProfile = () => {
       username: username.length ? username : user.username,
       name: name.length ? name : user.name,
       bio: bio.length ? bio : user.bio
-    })
-      .then(data => console.log(data))
-      .catch(err => console.error(err));
+    });
   }
 
   useEffect(() => {
