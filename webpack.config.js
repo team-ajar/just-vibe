@@ -6,16 +6,13 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 dotenv.config();
 
-// this config can be in webpack.config.js or other file with constants
 const API_URL = {
   production: JSON.stringify('prod-url'),
   development: JSON.stringify('dev-url')
 }
 
-// check environment mode
 const environment = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
-// webpack config
 module.exports = {
   mode: environment,
   entry: './client/src/index.tsx',
