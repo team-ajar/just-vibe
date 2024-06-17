@@ -79,7 +79,7 @@ app.use(express.static(DIST_PATH));
 app.use("/api", router);
 
 app.get("/", (req: Request, res: Response) => {
-  res.send(req.isAuthenticated() ? "/home" : "/");
+  res.send(req.isAuthenticated() ? "Logged in" : "Logged out");
 });
 
 app.get(
@@ -89,10 +89,10 @@ app.get(
 
 app.get(
   "/auth/google/callback",
-  passport.authenticate("google", {
-    successRedirect: "/home",
-    failureRedirect: "/",
-  }),
+  passport.authenticate("google", { failureRedirect: "/" }),
+  (req, res) => {
+    res.redirect("/");
+  }
 );
 
 app.listen(PORT, function () {
