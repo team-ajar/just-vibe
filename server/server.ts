@@ -79,7 +79,8 @@ app.use(express.static(DIST_PATH));
 app.use("/api", router);
 
 app.get("/", (req: Request, res: Response) => {
-  res.send(req.isAuthenticated() ? "Logged in" : "Logged out");
+  // res.send(req.isAuthenticated() ? "Logged in" : "Logged out");
+  req.isAuthenticated() ? res.render("/") :  res.render("/auth/google");
 });
 
 app.get(
