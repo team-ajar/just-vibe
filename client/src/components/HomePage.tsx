@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import dayjs from 'dayjs';
+import { Container, Typography, Card, CardContent, CardMedia, Button, Select, MenuItem, Box } from '@mui/material';
 
 const HomePage = () => {
   const [albumOfTheDay, setAlbumOfTheDay] = useState<any>(null);
@@ -71,35 +72,50 @@ const HomePage = () => {
   };
 
   return (
-    <div className="home-page">
-      <h1>Welcome to Just Vibe!</h1>
-      <p>{today}</p>
-      <h2>Your Album of The Day</h2>
+    <Container>
+      <Typography variant="h1" gutterBottom>Welcome to Just Vibe!</Typography>
+      <Typography variant="body1">{today}</Typography>
+      <Typography variant="h2" gutterBottom>Your Album of The Day</Typography>
       {albumOfTheDay ? (
-        <div>
-          <img src={albumOfTheDay.album.image} />
-          <h3>{albumOfTheDay.album.albumName}</h3>
-          <p>{albumOfTheDay.album.artistName}</p>
-          <button onClick={() => deleteAlbumOfTheDay(albumOfTheDay.id)}>Delete</button>
-          <button onClick={() => setIsEditing(true)}>Edit</button>
-          {isEditing && (
-            <div>
-              <select onChange={(e) => setNewAlbumId(Number(e.target.value))} value={newAlbumId || ''}>
-                <option value="" disabled>Select an album</option>
-                {albums.map(album => (
-                  <option key={album.id} value={album.id}>
-                    {album.albumName} by {album.artistName}
-                  </option>
-                ))}
-              </select>
-              <button onClick={() => newAlbumId && editAlbumOfTheDay(albumOfTheDay.id, newAlbumId)}>Save</button>
-            </div>
-          )}
-        </div>
+        <Card>
+          <CardMedia
+            component="img"
+            height="140"
+            image={albumOfTheDay.album.image}
+          />
+          <CardContent>
+            <Typography variant="h3">{albumOfTheDay.album.albumName}</Typography>
+            <Typography variant="body2">{albumOfTheDay.album.artistName}</Typography>
+            <Box display="flex" justifyContent="space-between" mt={2}>
+              <Button variant="contained" color="primary" onClick={() => deleteAlbumOfTheDay(albumOfTheDay.id)}>Delete</Button>
+              <Button variant="contained" color="secondary" onClick={() => setIsEditing(true)}>Edit</Button>
+            </Box>
+            {isEditing && (
+              <Box mt={2}>
+                <Select
+                  value={newAlbumId || ''}
+                  onChange={(e) => setNewAlbumId(Number(e.target.value))}
+                  displayEmpty
+                  fullWidth
+                >
+                  <MenuItem value="" disabled>Select an album</MenuItem>
+                  {albums.map(album => (
+                    <MenuItem key={album.id} value={album.id}>
+                      {album.albumName} by {album.artistName}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <Box mt={2}>
+                  <Button variant="contained" color="primary" onClick={() => newAlbumId && editAlbumOfTheDay(albumOfTheDay.id, newAlbumId)}>Save</Button>
+                </Box>
+              </Box>
+            )}
+          </CardContent>
+        </Card>
       ) : (
-        <p>{errorMessage}</p>
+        <Typography variant="body1">{errorMessage}</Typography>
       )}
-    </div>
+    </Container>
   );
 };
 
