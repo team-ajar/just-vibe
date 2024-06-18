@@ -6,10 +6,10 @@ const theme = createTheme({
       main: '#ff4081',
     },
     secondary: {
-      main: '#000',
+      main: '#9723C9',
     },
     background: {
-      default: '#fff',
+      default: '#FFF',
     },
   },
   typography: {
@@ -29,6 +29,20 @@ const theme = createTheme({
     h3: {
       fontSize: '1.5rem',
       fontWeight: 700,
+      textTransform: 'uppercase',
+      letterSpacing: '2px',
+    },
+    h5: {
+      fontSize: '1.5rem',
+      fontWeight: 700,
+      fontFamily: 'Arial, sans-serif',
+      textTransform: 'uppercase',
+      letterSpacing: '2px',
+    },
+    h6: {
+      fontSize: '1.25rem',
+      fontWeight: 700,
+      fontFamily: 'Arial, sans-serif',
       textTransform: 'uppercase',
       letterSpacing: '2px',
     },
