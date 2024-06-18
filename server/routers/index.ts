@@ -33,8 +33,8 @@ router.route('/album-of-the-day').get(albumOfTheDayController.getAlbumOfTheDay);
 router.route('/album-of-the-day/:id').put(albumOfTheDayController.editAlbumOfTheDay);
 router.route('/album-of-the-day/:id').delete(albumOfTheDayController.deleteAlbumOfTheDay);
 
-router.route('/music/artist').post(musicController.saveArtist);
-router.route('/music/album').post(musicController.saveAlbum);
+router.route('/music/artist/:userId').post(musicController.saveArtist);
+router.route('/music/album/:userId').post(musicController.saveAlbum);
 router.route('/music/albums').get(musicController.readAlbums);
 
 router.route('/user').get(profileController.readUser);
