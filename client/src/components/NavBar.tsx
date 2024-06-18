@@ -79,6 +79,7 @@ const NavBar = () => {
               aria-label="search"
               component={Link}
               to={`/search-results/${searchQuery}`}
+              onClick={() => setSearchQuery('')}
             >
               <SearchIcon />
             </IconButton>
