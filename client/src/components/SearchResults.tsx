@@ -27,9 +27,19 @@ const SearchResults = () => {
   const [searchResults, setSearchResults] = useState<SearchResultsData>({ artists: [], albums: [] });
 
   const [albumOfTheDaySet, setAlbumOfTheDaySet] = useState<boolean>(false);
+  const [user, setUser] = useState({id: 0, googleId: '', location: '', name: '', username: '' });
+
+
+  const loadUser = () => {
+    axios.get('/api/user')
+      .then(({ data }: any) => {
+        setUser(data);
+      })
+      .catch(err => console.error(err));
+  };
 
   const saveAlbum  = (album: any) => {
-    axios.post('/api/music/album', {
+    axios.post(`/api/music/album/${user.id}`, {
       albumName: album.name,
       artistName: album.artist,
       image: album.image[3]['#text'],
@@ -38,7 +48,7 @@ const SearchResults = () => {
   }
 
   const saveArtist = (artist: Artist) => {
-    axios.post('/api/music/artist', {
+    axios.post(`/api/music/artist/${user.id}`, {
       artistName: artist.name
     })
       .catch(err => console.error(err));
@@ -72,6 +82,7 @@ const SearchResults = () => {
   };
 
   useEffect(() => {
+    loadUser();
     fetch(`/api/search/${query}`)
       .then(response => response.json())
       .then((data) => {

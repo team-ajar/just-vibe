@@ -23,6 +23,8 @@ model User {
   TopArtists     TopArtists[]
   posts          Post[]
   reactions      Reaction[]
+  artists        Artist[]
+  albums         Album[]
 }
 
 model Review {
@@ -44,6 +46,8 @@ model Album {
   albumName      String
   artistName     String
   image          String          @db.VarChar(300)
+  userId         Int
+  user           User            @relation(fields: [userId], references: [id])
   reviews        Review[]
   albumsOfTheDay AlbumOfTheDay[]
   TopAlbums      TopAlbums[]
@@ -51,10 +55,11 @@ model Album {
 }
 
 model Artist {
-  id          Int          @id @default(autoincrement())
-  name        String       @db.VarChar(300)
-  description String
-  TopArtists  TopArtists[]
+  id         Int          @id @default(autoincrement())
+  name       String       @db.VarChar(300)
+  userId     Int
+  user       User         @relation(fields: [userId], references: [id])
+  TopArtists TopArtists[]
 }
 
 model AlbumOfTheDay {
@@ -99,15 +104,15 @@ model Follows {
 }
 
 model Post {
-  id        Int       @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   userId    Int
-  user      User      @relation(fields: [userId], references: [id])
-  date      DateTime  @default(now())
+  user      User       @relation(fields: [userId], references: [id])
+  date      DateTime   @default(now())
   postType  PostType
   albumId   Int?
   reviewId  Int?
-  album     Album?    @relation(fields: [albumId], references: [id])
-  review    Review?   @relation(fields: [reviewId], references: [id])
+  album     Album?     @relation(fields: [albumId], references: [id])
+  review    Review?    @relation(fields: [reviewId], references: [id])
   reactions Reaction[]
 }
 
