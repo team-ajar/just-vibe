@@ -62,7 +62,7 @@ const Profile = () => {
         <h3>@{user.username}</h3>
         <h4>{user.name}</h4>
         <p>{user.bio ? user.bio : "Add a bio"}</p>
-        <Link to={`/user/edit/${user.id}`}>Edit Profile</Link>
+        <Link to={`/profile/edit/${user.id}`}>Edit Profile</Link>
         <button onClick={() => deleteProfile()}>Delete profile</button>
       </div>
       {user.id > 0 && <TopAlbumsComponent userId={user.id} />}
