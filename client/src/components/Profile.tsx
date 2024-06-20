@@ -63,8 +63,8 @@ const Profile = () => {
           <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
             <Avatar src={user.image} sx={{ width: 120, height: 120, mb: 2 }} />
             <Typography variant="h3" sx={{ mb: 1 }}>@{user.username}</Typography>
-            <Typography variant="h4" sx={{ mb: 2 }}>{user.name}</Typography>
-            <Typography variant="body1" sx={{ mb: 3 }}>{user.bio ? user.bio : "Add a bio"}</Typography>
+            <Typography variant="h4" sx={{ mb: 1 }}>{user.name}</Typography>
+            <Typography variant="body1" sx={{ mb: 2 }}>{user.bio ? user.bio : "Add a bio"}</Typography>
             <Box sx={{ display: "flex", gap: 2 }}>
               <Button variant="contained" component={Link} to={`/profile/edit/${user.id}`}>
                 Edit Profile
