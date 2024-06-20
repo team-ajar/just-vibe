@@ -95,6 +95,14 @@ app.get(
   }
 );
 
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../dist/index.html"), function (err) {
+    if (err) {
+      res.status(500).send(err);
+    }
+  });
+});
+  
 app.get("/home", (req, res) => {
   if (req.isAuthenticated()) {
     res.sendFile(path.join(DIST_PATH, "index.html"));
