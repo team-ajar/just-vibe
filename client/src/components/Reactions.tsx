@@ -9,7 +9,7 @@ interface Props {
 const Reactions = ({ userId, postId }: Props) => {
   const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const emojis = ['❤️', '🤟', '‼️', '😍', '🚮'];
+  const emojis = ['❤️', '🤟', '💃', '😍', '🚮'];
 
   const getUserReaction = () => {
     axios.get(`/api/reactions/${userId}/${postId}`)
