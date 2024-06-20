@@ -1,20 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { IconButton } from "@mui/material";
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from '@mui/icons-material/LightMode';
 
 const LightDarkMode = () => {
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
-  const [theme, setTheme] = useState('Dark Mode');
+  useEffect(() => {
+    const rootElement = document.getElementById("root");
+    const isDark = rootElement?.classList.toggle('dark-mode');
+    setIsDarkMode(isDark || false);
+  }, []);
 
   const toggleColor = () => {
     const rootElement = document.getElementById("root");
-    rootElement?.classList.toggle('dark-mode')
-    setTheme(theme === "Light Mode" ? 'Dark Mode' : 'Light Mode')
-  }
+    rootElement?.classList.toggle('dark-mode');
+    setIsDarkMode(!isDarkMode);
+  };
 
   return (
-    <button onClick={toggleColor}>
-      Toggle {theme}
-    </button>
-  )
-}
+    <IconButton onClick={toggleColor} color="inherit">
+      {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
+    </IconButton>
+  );
+};
 
 export default LightDarkMode;
