@@ -78,7 +78,7 @@ const NavBar = () => {
             <Typography
               variant="h6"
               component={Link}
-              to="/"
+              to="/home"
               sx={{
                 mr: 2,
                 ...theme.typography.h6,

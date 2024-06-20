@@ -79,8 +79,7 @@ app.use(express.static(DIST_PATH));
 app.use("/api", router);
 
 app.get("/", (req: Request, res: Response) => {
-  // res.send(req.isAuthenticated() ? "Logged in" : "Logged out");
-  req.isAuthenticated() ? res.render("/") :  res.render("/auth/google");
+  res.sendFile(path.join(DIST_PATH, "index.html"));
 });
 
 app.get(
@@ -92,9 +91,17 @@ app.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/" }),
   (req, res) => {
-    res.redirect("/");
+    res.redirect("/home");
   }
 );
+
+app.get("/home", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.sendFile(path.join(DIST_PATH, "index.html"));
+  } else {
+    res.redirect("/");
+  }
+});
 
 app.listen(PORT, function () {
   console.log(`Listening on http://localhost:${PORT}`);
