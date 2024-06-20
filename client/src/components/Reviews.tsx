@@ -11,6 +11,8 @@ import {
   Select,
   MenuItem,
   Box,
+  FormControl,
+  TextareaAutosize,
 } from "@mui/material";
 
 interface Review {
@@ -118,94 +120,114 @@ const Reviews = () => {
   }, []);
 
   return (
-    <Container>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div style={{ flex: 1 }}>
-          <Typography variant="h1">Reviews</Typography>
-          <Typography
-            style={{ marginBottom: '10px', fontSize: '2rem', fontWeight: 'bold' }}
-          >
-            {state.name}
-          </Typography>
+    <Container p={2} mt={3}>
+      <Box sx={{ display: "flex", flexDirection: "column" }} mt={2}>
+        <Typography variant="h1">Reviews</Typography>
+        <Typography
+          sx={{ marginBottom: "10px", fontSize: "2rem", fontWeight: "bold" }}
+        >
+          {state.name}
+        </Typography>
+        <Box sx={{ flex: 1, display: "flex", gap: {
+          xs: "10px",
+          sm: "90px"
+        }, alignItems: "center", flexDirection: { xs: "column", sm: "row" }, mr: {
+          xs: 1.5
+        }}} >
           <img
             src={state.image[3]["#text"]}
             alt={`${state.name} album cover`}
             style={{
               maxWidth: "100%",
               height: "auto",
-              width: '500px', // Adjust the width to make the image bigger
+              width: "500px", // Adjust the width to make the image bigger
               boxShadow: "10px 10px 0px #000",
               border: "2px solid #000",
             }}
           />
-        </div>
-        <div style={{ flex: 1, marginLeft: '20px' }}>
-          <Typography
-            variant="h5"
-            style={{
-              marginTop: "20px",
-              marginBottom: "10px",
-              fontWeight: "bold",
-            }}
-          >
-            What did you think of the album?
-          </Typography>
-          <textarea
-            maxLength={18800}
-            placeholder="Write review here"
-            rows={6}
-            value={review.text}
-            onChange={(e) => setReview({ ...review, text: e.target.value })}
-            style={{
-              width: '100%',
-              padding: '10px',
-              border: '2px solid #000',
-              boxShadow: '5px 5px 0px #000',
-              borderRadius: '0px',
-              marginBottom: '20px',
-              fontSize: '1rem',
-              fontFamily: 'Arial, sans-serif',
-            }}
-          ></textarea>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={createReview}
-            sx={{
-              borderRadius: "0px",
-              textTransform: "none",
-              boxShadow: "5px 5px 0px #000",
-              "&:hover": {
-                boxShadow: "7px 7px 0px #000",
-              },
-              ml: 1,
-            }}
-          >
-            Submit Review
-          </Button>
+          <FormControl>
+            <Typography
+              variant="h5"
+              style={{
+                marginTop: "20px",
+                marginBottom: "10px",
+                fontWeight: "bold",
+              }}
+            >
+              What did you think of the album?
+            </Typography>
+            <TextareaAutosize
+              maxLength={18800}
+              placeholder="Write review here"
+              minRows={6}
+              value={review.text}
+              onChange={(e) => setReview({ ...review, text: e.target.value })}
+              style={{
+                width: "100%",
+                padding: "10px",
+                border: "2px solid #000",
+                boxShadow: "5px 5px 0px #000",
+                borderRadius: "0px",
+                marginBottom: "20px",
+                fontSize: "1rem",
+                fontFamily: "Arial, sans-serif",
+              }}
+            ></TextareaAutosize>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={createReview}
+              sx={{
+                borderRadius: "0px",
+                textTransform: "none",
+                boxShadow: "5px 5px 0px #000",
+                "&:hover": {
+                  boxShadow: "7px 7px 0px #000",
+                },
+                ml: 1,
+              }}
+            >
+              Submit Review
+            </Button>
+          </FormControl>
           {review.id && (
-            <Button 
+            <Button
               variant="outlined"
               color="secondary"
               onClick={() => updateReview(review.id)}
-              sx={{ marginLeft: '10px' }}
+              sx={{ marginLeft: "10px" }}
             >
               Update Review
             </Button>
           )}
-        </div>
-      </div>
+        </Box>
+      </Box>
       <div>
         <h2>All Reviews</h2>
         {reviews.length ? (
           reviews.map((rev) => (
-            <Card key={rev.id} sx={{ marginBottom: '20px', boxShadow: '5px 5px 0px #000' }}>
+            <Card
+              key={rev.id}
+              sx={{ marginBottom: "20px", boxShadow: "5px 5px 0px #000" }}
+            >
               <CardContent>
-                <Typography variant="body1" style={{ fontWeight: 'bold' }}>{rev.text}</Typography>
-                <Button variant="contained" color="primary" onClick={() => deleteReview(rev.id)} sx={{ marginTop: '10px' }}>
+                <Typography variant="body1" style={{ fontWeight: "bold" }}>
+                  {rev.text}
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => deleteReview(rev.id)}
+                  sx={{ marginTop: "10px" }}
+                >
                   Delete
                 </Button>
-                <Button variant="contained" color="secondary" onClick={() => setReview(rev)} sx={{ marginTop: '10px', marginLeft: '10px' }}>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => setReview(rev)}
+                  sx={{ marginTop: "10px", marginLeft: "10px" }}
+                >
                   Update
                 </Button>
               </CardContent>
