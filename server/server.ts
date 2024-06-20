@@ -112,6 +112,10 @@ app.get("/home", isAuthenticated, (req, res) => {
   res.sendFile(path.join(DIST_PATH, "index.html"));
 });
 
+app.get("*", isAuthenticated, (req, res) => {
+  res.sendFile(path.join(DIST_PATH, "index.html"));
+});
+
 app.listen(PORT, function () {
   console.log(`Listening on http://localhost:${PORT}`);
 });
