@@ -10,7 +10,12 @@ import {
   Button,
   Toolbar,
   InputBase,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
 } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
 import logo from "./justvibelogo.png";
@@ -41,64 +46,111 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const NavBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const drawer = (
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
+      <Typography variant="h6" sx={{ my: 2 }}>
+        Just Vibe
+      </Typography>
+      <List>
+        {pages.map((page) => (
+          <ListItem key={page} component={Link} to={`/${page.toLowerCase()}`} button>
+            <ListItemText primary={page} />
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#CB6CE6" }}>
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Box sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}>
-            <img src={logo} alt="Just Vibe Logo" height="100" />
-          </Box>
-          <Typography
-            variant="h6"
-            component={Link}
-            to="/"
-            sx={{
-              mr: 2,
-              ...theme.typography.h6,
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            Just Vibe
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                color="primary"
-                variant="contained"
-                key={page}
-                sx={{ color: "white", display: "block", m: 1 }}
-                component={Link}
-                to={`/${page.toLowerCase()}`}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <IconButton
-              type="submit"
-              aria-label="search"
+    <Box sx={{ display: "flex" }}>
+      <AppBar position="static" sx={{ backgroundColor: "#CB6CE6" }}>
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <Box sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}>
+              <img src={logo} alt="Just Vibe Logo" height="100" />
+            </Box>
+            <Typography
+              variant="h6"
               component={Link}
-              to={`/search-results/${searchQuery}`}
-              onClick={() => setSearchQuery("")}
+              to="/"
+              sx={{
+                mr: 2,
+                ...theme.typography.h6,
+                color: "inherit",
+                textDecoration: "none",
+              }}
             >
-              <SearchIcon />
-            </IconButton>
-          </Search>
-          <LightDarkMode />
-        </Toolbar>
-      </Container>
-    </AppBar>
+              Just Vibe
+            </Typography>
+            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+              {pages.map((page) => (
+                <Button
+                  color="primary"
+                  variant="contained"
+                  key={page}
+                  sx={{ color: "white", display: "block", m: 1 }}
+                  component={Link}
+                  to={`/${page.toLowerCase()}`}
+                >
+                  {page}
+                </Button>
+              ))}
+            </Box>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <IconButton
+                type="submit"
+                aria-label="search"
+                component={Link}
+                to={`/search-results/${searchQuery}`}
+                onClick={() => setSearchQuery("")}
+              >
+                <SearchIcon />
+              </IconButton>
+            </Search>
+            <LightDarkMode />
+            <Box>
+              <IconButton
+                color="inherit"
+                edge="start"
+                onClick={handleDrawerToggle}
+              >
+                <MenuIcon />
+              </IconButton>
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+      <Box component="nav">
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true,
+          }}
+          sx={{
+            display: { xs: "block", md: "none" },
+            "& .MuiDrawer-paper": { boxSizing: "border-box", width: 240 },
+          }}
+        >
+          {drawer}
+        </Drawer>
+      </Box>
+    </Box>
   );
 };
 
