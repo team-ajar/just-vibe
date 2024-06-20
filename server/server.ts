@@ -96,6 +96,14 @@ app.get(
   }
 );
 
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../dist/index.html"), function (err) {
+    if (err) {
+      res.status(500).send(err);
+    }
+  });
+});
+
 app.listen(PORT, function () {
   console.log(`Listening on http://localhost:${PORT}`);
 });
