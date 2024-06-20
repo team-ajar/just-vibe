@@ -8,6 +8,7 @@ import Profile from './Profile';
 import Feed from './Feed';
 import SearchUsers from './SearchUserResults';
 import EditProfile from './EditProfile';
+import Login from './Login';
 
 const App = () => {
 
@@ -15,7 +16,8 @@ const App = () => {
     <div>
       <NavBar />
       <Routes>
-        <Route path='/' element={<HomePage />} />
+        <Route path='/' element={<Login />} />
+        <Route path='/home' element={<HomePage />} />
         <Route path='/reviews' element={<Reviews />} />
         <Route path='/search-results/:query' element={<SearchResults />} />
         <Route path='/profile' element={<Profile />} />
