@@ -3,6 +3,7 @@ import axios from "axios";
 import { TopAlbumsComponent } from "./TopAlbums";
 import { TopArtistsComponent } from "./TopArtists";
 import { Link } from 'react-router-dom';
+import { Container, Typography, Card, Box, Button, Avatar } from "@mui/material";
 
 interface User {
   id: number;
@@ -55,19 +56,29 @@ const Profile = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Profile</h1>
-      <div>
-        <img src={user.image} />
-        <h3>@{user.username}</h3>
-        <h4>{user.name}</h4>
-        <p>{user.bio ? user.bio : "Add a bio"}</p>
-        <Link to={`/profile/edit/${user.id}`}>Edit Profile</Link>
-        <button onClick={() => deleteProfile()}>Delete profile</button>
-      </div>
-      {user.id > 0 && <TopAlbumsComponent userId={user.id} />}
-      {user.id > 0 && <TopArtistsComponent userId={user.id} />}
-    </div>
+    <Container sx={{ p: 2, mt: 3 }}>
+      <Box sx={{ alignItems: "left" }}>
+        <Typography variant="h1" sx={{ mb: 2 }}>Profile</Typography>
+        <Card sx={{ maxWidth: 600, p: 3, boxShadow: "10px 10px 0px #000", border: "2px solid #000" }}>
+          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <Avatar src={user.image} sx={{ width: 120, height: 120, mb: 2 }} />
+            <Typography variant="h3" sx={{ mb: 1 }}>@{user.username}</Typography>
+            <Typography variant="h4" sx={{ mb: 2 }}>{user.name}</Typography>
+            <Typography variant="body1" sx={{ mb: 3 }}>{user.bio ? user.bio : "Add a bio"}</Typography>
+            <Box sx={{ display: "flex", gap: 2 }}>
+              <Button variant="contained" component={Link} to={`/profile/edit/${user.id}`}>
+                Edit Profile
+              </Button>
+              <Button variant="contained" color="secondary" onClick={deleteProfile}>
+                Delete Profile
+              </Button>
+            </Box>
+          </Box>
+        </Card>
+        {user.id > 0 && <TopAlbumsComponent userId={user.id} />}
+        {user.id > 0 && <TopArtistsComponent userId={user.id} />}
+      </Box>
+    </Container>
   );
 };
 

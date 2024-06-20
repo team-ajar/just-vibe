@@ -1,6 +1,7 @@
 import { Album, TopAlbums } from "@prisma/client";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Box, Card, CardContent, Typography, Select, MenuItem, Button } from "@mui/material";
 
 export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
   const [albums, setAlbums] = useState<Album[]>([]);
@@ -74,94 +75,40 @@ export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
   let topAlbum3 = albums.find((album) => album.id === topAlbum[2]?.albumId);
 
   return (
-    <div>
-      <h2>Top 3 Albums</h2>
-      <div style={{ display: "flex", gap: "10px" }}>
-        <div>
-          <img
-            src={topAlbum1?.image || defaultImage}
-            width="300"
-            height="300"
-          />
-          <label>#1</label>
-          <select
-            value={topAlbum1?.id || ""}
-            onChange={(e) => {
-              if (e.target.value === "") return;
-              showSelectedAlbum(Number(e.target.value), 1, topAlbum1?.id || 0);
-            }}
-          >
-            {!topAlbum1 && <option value="">Select Album</option>}
-            {albums.map((album) => (
-              <option key={album.id} value={album.id}>
-                {album.albumName}
-              </option>
-            ))}
-          </select>
-          <button
-            onClick={() => deleteSelectedAlbum(1, topAlbum1?.id)}
-            type="button"
-          >
-            Delete
-          </button>
-        </div>
-        <div>
-          <img
-            src={topAlbum2?.image || defaultImage}
-            width="300"
-            height="300"
-          />
-          <label>#2</label>
-          <select
-            value={topAlbum2?.id || ""}
-            onChange={(e) => {
-              if (e.target.value === "") return;
-              showSelectedAlbum(Number(e.target.value), 2, topAlbum2?.id || 0);
-            }}
-          >
-            {!topAlbum2 && <option value="">Select Album</option>}
-            {albums.map((album) => (
-              <option key={album.id} value={album.id}>
-                {album.albumName}
-              </option>
-            ))}
-          </select>
-          <button
-            onClick={() => deleteSelectedAlbum(2, topAlbum2?.id)}
-            type="button"
-          >
-            Delete
-          </button>
-        </div>
-        <div>
-          <img
-            src={topAlbum3?.image || defaultImage}
-            width="300"
-            height="300"
-          />
-          <label>#3</label>
-          <select
-            value={topAlbum3?.id || ""}
-            onChange={(e) => {
-              if (e.target.value === "") return;
-              showSelectedAlbum(Number(e.target.value), 3, topAlbum3?.id || 0);
-            }}
-          >
-            {!topAlbum3 && <option value="">Select Album</option>}
-            {albums.map((album) => (
-              <option key={album.id} value={album.id}>
-                {album.albumName}
-              </option>
-            ))}
-          </select>
-          <button
-            onClick={() => deleteSelectedAlbum(3, topAlbum3?.id)}
-            type="button"
-          >
-            Delete
-          </button>
-        </div>
-      </div>
-    </div>
+    <Box >
+      <Typography variant="h2">Top 3 Albums</Typography>
+      <Box sx={{ display: "flex", gap: 3, flexWrap: "wrap" }}>
+        {[topAlbum1, topAlbum2, topAlbum3].map((topAlbum, index) => (
+          <Card key={index} sx={{ width: 300, boxShadow: "5px 5px 0px #000", border: "2px solid #000" }}>
+            <CardContent sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <img src={topAlbum?.image || defaultImage} width="300" height="300" />
+              <Typography variant="h3" sx={{ mt: 1 }}>#{index + 1}</Typography>
+              <Select
+                value={topAlbum?.id || ""}
+                onChange={(e) => showSelectedAlbum(Number(e.target.value), index + 1, topAlbum?.id || 0)}
+                displayEmpty
+                fullWidth
+                sx={{ mt: 1 }}
+              >
+                <MenuItem value="">Select Album</MenuItem>
+                {albums.map((album) => (
+                  <MenuItem key={album.id} value={album.id}>
+                    {album.albumName}
+                  </MenuItem>
+                ))}
+              </Select>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => deleteSelectedAlbum(index + 1, topAlbum?.id)}
+                sx={{ mt: 2 }}
+              >
+                Delete
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </Box>
+    </Box>
   );
 };
