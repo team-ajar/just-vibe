@@ -148,8 +148,8 @@ const SearchResults = () => {
         Albums
       </Typography>
       <ul>
-        {searchResults.albums.map((album: Album) => (
-          <li key={album.name}>
+        {searchResults.albums.map((album: Album, i: any) => (
+          <li key={i}>
             <Card sx={{ display: "flex", mb: 2 }}>
               <CardMedia
                 component="img"

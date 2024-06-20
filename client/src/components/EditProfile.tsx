@@ -80,7 +80,7 @@ const EditProfile = () => {
           onChange={(e) => handleChange(e.target.value, "bio")}
         ></textarea>
       </form>
-      <Link to="/user" onClick={handleSubmit}>Submit</Link>
+      <Link to="/profile" onClick={handleSubmit}>Submit</Link>
     </div>
   );
 };

@@ -71,7 +71,6 @@ const NavBar = () => {
                 sx={{ color: "white", display: "block", m: 1 }}
                 component={Link}
                 to={`/${page.toLowerCase()}`}
-                
               >
                 {page}
               </Button>

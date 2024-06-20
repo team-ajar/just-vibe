@@ -2,6 +2,9 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Reactions from "./Reactions";
+import { Container, Typography, Card, CardContent, CardMedia, Button, Box, InputBase, Grid } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import { styled, alpha } from "@mui/material/styles";
 
 interface User {
   id: number;
@@ -27,6 +30,27 @@ interface Review {
   userId: number;
   albumId: number;
 }
+
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  backgroundColor: alpha(theme.palette.common.black, 0.10),
+  marginRight: theme.spacing(2),
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  display: "flex",
+  alignItems: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    paddingLeft: theme.spacing(6),
+  },
+}));
 
 const Feed = () => {
   const [query, setQuery] = useState('');
@@ -64,38 +88,60 @@ const Feed = () => {
   }, [user]);
 
   return (
-    <div>
-      <h1>Feed</h1>
-      <div>
-        <input
-        type='text'
-        placeholder='Search for a user by username'
-        onChange={(e) => handleChange(e.target.value)}
-        />
-        <Link to={`/search/users/${query}`}>Search Users</Link>
-      </div>
-      <div>
-        <h2>Reviews From People You Follow</h2>
-        {reviews.length > 0 ? (
-          reviews.map(review => (
-            <div key={review.id}>
-              {review.Album ? (
-                <>
-                  <h3>{review.Album.albumName} by {review.Album.artistName}</h3>
-                  <img src={review.Album.image} />
-                </>
-              ) : (
-                <p>No album information available</p>
-              )}
-              <p>@{review.username}: {review.text}</p>
-              <Reactions userId={user.id} postId={review.id} />
-            </div>
-          ))
-        ) : (
-          <p>No reviews to display</p>
-        )}
-      </div>
-    </div>
+    <Container>
+      <Typography variant="h1">Feed</Typography>
+      <Box display="flex" mb={2}>
+        <Search>
+          <SearchIconWrapper>
+            <SearchIcon />
+          </SearchIconWrapper>
+          <StyledInputBase
+            placeholder="Search for a user"
+            onChange={(e) => handleChange(e.target.value)}
+          />
+        </Search>
+        <Button variant="contained" color="secondary" component={Link} to={`/search/users/${query}`}>
+          Search Users
+        </Button>
+      </Box>
+      <Typography variant="h2" gutterBottom>Reviews From People You Follow</Typography>
+      {reviews.length > 0 ? (
+        <Grid container spacing={5}>
+          {reviews.map(review => (
+            <Grid item xs={12} sm={6} md={4} key={review.id}>
+              <Card sx={{ width: '100%' }}>
+                {review.Album ? (
+                  <>
+                    <CardMedia
+                      component="div"
+                      sx={{
+                        paddingTop: '100%',
+                        backgroundImage: `url(${review.Album.image})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                      }}
+                    />
+                    <CardContent>
+                      <Typography variant="h3">{review.Album.albumName} by {review.Album.artistName}</Typography>
+                    </CardContent>
+                  </>
+                ) : (
+                  <CardContent>
+                    <Typography variant="body1">No album information available</Typography>
+                  </CardContent>
+                )}
+                <CardContent>
+                  <Typography variant="body1">@{review.username}: {review.text}</Typography>
+                  <Reactions userId={user.id} postId={review.id} />
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <Typography variant="body1">No reviews to display</Typography>
+      )}
+    </Container>
   )
 };
 
