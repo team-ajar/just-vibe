@@ -2,17 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import dayjs from "dayjs";
-import {
-  Container,
-  Typography,
-  Card,
-  CardContent,
-  CardMedia,
-  Button,
-  Select,
-  MenuItem,
-  Box,
-} from "@mui/material";
+import { Container, Typography, Card, CardContent, CardMedia, Button, Select, MenuItem, Box } from "@mui/material";
 
 interface Artist {
   image: any;
@@ -21,7 +11,7 @@ interface Artist {
 }
 
 interface Album {
-  id: number;
+  id: number;//
   image: any;
   name: string;
   artist: string;
