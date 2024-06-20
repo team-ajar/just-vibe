@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import { PrismaClient } from "@prisma/client";
 import router from "./routers";
+import isAuthenticated from "./middleware/auth";
 
 dotenv.config();
 
@@ -95,12 +96,20 @@ app.get(
   }
 );
 
-app.get("/home", (req, res) => {
-  if (req.isAuthenticated()) {
-    res.sendFile(path.join(DIST_PATH, "index.html"));
-  } else {
-    res.redirect("/");
-  }
+app.post('/api/logout', (req, res) => {
+  req.logout((err) => {
+    req.session.destroy(() => {
+      res.clearCookie('connect.sid');
+      res.sendStatus(200);
+    });
+    if (err) {
+      return res.status(500).send('Logout failed');
+    }
+  });
+});
+
+app.get("/home", isAuthenticated, (req, res) => {
+  res.sendFile(path.join(DIST_PATH, "index.html"));
 });
 
 app.listen(PORT, function () {
