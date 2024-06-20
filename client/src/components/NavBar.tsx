@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LightDarkMode from "./LightDarkMode";
 import {
   AppBar,
@@ -7,7 +7,6 @@ import {
   IconButton,
   Typography,
   Container,
-  Button,
   Toolbar,
   InputBase,
   Drawer,
@@ -20,36 +19,45 @@ import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
 import logo from "./justvibelogo.png";
 import theme from "../theme";
+import axios from "axios";
 
 const pages = ["Profile", "Feed"];
 
 const Search = styled("div")(({ theme }) => ({
-  position: "relative",
   backgroundColor: alpha(theme.palette.common.white, 0.15),
   marginRight: theme.spacing(2),
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  display: "flex",
-  alignItems: "center",
+  display: 'flex',
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
-    paddingLeft: theme.spacing(6),
+    paddingLeft: `calc(1em + ${theme.spacing(1)})`,
+    width: '11',
+    transition: theme.transitions.create('width'),
+    "&:focus": {
+      width: '23ch',
+    },
   },
 }));
 
 const NavBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [hamburgerOpen, setHamburgerOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+    setHamburgerOpen(!hamburgerOpen);
+  };
+
+  const handleLogout = () => {
+    axios.post('/api/logout')
+      .then(() => {
+        navigate('/');
+      })
+      .catch((error) => {
+        console.error('Logout failed:', error);
+      });
   };
 
   const drawer = (
@@ -63,6 +71,9 @@ const NavBar = () => {
             <ListItemText primary={page} />
           </ListItem>
         ))}
+        <ListItem button onClick={handleLogout}>
+          <ListItemText primary="Logout" />
+        </ListItem>
       </List>
     </Box>
   );
@@ -88,26 +99,17 @@ const NavBar = () => {
             >
               Just Vibe
             </Typography>
-            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              {pages.map((page) => (
-                <Button
-                  color="primary"
-                  variant="contained"
-                  key={page}
-                  sx={{ color: "white", display: "block", m: 1 }}
-                  component={Link}
-                  to={`/${page.toLowerCase()}`}
-                >
-                  {page}
-                </Button>
-              ))}
-            </Box>
+            <IconButton
+              color="inherit"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { xs: "flex", md: "flex" } }}
+            >
+              <MenuIcon />
+            </IconButton>
             <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
               <StyledInputBase
-                placeholder="Search..."
+                placeholder="Search for an album or artist"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -122,28 +124,19 @@ const NavBar = () => {
               </IconButton>
             </Search>
             <LightDarkMode />
-            <Box>
-              <IconButton
-                color="inherit"
-                edge="start"
-                onClick={handleDrawerToggle}
-              >
-                <MenuIcon />
-              </IconButton>
-            </Box>
           </Toolbar>
         </Container>
       </AppBar>
       <Box component="nav">
         <Drawer
           variant="temporary"
-          open={mobileOpen}
+          open={hamburgerOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
             keepMounted: true,
           }}
           sx={{
-            display: { xs: "block", md: "none" },
+            display: { xs: "block", md: "block" },
             "& .MuiDrawer-paper": { boxSizing: "border-box", width: 240 },
           }}
         >
