@@ -106,8 +106,8 @@ const SearchResults = () => {
       <h1>Search Results for {query}</h1>
       <h2>Albums</h2>
         <ul>
-          {searchResults.albums.map((album: Album) => (
-            <li key={album.name}>
+          {searchResults.albums.map((album: Album, i: any) => (
+            <li key={i}>
                 <a href={album.url}>
                   {album.image[1] && <img src={album.image[1]['#text']} />}
                   {album.name}
