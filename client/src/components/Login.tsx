@@ -1,18 +1,20 @@
 import React from 'react';
+import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { Container } from '@mui/material';
 
 const Login = () => {
   return (
-    <div>
-      <h1>Welcome to Just Vibe!</h1>
-      <p>
+    <Container maxWidth="xl">
+      <Typography variant="h1" gutterBottom>Welcome to Just Vibe!</Typography>
+      <Typography variant="body1" gutterBottom>
         Just Vibe is an app where you can get groovy with your friends! With Just Vibe, you can create a profile, search and save your favorite albums/artists, write reviews on your favorite (or not so favorite) albums, set an album of the day, and follow your friends to see what they're grooving out to!
-      </p>
-      <p>Log in below!</p>
+      </Typography>
+      <Typography variant="h5">Log in below!</Typography>
       <Button variant="contained" color="primary" href="/auth/google">
         Log In With Google
       </Button>
-    </div>
+    </Container>
   );
 };
 

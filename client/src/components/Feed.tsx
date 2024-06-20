@@ -47,6 +47,9 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
+  [theme.breakpoints.up("sm")]: {
+    width: "31ch",
+  },
   "& .MuiInputBase-input": {
     paddingLeft: theme.spacing(6),
   },
@@ -96,7 +99,7 @@ const Feed = () => {
             <SearchIcon />
           </SearchIconWrapper>
           <StyledInputBase
-            placeholder="Search for a user"
+            placeholder="Search for a user by username"
             onChange={(e) => handleChange(e.target.value)}
           />
         </Search>
