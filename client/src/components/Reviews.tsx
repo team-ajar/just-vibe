@@ -120,7 +120,7 @@ const Reviews = () => {
   }, []);
 
   return (
-    <Container p={2} mt={3}>
+    <Container sx={{padding: 2, marginTop: 3}}>
       <Box sx={{ display: "flex", flexDirection: "column" }} mt={2}>
         <Typography variant="h1">Reviews</Typography>
         <Typography
