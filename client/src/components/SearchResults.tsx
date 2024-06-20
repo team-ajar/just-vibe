@@ -3,6 +3,8 @@ import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import dayjs from "dayjs";
 import { Container, Typography, Card, CardContent, CardMedia, Button, Select, MenuItem, Box } from "@mui/material";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 
 interface Artist {
   image: any;
@@ -120,7 +122,7 @@ const SearchResults = () => {
       .catch((err) => console.error("Error checking album of the day", err));
   }, [query]);
   return (
-    <div>
+    <Box p={2}>
       <Typography
         variant="h1"
         sx={{
@@ -130,6 +132,7 @@ const SearchResults = () => {
           letterSpacing: "2px",
           color: "#000000", // primary color
           mb: 4, // margin-bottom
+          mt: 2,
         }}
       >
         Search Results for {query}
@@ -147,17 +150,23 @@ const SearchResults = () => {
       >
         Albums
       </Typography>
-      <ul>
+      <List>
         {searchResults.albums.map((album: Album, i: any) => (
-          <li key={i}>
-            <Card sx={{ display: "flex", mb: 2 }}>
+          <ListItem
+            sx={{ width: 1, display: "flex", mb: 2, flexDirection: {
+              xs: "column",
+              sm: "row"
+            }}}
+            key={i}
+          >
+            <Card sx={{ display: "flex", mb: 2, flexDirection: { xs: "column", sm: "row" }, width: 1 } }>
               <CardMedia
                 component="img"
-                sx={{ width: 151 }}
+                sx={{ width: { xs: '100%', sm: 151 } }}
                 image={album.image[3]["#text"]}
                 alt={album.name}
               />
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
                 <CardContent sx={{ flex: "1 0 auto" }}>
                   <Typography component="div" variant="h5">
                     {album.name}
@@ -171,13 +180,27 @@ const SearchResults = () => {
                   </Typography>
                 </CardContent>
                 <Box
-                  sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}
+                  sx={{
+                    display: "flex",
+                    alignItems: {
+                      xs: "center",
+                    },
+                    pb: 1,
+                    px: 1,
+                    pl: 1,
+                    flexWrap: "wrap",
+                    gap: 1,
+                    flexDirection: { xs: "column", sm: "row" }
+                  }}
                 >
                   <Button
                     variant="contained"
                     color="primary"
                     onClick={() => saveAlbum(album)}
-                    sx={{ boxShadow: "none", "&:hover": { boxShadow: "none" } }}
+                    sx={{
+                      boxShadow: "none",
+                      "&:hover": { boxShadow: "none" },
+                    }}
                   >
                     Save Album
                   </Button>
@@ -189,7 +212,8 @@ const SearchResults = () => {
                     sx={{
                       boxShadow: "none",
                       "&:hover": { boxShadow: "none" },
-                      ml: 1,
+                      ml: { xs: 0, sm: 1 },
+                      mt: { xs: 1, sm: 0 },
                     }}
                   >
                     Set as Album of the Day
@@ -199,6 +223,7 @@ const SearchResults = () => {
                       pathname: `/reviews`,
                     }}
                     state={album}
+                    style={{ textDecoration: "none" }}
                   >
                     <Button
                       variant="outlined"
@@ -206,7 +231,10 @@ const SearchResults = () => {
                       sx={{
                         boxShadow: "none",
                         "&:hover": { boxShadow: "none" },
-                        ml: 1,
+                        flex: "1 1 auto",
+                        maxWidth: { xs: "100%", sm: "unset" },
+                        ml: { xs: 0, sm: 1 },
+                        mt: { xs: 1, sm: 0 },
                       }}
                     >
                       Write Review
@@ -215,9 +243,9 @@ const SearchResults = () => {
                 </Box>
               </Box>
             </Card>
-          </li>
+          </ListItem>
         ))}
-      </ul>
+      </List>
       <Typography
         variant="h2"
         sx={{
@@ -231,15 +259,16 @@ const SearchResults = () => {
       >
         Artists
       </Typography>
-      <ul>
+      <List>
         {searchResults.artists.map((artist: Artist) => (
-          <li
+          <ListItem
             key={artist.name}
-            style={{
+            sx={{
               marginBottom: "10px",
               display: "flex",
               alignItems: "center",
-            }}
+              justifyContent: "space-between"              
+            }}           
           >
             <Typography
               variant="h6"
@@ -265,14 +294,16 @@ const SearchResults = () => {
                 boxShadow: "5px 5px 0px #000",
                 "&:hover": { boxShadow: "7px 7px 0px #000" },
                 marginLeft: "10px",
+                whiteSpace: "nowrap",
+                minWidth: "100px"
               }}
             >
               Save Artist
             </Button>
-          </li>
+          </ListItem>
         ))}
-      </ul>
-    </div>
+      </List>
+    </Box>
   );
 };
 
