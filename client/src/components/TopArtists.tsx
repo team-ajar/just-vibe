@@ -1,6 +1,7 @@
 import { Artist, TopArtists } from "@prisma/client";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Box, Card, CardContent, Typography, Select, MenuItem, Button } from "@mui/material";
 
 export const TopArtistsComponent = ({ userId }: { userId: number }) => {
   const [artists, setArtists] = useState<Artist[]>([]);
@@ -79,102 +80,40 @@ export const TopArtistsComponent = ({ userId }: { userId: number }) => {
   );
 
   return (
-    <div>
-      <h2>Top 3 Artists</h2>
-      <div style={{ display: "flex", gap: "10px" }}>
-        <div>
-          <h3>
-          {topArtist1?.name || "Select Artist"}
-          </h3>
-          <label>#1</label>
-          <select
-            value={topArtist1?.id || ""}
-            onChange={(e) => {
-              if (e.target.value === "") return;
-              showSelectedArtist(
-                Number(e.target.value),
-                1,
-                topArtist1?.id || 0
-              );
-            }}
-          >
-            {!topArtist1 && <option value="">Select Artist</option>}
-            {artists.map((artist) => (
-              <option key={artist.id} value={artist.id}>
-                {artist.name}
-              </option>
-            ))}
-          </select>
-          <button
-            onClick={() => deleteSelectedArtist(1, topArtist1?.id)}
-            type="button"
-          >
-            Delete
-          </button>
-        </div>
-
-        <div>
-        <h3>
-          {topArtist2?.name || "Select Artist"}
-          </h3>
-          <label>#2</label>
-          <select
-            value={topArtist2?.id || ""}
-            onChange={(e) => {
-              if (e.target.value === "") return;
-              showSelectedArtist(
-                Number(e.target.value),
-                2,
-                topArtist2?.id || 0
-              );
-            }}
-          >
-            {!topArtist2 && <option value="">Select Artist</option>}
-            {artists.map((artist) => (
-              <option key={artist.id} value={artist.id}>
-                {artist.name}
-              </option>
-            ))}
-          </select>
-          <button
-            onClick={() => deleteSelectedArtist(2, topArtist2?.id)}
-            type="button"
-          >
-            Delete
-          </button>
-        </div>
-
-        <div>
-        <h3>
-          {topArtist3?.name || "Select Artist"}
-          </h3>
-          <label>#3</label>
-          <select
-            value={topArtist3?.id || ""}
-            onChange={(e) => {
-              if (e.target.value === "") return;
-              showSelectedArtist(
-                Number(e.target.value),
-                3,
-                topArtist3?.id || 0
-              );
-            }}
-          >
-            {!topArtist3 && <option value="">Select Artist</option>}
-            {artists.map((artist) => (
-              <option key={artist.id} value={artist.id}>
-                {artist.name}
-              </option>
-            ))}
-          </select>
-          <button
-            onClick={() => deleteSelectedArtist(3, topArtist3?.id)}
-            type="button"
-          >
-            Delete
-          </button>
-        </div>
-      </div>
-    </div>
+    <Box >
+      <Typography variant="h2">Top 3 Artists</Typography>
+      <Box sx={{ display: "flex", gap: 3, flexWrap: "wrap" }}>
+        {[topArtist1, topArtist2, topArtist3].map((topArtist, index) => (
+          <Card key={index} sx={{ width: 300, boxShadow: "5px 5px 0px #000", border: "2px solid #000" }}>
+            <CardContent sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <Typography variant="h3" sx={{ mt: 1 }}>{topArtist?.name || "Select Artist"}</Typography>
+              <Typography variant="h3" sx={{ mt: 1 }}>#{index + 1}</Typography>
+              <Select
+                value={topArtist?.id || ""}
+                onChange={(e) => showSelectedArtist(Number(e.target.value), index + 1, topArtist?.id || 0)}
+                displayEmpty
+                fullWidth
+                sx={{ mt: 1 }}
+              >
+                <MenuItem value="">Select Artist</MenuItem>
+                {artists.map((artist) => (
+                  <MenuItem key={artist.id} value={artist.id}>
+                    {artist.name}
+                  </MenuItem>
+                ))}
+              </Select>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => deleteSelectedArtist(index + 1, topArtist?.id)}
+                sx={{ mt: 2 }}
+              >
+                Delete
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </Box>
+    </Box>
   );
 };

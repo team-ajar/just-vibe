@@ -13,7 +13,7 @@ interface Artist {
 }
 
 interface Album {
-  id: number;//
+  id: number;
   image: any;
   name: string;
   artist: string;
@@ -267,8 +267,8 @@ const SearchResults = () => {
               marginBottom: "10px",
               display: "flex",
               alignItems: "center",
-              justifyContent: "space-between"              
-            }}           
+              justifyContent: "space-between"
+            }}
           >
             <Typography
               variant="h6"

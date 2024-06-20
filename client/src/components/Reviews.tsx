@@ -6,10 +6,7 @@ import {
   Typography,
   Card,
   CardContent,
-  CardMedia,
   Button,
-  Select,
-  MenuItem,
   Box,
   FormControl,
   TextareaAutosize,
@@ -120,7 +117,7 @@ const Reviews = () => {
   }, []);
 
   return (
-    <Container sx={{p: 2, mt: 3}}>
+    <Container sx={{ p: 2, mt: 3 }}>
       <Box sx={{ display: "flex", flexDirection: "column" }} mt={2}>
         <Typography variant="h1">Reviews</Typography>
         <Typography
@@ -140,7 +137,7 @@ const Reviews = () => {
             style={{
               maxWidth: "100%",
               height: "auto",
-              width: "500px", // Adjust the width to make the image bigger
+              width: "500px",
               boxShadow: "10px 10px 0px #000",
               border: "2px solid #000",
             }}
