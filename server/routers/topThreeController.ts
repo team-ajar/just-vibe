@@ -5,23 +5,20 @@ const prisma = new PrismaClient();
 
 const topThreeController = {
   getTopAlbums: (req: Request, res: Response) => {
-    let { userId } = req.params;
-    const userIdNumber = Number(userId);
-
-    if (userIdNumber < 0){
-      return res.sendStatus(400);
-    }
 
     prisma.album.findMany({
       orderBy: {
         albumName: 'asc'
+      },
+      where: {
+        userId: req.user!.id,
       }
     })
     
     .then((albums) => {
       prisma.topAlbums.findMany({
         where: {
-          userId: Number(userId)
+          userId: req.user!.id
         },
         orderBy: {
           position: 'asc'
@@ -105,22 +102,20 @@ const topThreeController = {
   },
 
   getTopArtists: (req: Request, res: Response) => {
-    let { userId } = req.params;
-    const userIdNumber = Number(userId);
 
-    if (userIdNumber < 0){
-      return res.sendStatus(400);
-    }
-
+    
     prisma.artist.findMany({
       orderBy: {
         name: 'asc'
+      },
+      where: {
+        userId: req.user!.id,
       }
     })
     .then((artists) => {
       prisma.topArtists.findMany({
         where: {
-          userId: Number(userId)
+          userId: req.user!.id
         },
         orderBy: {
           position: 'asc'

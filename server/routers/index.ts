@@ -9,19 +9,20 @@ import topThreeController from "./topThreeController";
 import followController from "./followController";
 import followedUsers from "./followedUsers";
 import reactionsController from "./reactionsController";
+import isAuthenticated from "../middleware/auth";
 
 const router = express.Router();
 
 router.route('/search/:search').get(searchController.handleMusicSearch);
 router.route('/search/users/:query').get(searchController.handleUserSearch);
 
-router.route('/top/albums/:userId').get(topThreeController.getTopAlbums);
-router.route('/top/albums/:oldAlbumId/:position/:userId').post(topThreeController.createOrUpdateTopAlbum);
-router.route('/top/albums/:albumId/:position/:userId').delete(topThreeController.deleteTopAlbum);
+router.route('/top/albums/:userId').get(isAuthenticated, topThreeController.getTopAlbums);
+router.route('/top/albums/:oldAlbumId/:position/:userId').post(isAuthenticated, topThreeController.createOrUpdateTopAlbum);
+router.route('/top/albums/:albumId/:position/:userId').delete(isAuthenticated, topThreeController.deleteTopAlbum);
 
-router.route('/top/artists/:userId').get(topThreeController.getTopArtists);
-router.route('/top/artists/:oldArtistId/:position/:userId').post(topThreeController.createOrUpdateTopArtist);
-router.route('/top/artists/:artistId/:position/:userId').delete(topThreeController.deleteTopArtist);
+router.route('/top/artists/:userId').get(isAuthenticated, topThreeController.getTopArtists);
+router.route('/top/artists/:oldArtistId/:position/:userId').post(isAuthenticated, topThreeController.createOrUpdateTopArtist);
+router.route('/top/artists/:artistId/:position/:userId').delete(isAuthenticated, topThreeController.deleteTopArtist);
 
 router.route('/albums/:artistName/:albumName/reviews').get(reviewsController.getReviews);
 router.route('/albums/:artistName/:albumName/review/:userId').post(reviewsController.createReview);
