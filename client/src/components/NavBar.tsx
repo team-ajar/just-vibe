@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LightDarkMode from "./LightDarkMode";
 import {
   AppBar,
@@ -47,6 +47,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const NavBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -66,6 +67,15 @@ const NavBar = () => {
       </List>
     </Box>
   );
+
+  const handleEnter = (e: any) => {
+    // console.log(e)
+    if (e.key === 'Enter') {
+      setSearchQuery('');
+      return navigate(`/search-results/${searchQuery}`);
+      // searchQuery
+    }
+  }
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -110,6 +120,7 @@ const NavBar = () => {
                 placeholder="Search..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => handleEnter(e)}
               />
               <IconButton
                 type="submit"
