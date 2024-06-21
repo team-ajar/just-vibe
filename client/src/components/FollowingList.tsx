@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Typography, Container, Box, Button, styled } from '@mui/material';
 
@@ -34,6 +34,7 @@ const StyledListItem = styled(ListItem)(({ theme }) => ({
 const FollowingList = () => {
   const { userId } = useParams<{ userId: string }>();
   const [following, setFollowing] = useState<Follow[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(`/api/following/${userId}`)
@@ -52,6 +53,9 @@ const FollowingList = () => {
 
   return (
     <Container sx={{ p: 2, mt: 3 }}>
+      <Button variant="contained" onClick={() => navigate('/profile')} sx={{ mb: 2 }}>
+        &larr; Back to Profile
+      </Button>
       <Box sx={{ alignItems: "left" }}>
         <Typography variant="h2" sx={{ mb: 2 }}>Following</Typography>
         <List>

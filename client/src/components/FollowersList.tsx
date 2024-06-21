@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Typography, Container, Box, styled } from '@mui/material';
+import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Typography, Container, Box, styled, Button } from '@mui/material';
 
 interface User {
   id: number;
@@ -34,6 +34,7 @@ const StyledListItem = styled(ListItem)(({ theme }) => ({
 const FollowersList = () => {
   const { userId } = useParams<{ userId: string }>();
   const [followers, setFollowers] = useState<Follow[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(`/api/followers/${userId}`)
@@ -43,6 +44,9 @@ const FollowersList = () => {
 
   return (
     <Container sx={{ p: 2, mt: 3 }}>
+      <Button variant="contained" onClick={() => navigate('/profile')} sx={{ mb: 2 }}>
+        &larr; Back to Profile
+      </Button>
       <Box sx={{ alignItems: "left" }}>
         <Typography variant="h2" sx={{ mb: 2 }}>Followers</Typography>
         <List>
