@@ -103,7 +103,7 @@ const Feed = () => {
             onChange={(e) => handleChange(e.target.value)}
           />
         </Search>
-        <Button variant="contained" color="secondary" component={Link} to={`/search/users/${query}`}>
+        <Button variant="contained" color="primary" component={Link} to={`/search/users/${query}`}>
           Search Users
         </Button>
       </Box>

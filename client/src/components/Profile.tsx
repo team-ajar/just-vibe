@@ -75,20 +75,21 @@ const Profile = () => {
             </Box>
           </Box>
 
-          <Box sx={{ mt: 3 }}>
-            <Typography variant="h3" sx={{ mb: 2 }}>Followers</Typography>
-            <Button variant="outlined" component={Link} to={`/profile/followers/${user.id}`}>
-              View Followers
-            </Button>
-          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
+            <Box sx={{ flex: 1, textAlign: 'center' }}>
+              <Typography variant="h3" sx={{ mb: 2 }}>Followers</Typography>
+              <Button variant="outlined" component={Link} to={`/profile/followers/${user.id}`}>
+                View Followers
+              </Button>
+            </Box>
 
-          <Box sx={{ mt: 3 }}>
-            <Typography variant="h3" sx={{ mb: 2 }}>Following</Typography>
-            <Button variant="outlined" component={Link} to={`/profile/following/${user.id}`}>
-              View Following
-            </Button>
+            <Box sx={{ flex: 1, textAlign: 'center' }}>
+              <Typography variant="h3" sx={{ mb: 2 }}>Following</Typography>
+              <Button variant="outlined" component={Link} to={`/profile/following/${user.id}`}>
+                View Following
+              </Button>
+            </Box>
           </Box>
-
         </Card>
         {user.id > 0 && <TopAlbumsComponent userId={user.id} />}
         {user.id > 0 && <TopArtistsComponent userId={user.id} />}
