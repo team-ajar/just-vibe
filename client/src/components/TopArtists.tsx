@@ -1,7 +1,7 @@
 import { Artist, TopArtists } from "@prisma/client";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Box, Card, CardContent, Typography, Select, MenuItem, Button } from "@mui/material";
+import { Box, Card, CardContent, Typography, Select, MenuItem, Button } from "../style";
 
 export const TopArtistsComponent = ({ userId }: { userId: number }) => {
   const [artists, setArtists] = useState<Artist[]>([]);

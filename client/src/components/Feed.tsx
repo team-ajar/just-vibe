@@ -2,9 +2,7 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Reactions from "./Reactions";
-import { Container, Typography, Card, CardContent, CardMedia, Button, Box, InputBase, Grid } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import { styled, alpha } from "@mui/material/styles";
+import { Container, Typography, Card, CardContent, CardMedia, Button, Box, InputBase, Grid, SearchIcon, styled, alpha } from "../style";
 
 interface User {
   id: number;
@@ -103,7 +101,7 @@ const Feed = () => {
             onChange={(e) => handleChange(e.target.value)}
           />
         </Search>
-        <Button variant="contained" color="secondary" component={Link} to={`/search/users/${query}`}>
+        <Button variant="contained" color="primary" component={Link} to={`/search/users/${query}`}>
           Search Users
         </Button>
       </Box>
