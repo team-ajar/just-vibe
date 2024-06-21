@@ -9,6 +9,8 @@ import Feed from './Feed';
 import SearchUsers from './SearchUserResults';
 import EditProfile from './EditProfile';
 import Login from './Login';
+import FollowersList from '../FollowersList';
+import FollowingList from './FollowingList';
 
 const App = () => {
   const location = useLocation();
@@ -26,6 +28,8 @@ const App = () => {
         <Route path='/feed' element={<Feed />} />
         <Route path='/search/users/:query' element={< SearchUsers />} />
         <Route path='/profile/edit/:id' element={<EditProfile/>} />
+        <Route path='/profile/followers/:userId' element={<FollowersList />} />
+        <Route path='/profile/following/:userId' element={<FollowingList />} />
       </Routes>
     </div>
   )

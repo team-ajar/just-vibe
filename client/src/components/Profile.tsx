@@ -3,7 +3,7 @@ import axios from "axios";
 import { TopAlbumsComponent } from "./TopAlbums";
 import { TopArtistsComponent } from "./TopArtists";
 import { Link } from 'react-router-dom';
-import { Container, Typography, Card, Box, Button, Avatar, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
+import { Container, Typography, Card, Box, Button, Avatar } from "@mui/material";
 
 interface User {
   id: number;
@@ -13,13 +13,6 @@ interface User {
   username: string;
   bio: string;
   image: string;
-}
-
-interface Follow {
-  followedById: number;
-  followingId: number;
-  followedBy: User;
-  following?: User;
 }
 
 const Profile = () => {
@@ -33,22 +26,13 @@ const Profile = () => {
     image: "",
   });
 
-  const [followers, setFollowers] = useState<Follow[]>([]);
-  const [following, setFollowing] = useState<Follow[]>([]);
-
-const loadPage = async () => {
-    try {
-      const { data: userData } = await axios.get("/api/user");
-      setUser(userData);
-
-      const { data: followersData } = await axios.get(`/api/followers/${userData.id}`);
-      setFollowers(followersData);
-
-      const { data: followingData } = await axios.get(`/api/following/${userData.id}`);
-      setFollowing(followingData);
-    } catch (error) {
-      console.error("Error loading profile data", error);
-    }
+  const loadPage = () => {
+    axios
+      .get("/api/user")
+      .then(({ data }: any) => {
+        setUser(data);
+      })
+      .catch((err) => console.error(err));
   };
 
   const deleteProfile = () => {
@@ -93,36 +77,16 @@ const loadPage = async () => {
 
           <Box sx={{ mt: 3 }}>
             <Typography variant="h2" sx={{ mb: 2 }}>Followers</Typography>
-            <List>
-              {followers.map((follower) => (
-                <ListItem key={follower.followedBy.id}>
-                  <ListItemAvatar>
-                    <Avatar src={follower.followedBy.image} />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={follower.followedBy.name}
-                    secondary={`@${follower.followedBy.username}`}
-                  />
-                </ListItem>
-              ))}
-            </List>
+            <Button variant="outlined" component={Link} to={`/profile/followers/${user.id}`}>
+              View Followers
+            </Button>
           </Box>
 
           <Box sx={{ mt: 3 }}>
             <Typography variant="h2" sx={{ mb: 2 }}>Following</Typography>
-            <List>
-              {following.map((followed) => (
-                <ListItem key={followed.following?.id ?? followed.followedBy.id}>
-                  <ListItemAvatar>
-                    <Avatar src={followed.following?.image ?? followed.followedBy.image} />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={followed.following?.name ?? followed.followedBy.name}
-                    secondary={`@${followed.following?.username ?? followed.followedBy.username}`}
-                  />
-                </ListItem>
-              ))}
-            </List>
+            <Button variant="outlined" component={Link} to={`/profile/following/${user.id}`}>
+              View Following
+            </Button>
           </Box>
 
         </Card>
