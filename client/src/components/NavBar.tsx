@@ -74,6 +74,15 @@ const NavBar = () => {
     </Box>
   );
 
+  const handleEnter = (e: any) => {
+    // console.log(e)
+    if (e.key === 'Enter') {
+      setSearchQuery('');
+      return navigate(`/search-results/${searchQuery}`);
+      // searchQuery
+    }
+  }
+
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar position="static" sx={{ backgroundColor: "#CB6CE6" }}>
@@ -97,6 +106,7 @@ const NavBar = () => {
                 placeholder="Search for an album or artist"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => handleEnter(e)}
               />
               <IconButton
                 type="submit"
