@@ -60,16 +60,15 @@ const profileController = {
   },
 
   deleteUser: (req: Request, res: Response) => {
-    const { userId } = req.params;
+    const { userId, gooId } = req.params;
 
-    prisma.user
-      .delete({
+    prisma.user.delete({
         where: {
-          id: Number(userId),
+          googleId: gooId
         },
       })
-      .then(() => res.sendStatus(201))
-      .catch(() => res.sendStatus(500));
+      .then((data) => console.log(data))
+      .catch((err) => console.error(err));
   },
 };
 
