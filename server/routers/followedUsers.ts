@@ -17,6 +17,9 @@ const followedUsers = {
                 include: {
                   Album: true,
                 },
+                orderBy: {
+                  id: 'desc',
+                }
               },
             },
           },
