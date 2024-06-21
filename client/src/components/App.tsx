@@ -9,7 +9,7 @@ import Feed from './Feed';
 import SearchUsers from './SearchUserResults';
 import EditProfile from './EditProfile';
 import Login from './Login';
-import FollowersList from '../FollowersList';
+import FollowersList from './FollowersList';
 import FollowingList from './FollowingList';
 
 const App = () => {

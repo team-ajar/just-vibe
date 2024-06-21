@@ -76,14 +76,14 @@ const Profile = () => {
           </Box>
 
           <Box sx={{ mt: 3 }}>
-            <Typography variant="h2" sx={{ mb: 2 }}>Followers</Typography>
+            <Typography variant="h3" sx={{ mb: 2 }}>Followers</Typography>
             <Button variant="outlined" component={Link} to={`/profile/followers/${user.id}`}>
               View Followers
             </Button>
           </Box>
 
           <Box sx={{ mt: 3 }}>
-            <Typography variant="h2" sx={{ mb: 2 }}>Following</Typography>
+            <Typography variant="h3" sx={{ mb: 2 }}>Following</Typography>
             <Button variant="outlined" component={Link} to={`/profile/following/${user.id}`}>
               View Following
             </Button>

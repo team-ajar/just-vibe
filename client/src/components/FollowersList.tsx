@@ -16,32 +16,32 @@ interface User {
 interface Follow {
   followedById: number;
   followingId: number;
-  following: User;
+  followedBy: User;
 }
 
-const FollowingList = () => {
+const FollowersList = () => {
   const { userId } = useParams<{ userId: string }>();
-  const [following, setFollowing] = useState<Follow[]>([]);
+  const [followers, setFollowers] = useState<Follow[]>([]);
 
   useEffect(() => {
-    axios.get(`/api/following/${userId}`)
-      .then(response => setFollowing(response.data))
-      .catch(error => console.error('Error fetching following', error));
+    axios.get(`/api/followers/${userId}`)
+      .then(response => setFollowers(response.data))
+      .catch(error => console.error('Error fetching followers', error));
   }, [userId]);
 
   return (
     <Container sx={{ p: 2, mt: 3 }}>
       <Box sx={{ alignItems: "left" }}>
-        <Typography variant="h2" sx={{ mb: 2 }}>Following</Typography>
+        <Typography variant="h2" sx={{ mb: 2 }}>Followers</Typography>
         <List>
-          {following.map((followed) => (
-            <ListItem key={followed.following.id}>
+          {followers.map((follower) => (
+            <ListItem key={follower.followedBy.id}>
               <ListItemAvatar>
-                <Avatar src={followed.following.image} />
+                <Avatar src={follower.followedBy.image} />
               </ListItemAvatar>
               <ListItemText
-                primary={followed.following.name}
-                secondary={`@${followed.following.username}`}
+                primary={follower.followedBy.name}
+                secondary={`@${follower.followedBy.username}`}
               />
             </ListItem>
           ))}
@@ -51,4 +51,4 @@ const FollowingList = () => {
   );
 };
 
-export default FollowingList;
+export default FollowersList;
