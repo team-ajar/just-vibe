@@ -222,7 +222,7 @@ const SearchResults = () => {
                     to={{
                       pathname: `/reviews`,
                     }}
-                    state={album}
+                    state={{ album, query }}
                     style={{ textDecoration: "none" }}
                   >
                     <Button
