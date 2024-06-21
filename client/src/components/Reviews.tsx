@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import Snackbar from '@mui/material/Snackbar';
+import SnackbarContent from '@mui/material/SnackbarContent';
 import {
   Container,
   Typography,
@@ -41,13 +43,16 @@ const Reviews = () => {
     id?: number;
   }>({ text: "", rating: 5, id: undefined });
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const showReviews = () => {
     axios
       .get(`/api/albums/${album.artist}/${album.name}/reviews`)
       .then((response) => {
         if (response.data.error) {
-          alert("Save album!");
+          setSnackbarMessage("Save album!");
+          setSnackbarOpen(true);
           return;
         }
         setReviews(response.data);
@@ -72,7 +77,8 @@ const Reviews = () => {
       })
       .catch((error) => {
         if (error.response.status === 404) {
-          alert(error.response.data);
+          setSnackbarMessage(error.response.data);
+          setSnackbarOpen(true);
         }
         console.error("Error creating review:", error);
       });
@@ -127,6 +133,10 @@ const Reviews = () => {
       setUserId(response.data.id);
     });
   }, []);
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
 
   return (
     <Container sx={{ p: 2, mt: 3 }}>
@@ -249,6 +259,16 @@ const Reviews = () => {
           <Typography variant="body1">No reviews yet.</Typography>
         )}
       </div>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <SnackbarContent
+          message={snackbarMessage}
+        />
+      </Snackbar>
     </Container>
   );
 };
