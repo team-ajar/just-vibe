@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Typography, Container, Box } from '@mui/material';
+import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Typography, Container, Box, Button, styled } from '@mui/material';
 
 interface User {
   id: number;
@@ -19,6 +19,18 @@ interface Follow {
   following: User;
 }
 
+const StyledListItem = styled(ListItem)(({ theme }) => ({
+  padding: theme.spacing(2),
+  border: `1px solid ${theme.palette.primary.main}`,
+  borderRadius: theme.shape.borderRadius,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  '&:hover': {
+    backgroundColor: theme.palette.primary.light,
+  },
+}));
+
 const FollowingList = () => {
   const { userId } = useParams<{ userId: string }>();
   const [following, setFollowing] = useState<Follow[]>([]);
@@ -29,21 +41,39 @@ const FollowingList = () => {
       .catch(error => console.error('Error fetching following', error));
   }, [userId]);
 
+  const unfollowUser = (unfollowingId: number) => {
+    axios.delete(`/api/follow/${userId}/${unfollowingId}`)
+      .then(() => {
+        setFollowing(following.filter(follow => follow.following.id !== unfollowingId));
+      })
+      .catch(error => console.error('Error unfollowing user', error));
+  };
+
+
   return (
     <Container sx={{ p: 2, mt: 3 }}>
       <Box sx={{ alignItems: "left" }}>
         <Typography variant="h2" sx={{ mb: 2 }}>Following</Typography>
         <List>
           {following.map((followed) => (
-            <ListItem key={followed.following.id}>
-              <ListItemAvatar>
-                <Avatar src={followed.following.image} />
-              </ListItemAvatar>
-              <ListItemText
-                primary={followed.following.name}
-                secondary={`@${followed.following.username}`}
-              />
-            </ListItem>
+            <StyledListItem key={followed.following.id}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <ListItemAvatar>
+                  <Avatar src={followed.following.image} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={followed.following.name}
+                  secondary={`@${followed.following.username}`}
+                />
+              </Box>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => unfollowUser(followed.following.id)}
+              >
+                Unfollow
+              </Button>
+            </StyledListItem>
           ))}
         </List>
       </Box>
