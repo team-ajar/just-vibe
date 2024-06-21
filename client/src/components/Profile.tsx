@@ -3,7 +3,7 @@ import axios from "axios";
 import { TopAlbumsComponent } from "./TopAlbums";
 import { TopArtistsComponent } from "./TopArtists";
 import { Link } from 'react-router-dom';
-import { Container, Typography, Card, Box, Button, Avatar } from "@mui/material";
+import { Container, Typography, Card, Box, Button, Avatar } from "../style";
 
 interface User {
   id: number;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import dayjs from 'dayjs';
-import { Container, Typography, Card, CardContent, CardMedia, Button, Select, MenuItem, Box } from '@mui/material';
+import { Container, Typography, Card, CardContent, CardMedia, Button, Select, MenuItem, Box } from "../style";
 
 const HomePage = () => {
   const [albumOfTheDay, setAlbumOfTheDay] = useState<any>(null);

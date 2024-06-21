@@ -10,7 +10,7 @@ import {
   Box,
   FormControl,
   TextareaAutosize
-} from "@mui/material";
+} from "../style";
 
 interface Review {
   text: string;

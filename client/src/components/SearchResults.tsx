@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import dayjs from "dayjs";
-import { Container, Typography, Card, CardContent, CardMedia, Button, Select, MenuItem, Box } from "@mui/material";
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
+import { Typography, Card, CardContent, CardMedia, Button, Box, List, ListItem } from "../style";
 
 interface Artist {
   image: any;

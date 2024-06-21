@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Container, Typography, Box, Button, styled } from '@mui/material';
+import { Container, Typography, Box, Button, styled } from "../style";
 
 const StyledListItem = styled('li')(({ theme }) => ({
   padding: theme.spacing(2),

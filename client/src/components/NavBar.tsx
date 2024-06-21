@@ -13,10 +13,11 @@ import {
   List,
   ListItem,
   ListItemText,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
-import { styled, alpha } from "@mui/material/styles";
+  MenuIcon,
+  SearchIcon,
+  styled,
+  alpha
+} from "../style";
 import logo from "./justvibelogo.png";
 import theme from "../theme";
 import axios from "axios";
