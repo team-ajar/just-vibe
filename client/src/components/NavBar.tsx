@@ -5,7 +5,6 @@ import {
   AppBar,
   Box,
   IconButton,
-  Typography,
   Container,
   Toolbar,
   InputBase,
@@ -13,12 +12,12 @@ import {
   List,
   ListItem,
   ListItemText,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
-import { styled, alpha } from "@mui/material/styles";
+  MenuIcon,
+  SearchIcon,
+  styled,
+  alpha
+} from "../style";
 import logo from "./justvibelogo.png";
-import theme from "../theme";
 import axios from "axios";
 
 const pages = ["Profile", "Feed"];
@@ -33,7 +32,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
     paddingLeft: `calc(1em + ${theme.spacing(1)})`,
-    width: '11',
+    width: '11ch',
     transition: theme.transitions.create('width'),
     "&:focus": {
       width: '23ch',
@@ -62,9 +61,6 @@ const NavBar = () => {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        Just Vibe
-      </Typography>
       <List>
         {pages.map((page) => (
           <ListItem key={page} component={Link} to={`/${page.toLowerCase()}`} button>
@@ -78,27 +74,25 @@ const NavBar = () => {
     </Box>
   );
 
+  const handleEnter = (e: any) => {
+    // console.log(e)
+    if (e.key === 'Enter') {
+      setSearchQuery('');
+      return navigate(`/search-results/${searchQuery}`);
+      // searchQuery
+    }
+  }
+
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar position="static" sx={{ backgroundColor: "#CB6CE6" }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Box sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}>
-              <img src={logo} alt="Just Vibe Logo" height="100" />
+              <Link to="/home">
+                <img src={logo} alt="Just Vibe Logo" height="100" />
+              </Link>
             </Box>
-            <Typography
-              variant="h6"
-              component={Link}
-              to="/home"
-              sx={{
-                mr: 2,
-                ...theme.typography.h6,
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              Just Vibe
-            </Typography>
             <IconButton
               color="inherit"
               edge="start"
@@ -112,6 +106,7 @@ const NavBar = () => {
                 placeholder="Search for an album or artist"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => handleEnter(e)}
               />
               <IconButton
                 type="submit"

@@ -1,10 +1,8 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Reactions from "./Reactions";
-import { Container, Typography, Card, CardContent, CardMedia, Button, Box, InputBase, Grid } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import { styled, alpha } from "@mui/material/styles";
+import { Container, Typography, Card, CardContent, CardMedia, Button, Box, InputBase, Grid, SearchIcon, styled, alpha } from "../style";
 
 interface User {
   id: number;
@@ -59,6 +57,7 @@ const Feed = () => {
   const [query, setQuery] = useState('');
   const [user, setUser] = useState<User>({id: 0, googleId: '', location: '', name: '', username: '' });
   const [reviews, setReviews] = useState<Review[]>([]);
+  const navigate = useNavigate();
 
   const loadUser = () => {
     axios.get('/api/user')
@@ -79,6 +78,15 @@ const Feed = () => {
   const handleChange = (e: any) => {
     setQuery(e);
   };
+
+  const handleEnter = (e: any) => {
+    // console.log(e)
+    if (e.key === 'Enter') {
+      setQuery('');
+      return navigate(`/search/users/${query}`);
+      // searchQuery
+    }
+  }
 
   useEffect(() => {
     loadUser();
@@ -101,9 +109,10 @@ const Feed = () => {
           <StyledInputBase
             placeholder="Search for a user by username"
             onChange={(e) => handleChange(e.target.value)}
+            onKeyDown={(e) => handleEnter(e)}
           />
         </Search>
-        <Button variant="contained" color="secondary" component={Link} to={`/search/users/${query}`}>
+        <Button variant="contained" color="primary" component={Link} to={`/search/users/${query}`}>
           Search Users
         </Button>
       </Box>
