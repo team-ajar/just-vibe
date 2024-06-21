@@ -63,7 +63,6 @@ const Profile = () => {
       bio: "",
       image: "",
     };
-    console.log(user);
     axios.delete(`/api/user/${user.id}/${user.googleId}`).then(() => setUser(delUser)).catch((err: any) => console.error(err));
     handleClose();
     return navigate('/');

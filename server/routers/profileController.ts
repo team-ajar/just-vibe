@@ -64,11 +64,11 @@ const profileController = {
 
     prisma.user.delete({
         where: {
-          googleId: gooId
+          id: Number(userId)
         },
       })
-      .then((data) => console.log(data))
-      .catch((err) => console.error(err));
+      .then(() => res.sendStatus(201))
+      .catch(() => res.sendStatus(500));
   },
 };
 

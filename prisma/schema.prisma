@@ -33,7 +33,7 @@ model Review {
   rating  Int
   userId  Int
   albumId Int
-  user    User   @relation(fields: [userId], references: [id])
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   Album   Album  @relation(fields: [albumId], references: [id])
   posts   Post[]
 
@@ -47,7 +47,7 @@ model Album {
   artistName     String
   image          String          @db.VarChar(300)
   userId         Int
-  user           User            @relation(fields: [userId], references: [id])
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   reviews        Review[]
   albumsOfTheDay AlbumOfTheDay[]
   TopAlbums      TopAlbums[]
@@ -58,7 +58,7 @@ model Artist {
   id         Int          @id @default(autoincrement())
   name       String       @db.VarChar(300)
   userId     Int
-  user       User         @relation(fields: [userId], references: [id])
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   TopArtists TopArtists[]
 }
 
@@ -68,7 +68,7 @@ model AlbumOfTheDay {
   albumId Int
   album   Album    @relation(fields: [albumId], references: [id])
   userId  Int
-  user    User     @relation(fields: [userId], references: [id])
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([albumId], map: "AlbumOfTheDay_albumId_fkey")
   @@index([userId], map: "AlbumOfTheDay_userId_fkey")
@@ -95,9 +95,9 @@ model TopArtists {
 }
 
 model Follows {
-  followedBy   User @relation("followedBy", fields: [followedById], references: [id])
+  followedBy   User @relation("followedBy", fields: [followedById], references: [id], onDelete: Cascade)
   followedById Int
-  following    User @relation("following", fields: [followingId], references: [id])
+  following    User @relation("following", fields: [followingId], references: [id], onDelete: Cascade)
   followingId  Int
 
   @@id([followingId, followedById])
