@@ -85,7 +85,7 @@ const Feed = () => {
     // console.log(e)
     if (e.key === 'Enter') {
       setQuery('');
-      return navigate(`/search/users/${query}`);
+      return navigate(`/search/users/${user.id}/${query}`);
       // searchQuery
     }
   }

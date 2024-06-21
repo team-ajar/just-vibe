@@ -13,7 +13,7 @@ import reactionsController from "./reactionsController";
 const router = express.Router();
 
 router.route('/search/:search').get(searchController.handleMusicSearch);
-router.route('/search/users/:query').get(searchController.handleUserSearch);
+router.route('/search/users/:userId/:query').get(searchController.handleUserSearch);
 
 router.route('/top/albums/:userId').get(topThreeController.getTopAlbums);
 router.route('/top/albums/:oldAlbumId/:position/:userId').post(topThreeController.createOrUpdateTopAlbum);

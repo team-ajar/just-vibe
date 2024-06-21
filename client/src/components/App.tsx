@@ -24,7 +24,7 @@ const App = () => {
         <Route path='/search-results/:query' element={<SearchResults />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/feed' element={<Feed />} />
-        <Route path='/search/users/:query' element={< SearchUsers />} />
+        <Route path='/search/users/:userId/:query' element={< SearchUsers />} />
         <Route path='/profile/edit/:id' element={<EditProfile/>} />
       </Routes>
     </div>

@@ -16,7 +16,7 @@ const StyledListItem = styled('li')(({ theme }) => ({
 }));
 
 const SearchUsers = () => {
-  const { query } = useParams();
+  const { query, userId } = useParams();
   const [searchResults, setSearchResults] = useState([]);
   const [user, setUser] = useState({id: 0, googleId: '', location: '', name: '', username: '' });
 
@@ -31,7 +31,7 @@ const SearchUsers = () => {
   useEffect(() => {
     loadUser();
 
-    fetch(`/api/search/users/${query}`)
+    fetch(`/api/search/users/${userId}/${query}`)
       .then((data: any) => data.json())
       .then((response: any) => {
         setSearchResults(response);

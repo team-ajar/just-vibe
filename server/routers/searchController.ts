@@ -4,9 +4,22 @@ import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
+// const foundUser = prisma.user.findMany({});
+
 require("dotenv").config();
 
 const LAST_FM_API_KEY = process.env.LAST_FM_API_KEY;
+
+// interface foundUser {
+//   id: number;
+//   name: string;
+//   username: string;
+//   googleId: string;
+//   location: string;
+//   bio: string;
+//   image: string;
+//   isFollowing: boolean;
+// }
 
 const searchController = {
   handleMusicSearch: (req: Request, res: Response) => {
@@ -32,27 +45,41 @@ const searchController = {
       })
       .catch((err: AxiosResponse) => console.error("err: ", err));
   },
-  handleUserSearch: (req: Request, res: Response) => {
-    const { query } = req.params;
+  handleUserSearch: async (req: Request, res: Response) => {
+    const { userId, query } = req.params;
 
     prisma.user
       .findMany({
         where: {
-          username: {
-            contains: query,
-          },
+          OR: [
+            {
+              username: {
+                contains: query,
+              },
+            },
+            {
+              name: {
+                contains: query,
+              },
+            },
+          ],
+          AND: [
+            {
+              id: {
+                not: Number(userId),
+              },
+            },
+          ],
         },
       })
-      .then((found: any) => {
-        if (found.length) {
-          res.status(200).send(found);
-        } else {
-          res.status(404).send("User not found");
-        }
-      })
-      .catch((err: any) => {
-        res.status(500).send(err);
-      });
+        .then((found: any) => {
+          if (found.length) {
+            res.status(201).send(found);
+          } else {
+            res.status(404).send('No users found');
+          }
+        })
+        .catch(() => res.sendStatus(500));
   },
 };
 
