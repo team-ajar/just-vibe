@@ -80,11 +80,9 @@ const Feed = () => {
   };
 
   const handleEnter = (e: any) => {
-    // console.log(e)
     if (e.key === 'Enter') {
       setQuery('');
       return navigate(`/search/users/${query}`);
-      // searchQuery
     }
   }
 
