@@ -36,7 +36,7 @@ const Profile = () => {
   const [followers, setFollowers] = useState<Follow[]>([]);
   const [following, setFollowing] = useState<Follow[]>([]);
 
-  const loadProfileData = async () => {
+const loadPage = async () => {
     try {
       const { data: userData } = await axios.get("/api/user");
       setUser(userData);
@@ -47,7 +47,7 @@ const Profile = () => {
       const { data: followingData } = await axios.get(`/api/following/${userData.id}`);
       setFollowing(followingData);
     } catch (error) {
-      console.error("Error loading profile data:", error);
+      console.error("Error loading profile data", error);
     }
   };
 
@@ -68,7 +68,7 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    loadProfileData();
+    loadPage();
   }, []);
 
   return (
