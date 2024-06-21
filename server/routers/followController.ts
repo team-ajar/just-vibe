@@ -40,6 +40,36 @@ const followController = {
       res.sendStatus(500);
     })
   },
+
+  getFollowers: (req: Request, res: Response) => {
+    const { userId } = req.params;
+    prisma.follows.findMany({
+      where: { followingId: parseInt(userId) },
+      include: { followedBy: true },
+    })
+    .then(followers => {
+      res.send(followers);
+    })
+    .catch(err => {
+      console.error('Error fetching followers', err);
+      res.sendStatus(500);
+    });
+  },
+
+  getFollowing: (req: Request, res: Response) => {
+    const { userId } = req.params;
+    prisma.follows.findMany({
+      where: { followedById: parseInt(userId) },
+      include: { following: true },
+    })
+    .then(following => {
+      res.send(following);
+    })
+    .catch(err => {
+      console.error('Error fetching following', err);
+      res.sendStatus(500);
+    });
+  }
 }
 
 export default followController;

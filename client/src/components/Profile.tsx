@@ -36,7 +36,7 @@ const Profile = () => {
   };
 
   const deleteProfile = () => {
-    let answer = prompt("enter your username to delete:");
+    let answer = prompt("Enter your username to delete:");
     const delUser = {
       id: 0,
       googleId: "",
@@ -74,6 +74,21 @@ const Profile = () => {
               </Button>
             </Box>
           </Box>
+
+          <Box sx={{ mt: 3 }}>
+            <Typography variant="h3" sx={{ mb: 2 }}>Followers</Typography>
+            <Button variant="outlined" component={Link} to={`/profile/followers/${user.id}`}>
+              View Followers
+            </Button>
+          </Box>
+
+          <Box sx={{ mt: 3 }}>
+            <Typography variant="h3" sx={{ mb: 2 }}>Following</Typography>
+            <Button variant="outlined" component={Link} to={`/profile/following/${user.id}`}>
+              View Following
+            </Button>
+          </Box>
+
         </Card>
         {user.id > 0 && <TopAlbumsComponent userId={user.id} />}
         {user.id > 0 && <TopArtistsComponent userId={user.id} />}
