@@ -46,6 +46,8 @@ router.route('/album-id').post(albumIdController.getAlbumId);
 
 router.route('/follow/:followedById/:followingId').post(followController.followUser);
 router.route('/follow/:followedById/:followingId').delete(followController.unfollowUser);
+router.route('/followers/:userId').get(followController.getFollowers);
+router.route('/following/:userId').get(followController.getFollowing);
 
 router.route('/feed/reviews/:userId').get(followedUsers.getFollowedUsersReviews);
 

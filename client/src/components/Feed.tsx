@@ -91,8 +91,8 @@ const Feed = () => {
   }, [user]);
 
   return (
-    <Container>
-      <Typography variant="h1">Feed</Typography>
+    <Container sx={{ p: 2, mt: 3 }}>
+      <Typography variant="h1" gutterBottom>Feed</Typography>
       <Box display="flex" mb={2}>
         <Search>
           <SearchIconWrapper>
