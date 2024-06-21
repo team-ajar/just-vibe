@@ -73,7 +73,7 @@ const HomePage = () => {
 
   return (
     <Container sx={{ p: 2, mt: 3 }}>
-      <Typography variant="h1" gutterBottom>Welcome to Just Vibe!</Typography>
+      <Typography variant="h1" gutterBottom>Welcome!</Typography>
       <Typography variant="body1" gutterBottom>{today}</Typography>
       <Typography variant="h2" gutterBottom>Your Album of The Day</Typography>
       {albumOfTheDay ? (
