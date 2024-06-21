@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Container, Typography, Box, Button, styled } from '@mui/material';
 
@@ -19,6 +19,7 @@ const SearchUsers = () => {
   const { query } = useParams();
   const [searchResults, setSearchResults] = useState([]);
   const [user, setUser] = useState({id: 0, googleId: '', location: '', name: '', username: '' });
+  const navigate = useNavigate();
 
   const loadUser = () => {
     axios.get('/api/user')
@@ -49,6 +50,9 @@ const SearchUsers = () => {
 
   return (
     <Container sx={{ p: 2, mt: 3 }}>
+      <Button variant="contained" onClick={() => navigate('/feed')} sx={{ mb: 2 }}>
+        &larr; Back to Feed
+      </Button>
       <Typography variant="h1" gutterBottom>Users:</Typography>
       <Box component="ul" p={0} m={0}>
         {searchResults.map((user: any, index: number) => (
