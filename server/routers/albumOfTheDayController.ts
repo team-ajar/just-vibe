@@ -33,30 +33,36 @@ const albumOfTheDayController = {
   setAlbumOfTheDay: (req: Request, res: Response) => {
     const { albumId } = req.body;
     const userId = req.user?.id;
-    const startOfDay = dayjs().startOf('day').toISOString();
-    const endOfDay = dayjs().endOf('day').toISOString();
+    const todayStart = dayjs().startOf('day').toISOString();
+    const todayEnd = dayjs().endOf('day').toISOString();
 
     prisma.albumOfTheDay.findFirst({
       where: {
         userId,
         date: {
-          gte: startOfDay,
-          lt: endOfDay,
+          gte: todayStart,
+          lt: todayEnd,
         }
       }
     })
     .then((existingEntry) => {
       if (existingEntry) {
-        res.sendStatus(404);
+        return prisma.albumOfTheDay.update({
+          where: { id: existingEntry.id },
+          data: {
+            album: { connect: { id: albumId } },
+            date: new Date(),
+          },
+        });
+      } else {
+        return prisma.albumOfTheDay.create({
+          data: {
+            album: { connect: { id: albumId } },
+            user: { connect: { id: userId } },
+            date: new Date(),
+          },
+        });
       }
-    })
-
-    prisma.albumOfTheDay.create({
-      data: {
-        album: { connect: { id: albumId } },
-        user: { connect: { id: userId } },
-        date: new Date(),
-      },
     })
     .then(() => {
       res.sendStatus(201);
@@ -64,7 +70,7 @@ const albumOfTheDayController = {
     .catch((err: any) => {
       console.error('Error setting album of the day', err);
       res.sendStatus(500);
-    })
+    });
   },
 
   editAlbumOfTheDay: (req: Request, res: Response) => {
