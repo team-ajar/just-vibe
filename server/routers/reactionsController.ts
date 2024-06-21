@@ -64,6 +64,24 @@ const reactionsController = {
         res.sendStatus(500);
       });
   },
+
+  getReaction: (req: Request, res: Response) => {
+    const { userId, postId } = req.params;
+
+    prisma.reaction.findFirst({
+      where: {
+        userId: parseInt(userId),
+        postId: parseInt(postId),
+      },
+    })
+    .then((reaction) => {
+      res.status(200).send(reaction);
+    })
+    .catch((err) => {
+      console.error("Error fetching reaction:", err);
+      res.sendStatus(500);
+    });
+  }
 };
 
 export default reactionsController;
