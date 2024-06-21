@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import dayjs from 'dayjs';
-import { Container, Typography, Card, CardContent, CardMedia, Button, Select, MenuItem, Box } from '@mui/material';
+import { Container, Typography, Card, CardContent, CardMedia, Button, Select, MenuItem, Box } from "../style";
 
 const HomePage = () => {
   const [albumOfTheDay, setAlbumOfTheDay] = useState<any>(null);
@@ -73,7 +73,7 @@ const HomePage = () => {
 
   return (
     <Container sx={{ p: 2, mt: 3 }}>
-      <Typography variant="h1" gutterBottom>Welcome to Just Vibe!</Typography>
+      <Typography variant="h1" gutterBottom>Welcome!</Typography>
       <Typography variant="body1" gutterBottom>{today}</Typography>
       <Typography variant="h2" gutterBottom>Your Album of The Day</Typography>
       {albumOfTheDay ? (
@@ -92,8 +92,8 @@ const HomePage = () => {
               <Typography variant="h3">{albumOfTheDay.album.albumName}</Typography>
               <Typography variant="body2">{albumOfTheDay.album.artistName}</Typography>
               <Box display="flex" justifyContent="space-between" mt={2}>
-                <Button variant="contained" color="primary" onClick={() => deleteAlbumOfTheDay(albumOfTheDay.id)}>Delete</Button>
-                <Button variant="contained" color="secondary" onClick={() => setIsEditing(true)}>Edit</Button>
+                <Button variant="contained" color="primary" onClick={() => setIsEditing(true)}>Edit</Button>
+                <Button variant="contained" color="secondary" onClick={() => deleteAlbumOfTheDay(albumOfTheDay.id)}>Delete</Button>
               </Box>
               {isEditing && (
                 <Box mt={2}>

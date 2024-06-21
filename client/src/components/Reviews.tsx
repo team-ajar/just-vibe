@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import Snackbar from '@mui/material/Snackbar';
+import SnackbarContent from '@mui/material/SnackbarContent';
 import {
   Container,
   Typography,
@@ -9,8 +11,8 @@ import {
   Button,
   Box,
   FormControl,
-  TextareaAutosize,
-} from "@mui/material";
+  TextareaAutosize
+} from "../style";
 
 interface Review {
   text: string;
@@ -19,8 +21,20 @@ interface Review {
   id: number;
 }
 
+interface LocationState {
+  album: {
+    id: number;
+    image: any;
+    name: string;
+    artist: string;
+  };
+  query: string;
+}
+
 const Reviews = () => {
-  const { state } = useLocation();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { album, query } = location.state as LocationState;
 
   const [userId, setUserId] = useState<null | number>(null);
   const [review, setReview] = useState<{
@@ -29,13 +43,16 @@ const Reviews = () => {
     id?: number;
   }>({ text: "", rating: 5, id: undefined });
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const showReviews = () => {
     axios
-      .get(`/api/albums/${state.artist}/${state.name}/reviews`)
+      .get(`/api/albums/${album.artist}/${album.name}/reviews`)
       .then((response) => {
         if (response.data.error) {
-          alert("Save album!");
+          setSnackbarMessage("Save album!");
+          setSnackbarOpen(true);
           return;
         }
         setReviews(response.data);
@@ -51,7 +68,7 @@ const Reviews = () => {
     }
     axios
       .post(
-        `/api/albums/${state.artist}/${state.name}/review/${userId}`,
+        `/api/albums/${album.artist}/${album.name}/review/${userId}`,
         review
       )
       .then((response) => {
@@ -60,7 +77,8 @@ const Reviews = () => {
       })
       .catch((error) => {
         if (error.response.status === 404) {
-          alert(error.response.data);
+          setSnackbarMessage(error.response.data);
+          setSnackbarOpen(true);
         }
         console.error("Error creating review:", error);
       });
@@ -100,12 +118,12 @@ const Reviews = () => {
   };
 
   useEffect(() => {
-    if (!state) return;
+    if (!album) return;
     showReviews();
     return () => {
       setReviews([]);
     };
-  }, [state]);
+  }, [album]);
 
   useEffect(() => {
     axios.get(`api/user`).then((response) => {
@@ -116,14 +134,21 @@ const Reviews = () => {
     });
   }, []);
 
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
   return (
     <Container sx={{ p: 2, mt: 3 }}>
+      <Button variant="contained" onClick={() => navigate(`/search-results/${query}`)} sx={{ mb: 2 }}>
+        &larr; Back to Search Results
+      </Button>
       <Box sx={{ display: "flex", flexDirection: "column" }} mt={2}>
         <Typography variant="h1">Reviews</Typography>
         <Typography
           sx={{ marginBottom: "10px", fontSize: "2rem", fontWeight: "bold" }}
         >
-          {state.name}
+          {album.name}
         </Typography>
         <Box sx={{ flex: 1, display: "flex", gap: {
           xs: "10px",
@@ -132,8 +157,8 @@ const Reviews = () => {
           xs: 1.5
         }}} >
           <img
-            src={state.image[3]["#text"]}
-            alt={`${state.name} album cover`}
+            src={album.image[3]["#text"]}
+            alt={`${album.name} album cover`}
             style={{
               maxWidth: "100%",
               height: "auto",
@@ -234,6 +259,16 @@ const Reviews = () => {
           <Typography variant="body1">No reviews yet.</Typography>
         )}
       </div>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <SnackbarContent
+          message={snackbarMessage}
+        />
+      </Snackbar>
     </Container>
   );
 };

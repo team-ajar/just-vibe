@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { IconButton } from "@mui/material";
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import LightModeIcon from '@mui/icons-material/LightMode';
+import { IconButton, DarkModeIcon, LightModeIcon } from "../style";
 
 const LightDarkMode = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
