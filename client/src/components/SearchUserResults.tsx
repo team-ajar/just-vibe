@@ -48,8 +48,8 @@ const SearchUsers = () => {
   }
 
   return (
-    <Container>
-      <Typography variant="h1">Users:</Typography>
+    <Container sx={{ p: 2, mt: 3 }}>
+      <Typography variant="h1" gutterBottom>Users:</Typography>
       <Box component="ul" p={0} m={0}>
         {searchResults.map((user: any, index: number) => (
           <StyledListItem key={index}>
