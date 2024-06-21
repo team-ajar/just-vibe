@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Typography, Container, Box } from '@mui/material';
+import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Typography, Container, Box, styled } from '@mui/material';
 
 interface User {
   id: number;
@@ -19,6 +19,18 @@ interface Follow {
   followedBy: User;
 }
 
+const StyledListItem = styled(ListItem)(({ theme }) => ({
+  padding: theme.spacing(2),
+  border: `1px solid ${theme.palette.primary.main}`,
+  borderRadius: theme.shape.borderRadius,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  '&:hover': {
+    backgroundColor: theme.palette.primary.light,
+  },
+}));
+
 const FollowersList = () => {
   const { userId } = useParams<{ userId: string }>();
   const [followers, setFollowers] = useState<Follow[]>([]);
@@ -35,7 +47,7 @@ const FollowersList = () => {
         <Typography variant="h2" sx={{ mb: 2 }}>Followers</Typography>
         <List>
           {followers.map((follower) => (
-            <ListItem key={follower.followedBy.id}>
+            <StyledListItem key={follower.followedBy.id}>
               <ListItemAvatar>
                 <Avatar src={follower.followedBy.image} />
               </ListItemAvatar>
@@ -43,7 +55,7 @@ const FollowersList = () => {
                 primary={follower.followedBy.name}
                 secondary={`@${follower.followedBy.username}`}
               />
-            </ListItem>
+            </StyledListItem>
           ))}
         </List>
       </Box>
