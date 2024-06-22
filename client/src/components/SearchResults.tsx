@@ -51,7 +51,7 @@ const SearchResults = () => {
   });
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  // const [message, setMessage] = useState("");
+  const [message, setMessage] = useState("");
 
   const loadUser = () => {
     axios
@@ -69,9 +69,9 @@ const SearchResults = () => {
         artistName: album.artist,
         image: album.image[3]["#text"],
       })
-      .then(() => setSnackbarOpen(true))
       .catch((err) => console.error(err));
-    // setSnackbarOpen(false);
+    setMessage(`${album.name} saved!`);
+    setSnackbarOpen(true);
   };
 
   const saveArtist = (artist: Artist) => {
@@ -80,6 +80,8 @@ const SearchResults = () => {
         artistName: artist.name,
       })
       .catch((err) => console.error(err));
+    setMessage(`${artist.name} saved!`);
+    setSnackbarOpen(true);
   };
 
   const saveAlbumOfTheDay = (album: any) => {
@@ -343,7 +345,7 @@ const SearchResults = () => {
         onClose={handleClose}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
-        <SnackbarContent message="Album saved!" />
+        <SnackbarContent message={message} />
       </Snackbar>
     </Box>
   );
