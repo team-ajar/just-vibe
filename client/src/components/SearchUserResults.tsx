@@ -103,10 +103,7 @@ const SearchUsers = () => {
         Users:
       </Typography>
       <Box component="ul" p={0} m={0}>
-        {searchResults.map((foundUser: User, index: number) => {
-          console.log('search results: ', searchResults);
-          console.log('follows: ', follows);
-          return (
+        {searchResults.map((foundUser: User, index: number) => (
           <StyledListItem key={index}>
             <Typography variant="body1">{`@${foundUser.username} - ${foundUser.name}`}</Typography>
             <div>
@@ -132,7 +129,7 @@ const SearchUsers = () => {
               )}
             </div>
           </StyledListItem>
-        )})}
+        ))}
       </Box>
     </Container>
   );

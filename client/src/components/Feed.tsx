@@ -110,7 +110,7 @@ const Feed = () => {
             onKeyDown={(e) => handleEnter(e)}
           />
         </Search>
-        <Button variant="contained" color="primary" component={Link} to={`/search/users/${query}`}>
+        <Button variant="contained" color="primary" component={Link} to={`/search/users/${user.id}/${query}`}>
           Search Users
         </Button>
       </Box>
