@@ -46,7 +46,8 @@ const musicController = {
       .findMany({
         where: {
           albumName,
-          artistName
+          artistName,
+          userId: Number(userId)
         },
       })
       .then((found: any) => {
