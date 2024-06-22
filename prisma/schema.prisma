@@ -15,6 +15,7 @@ model User {
   location       String
   bio            String          @db.VarChar(300)
   image          String          @db.VarChar(300)
+  lastReset      DateTime?
   followedBy     Follows[]       @relation("followedBy")
   following      Follows[]       @relation("following")
   reviews        Review[]

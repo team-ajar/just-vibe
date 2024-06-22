@@ -71,12 +71,23 @@ const musicController = {
       })
       .catch((err) => console.error(err));
   },
+
   readAlbums: (req: Request, res: Response) => {
-    prisma.album
-      .findMany()
-      .then((albums) => res.status(201).send(albums))
-      .catch(() => res.sendStatus(500));
-  },
+    const userId = req.user?.id;
+
+    prisma.album.findMany({
+      where: {
+        userId: userId
+      }
+    })
+    .then(albums => {
+      res.status(201).send(albums);
+    })
+    .catch(err => {
+      console.error('Error fetching albums', err);
+      res.sendStatus(500);
+    });
+  }
 };
 
 export default musicController;

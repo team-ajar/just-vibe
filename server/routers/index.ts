@@ -53,5 +53,6 @@ router.route('/feed/reviews/:userId').get(followedUsers.getFollowedUsersReviews)
 
 router.route('/reactions').post(reactionsController.addOrUpdateReaction);
 router.route('/reactions/:userId/:postId').delete(reactionsController.removeReaction);
+router.route('/reactions/:userId/:postId').get(reactionsController.getReaction);
 
 export default router;

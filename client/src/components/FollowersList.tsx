@@ -42,6 +42,12 @@ const FollowersList = () => {
       .catch(error => console.error('Error fetching followers', error));
   }, [userId]);
 
+  const followUser = (followingId: number) => {
+    axios.post(`/api/follow/${userId}/${followingId}`)
+      .then(() => {})
+      .catch(error => console.error('Error unfollowing user', error));
+  };
+
   return (
     <Container sx={{ p: 2, mt: 3 }}>
       <Button variant="contained" onClick={() => navigate('/profile')} sx={{ mb: 2 }}>
@@ -52,13 +58,22 @@ const FollowersList = () => {
         <List>
           {followers.map((follower) => (
             <StyledListItem key={follower.followedBy.id}>
-              <ListItemAvatar>
-                <Avatar src={follower.followedBy.image} />
-              </ListItemAvatar>
-              <ListItemText
-                primary={follower.followedBy.name}
-                secondary={`@${follower.followedBy.username}`}
-              />
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <ListItemAvatar>
+                  <Avatar src={follower.followedBy.image} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={follower.followedBy.name}
+                  secondary={`@${follower.followedBy.username}`}
+                />
+              </Box>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => followUser(follower.followedBy.id)}
+              >
+                Follow
+              </Button>
             </StyledListItem>
           ))}
         </List>
