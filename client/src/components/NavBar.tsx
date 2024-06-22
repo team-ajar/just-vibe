@@ -19,6 +19,7 @@ import {
 } from "../style";
 import logo from "./justvibelogo.png";
 import axios from "axios";
+import { PaletteMode } from "@mui/material";
 
 const pages = ["Profile", "Feed"];
 
@@ -40,7 +41,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const NavBar = () => {
+const NavBar = ({toggle, mode}: {toggle: () => void, mode: PaletteMode}) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const navigate = useNavigate();
@@ -118,7 +119,7 @@ const NavBar = () => {
                 <SearchIcon />
               </IconButton>
             </Search>
-            <LightDarkMode />
+            <LightDarkMode toggle={toggle} mode={mode} />
           </Toolbar>
         </Container>
       </AppBar>
