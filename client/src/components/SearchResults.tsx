@@ -2,7 +2,18 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import dayjs from "dayjs";
-import { Typography, Card, CardContent, CardMedia, Button, Box, List, ListItem } from "../style";
+import {
+  Typography,
+  Card,
+  CardContent,
+  CardMedia,
+  Button,
+  Box,
+  List,
+  ListItem,
+  Snackbar,
+  SnackbarContent,
+} from "../style";
 
 interface Artist {
   image: any;
@@ -39,6 +50,9 @@ const SearchResults = () => {
     username: "",
   });
 
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  // const [message, setMessage] = useState("");
+
   const loadUser = () => {
     axios
       .get("/api/user")
@@ -55,7 +69,9 @@ const SearchResults = () => {
         artistName: album.artist,
         image: album.image[3]["#text"],
       })
+      .then(() => setSnackbarOpen(true))
       .catch((err) => console.error(err));
+    // setSnackbarOpen(false);
   };
 
   const saveArtist = (artist: Artist) => {
@@ -96,6 +112,14 @@ const SearchResults = () => {
           .catch((err) => console.error("Error getting userId", err));
       })
       .catch((err) => console.error("Error getting albumId", err));
+  };
+
+  const handleOpen = () => {
+    setSnackbarOpen(false);
+  };
+
+  const handleClose = () => {
+    setSnackbarOpen(false);
   };
 
   useEffect(() => {
@@ -151,16 +175,28 @@ const SearchResults = () => {
       <List>
         {searchResults.albums.map((album: Album, i: any) => (
           <ListItem
-            sx={{ width: 1, display: "flex", mb: 2, flexDirection: {
-              xs: "column",
-              sm: "row"
-            }}}
+            sx={{
+              width: 1,
+              display: "flex",
+              mb: 2,
+              flexDirection: {
+                xs: "column",
+                sm: "row",
+              },
+            }}
             key={i}
           >
-            <Card sx={{ display: "flex", mb: 2, flexDirection: { xs: "column", sm: "row" }, width: 1 } }>
+            <Card
+              sx={{
+                display: "flex",
+                mb: 2,
+                flexDirection: { xs: "column", sm: "row" },
+                width: 1,
+              }}
+            >
               <CardMedia
                 component="img"
-                sx={{ width: { xs: '100%', sm: 151 } }}
+                sx={{ width: { xs: "100%", sm: 151 } }}
                 image={album.image[3]["#text"]}
                 alt={album.name}
               />
@@ -188,7 +224,7 @@ const SearchResults = () => {
                     pl: 1,
                     flexWrap: "wrap",
                     gap: 1,
-                    flexDirection: { xs: "column", sm: "row" }
+                    flexDirection: { xs: "column", sm: "row" },
                   }}
                 >
                   <Button
@@ -265,7 +301,7 @@ const SearchResults = () => {
               marginBottom: "10px",
               display: "flex",
               alignItems: "center",
-              justifyContent: "space-between"
+              justifyContent: "space-between",
             }}
           >
             <Typography
@@ -293,7 +329,7 @@ const SearchResults = () => {
                 "&:hover": { boxShadow: "7px 7px 0px #000" },
                 marginLeft: "10px",
                 whiteSpace: "nowrap",
-                minWidth: "100px"
+                minWidth: "100px",
               }}
             >
               Save Artist
@@ -301,8 +337,16 @@ const SearchResults = () => {
           </ListItem>
         ))}
       </List>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <SnackbarContent message="Album saved!" />
+      </Snackbar>
     </Box>
   );
-};
+}
 
 export default SearchResults;

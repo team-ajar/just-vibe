@@ -27,6 +27,8 @@ import Drawer from '@mui/material/Drawer';
 import MenuIcon from "@mui/icons-material/Menu";
 import FormControl from "@mui/material/FormControl";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
+import Snackbar from '@mui/material/Snackbar';
+import SnackbarContent from '@mui/material/SnackbarContent';
 
 export {
   Container,
@@ -58,4 +60,6 @@ export {
   MenuIcon,
   FormControl,
   TextareaAutosize,
+  Snackbar,
+  SnackbarContent
 };
