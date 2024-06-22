@@ -14,7 +14,7 @@ import isAuthenticated from "../middleware/auth";
 const router = express.Router();
 
 router.route('/search/:search').get(searchController.handleMusicSearch);
-router.route('/search/users/:query').get(searchController.handleUserSearch);
+router.route('/search/users/:userId/:query').get(searchController.handleUserSearch);
 
 router.route('/top/albums/:userId').get(isAuthenticated, topThreeController.getTopAlbums);
 router.route('/top/albums/:oldAlbumId/:position/:userId').post(isAuthenticated, topThreeController.createOrUpdateTopAlbum);
