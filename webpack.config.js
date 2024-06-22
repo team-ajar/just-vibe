@@ -40,8 +40,5 @@ module.exports = {
       template: './client/index.html',
       filename: 'index.html'
     }),
-    new CopyPlugin({
-      patterns: [{ from: "./client/styles.css", to: "styles.css" }],
-    }),
 ],
 };

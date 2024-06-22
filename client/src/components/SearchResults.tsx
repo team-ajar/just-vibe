@@ -154,7 +154,6 @@ const SearchResults = () => {
           fontWeight: 700,
           textTransform: "uppercase",
           letterSpacing: "2px",
-          color: "#000000", // primary color
           mb: 4, // margin-bottom
           mt: 2,
         }}
@@ -168,7 +167,6 @@ const SearchResults = () => {
           fontWeight: 700,
           textTransform: "uppercase",
           letterSpacing: "2px",
-          color: "#000000", // primary color
           mb: 2, // margin-bottom
         }}
       >
@@ -289,7 +287,6 @@ const SearchResults = () => {
           fontWeight: 700,
           textTransform: "uppercase",
           letterSpacing: "2px",
-          color: "#000000", // primary color
           mb: 2, // margin-bottom
         }}
       >
@@ -307,13 +304,12 @@ const SearchResults = () => {
             }}
           >
             <Typography
-              variant="h6"
+              variant="body2"
               sx={{
                 fontSize: "1.25rem",
                 fontWeight: 700,
                 textTransform: "uppercase",
                 letterSpacing: "2px",
-                color: "#000000", // primary color
                 marginRight: "10px", // space between artist name and button
                 textDecoration: "none",
               }}
