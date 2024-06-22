@@ -48,7 +48,7 @@ model Album {
   artistName     String
   image          String          @db.VarChar(300)
   userId         Int
-  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user           User[]
   reviews        Review[]
   albumsOfTheDay AlbumOfTheDay[]
   TopAlbums      TopAlbums[]
