@@ -16,11 +16,12 @@ const Reactions = ({ userId, postId }: Props) => {
       .then((response) => {
         const { emoji } = response.data;
         setSelectedEmoji(emoji);
-        setIsLoading(false);
         localStorage.setItem(`reaction_${userId}_${postId}`, emoji);
       })
       .catch((err) => {
         console.error('Error getting user reaction:', err);
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   };

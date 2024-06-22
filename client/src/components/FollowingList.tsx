@@ -50,7 +50,6 @@ const FollowingList = () => {
       .catch(error => console.error('Error unfollowing user', error));
   };
 
-
   return (
     <Container sx={{ p: 2, mt: 3 }}>
       <Button variant="contained" onClick={() => navigate('/profile')} sx={{ mb: 2 }}>

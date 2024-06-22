@@ -63,6 +63,9 @@ const NavBar = ({toggle, mode}: {toggle: () => void, mode: PaletteMode}) => {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <List>
+        <ListItem component={Link} to="/home" button>
+          <ListItemText primary="Home" />
+        </ListItem>
         {pages.map((page) => (
           <ListItem key={page} component={Link} to={`/${page.toLowerCase()}`} button>
             <ListItemText primary={page} />
@@ -76,11 +79,9 @@ const NavBar = ({toggle, mode}: {toggle: () => void, mode: PaletteMode}) => {
   );
 
   const handleEnter = (e: any) => {
-    // console.log(e)
     if (e.key === 'Enter') {
       setSearchQuery('');
       return navigate(`/search-results/${searchQuery}`);
-      // searchQuery
     }
   }
 

@@ -14,7 +14,7 @@ import isAuthenticated from "../middleware/auth";
 const router = express.Router();
 
 router.route('/search/:search').get(searchController.handleMusicSearch);
-router.route('/search/users/:query').get(searchController.handleUserSearch);
+router.route('/search/users/:userId/:query').get(searchController.handleUserSearch);
 
 router.route('/top/albums/:userId').get(isAuthenticated, topThreeController.getTopAlbums);
 router.route('/top/albums/:oldAlbumId/:position/:userId').post(isAuthenticated, topThreeController.createOrUpdateTopAlbum);
@@ -53,5 +53,6 @@ router.route('/feed/reviews/:userId').get(followedUsers.getFollowedUsersReviews)
 
 router.route('/reactions').post(reactionsController.addOrUpdateReaction);
 router.route('/reactions/:userId/:postId').delete(reactionsController.removeReaction);
+router.route('/reactions/:userId/:postId').get(reactionsController.getReaction);
 
 export default router;
