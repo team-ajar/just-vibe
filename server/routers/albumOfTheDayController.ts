@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import dayjs from 'dayjs';
+import cron from 'node-cron';
 
 const prisma = new PrismaClient();
 
@@ -103,6 +104,27 @@ const albumOfTheDayController = {
       res.sendStatus(500);
     })
   },
+
+  clearAlbumOfTheDay: () => {
+    const todayStart = dayjs().add(1, 'day').startOf('day').toISOString();
+    const todayEnd = dayjs().endOf('day').toISOString();
+
+    prisma.albumOfTheDay.deleteMany({
+      where: {
+        date: {
+          lt: todayEnd,
+        },
+      },
+    })
+    .then(() => {})
+    .catch((error) => {
+      console.error('Error resetting Album of the Day:', error);
+    });
+  }
 }
+
+cron.schedule('0 8 * * *', () => {
+  albumOfTheDayController.clearAlbumOfTheDay();
+});
 
 export default albumOfTheDayController;
