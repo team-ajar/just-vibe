@@ -158,18 +158,15 @@ const SearchResults = () => {
           fontWeight: 700,
           textTransform: "uppercase",
           letterSpacing: "2px",
-          mb: 4, // margin-bottom
+          mb: 4,
           mt: 2,
         }}
       >
         Search Results for {query}
       </Typography>
       <Accordion>
-        <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-          Albums
-        </AccordionSummary>
-        {/* <Typography
-          variant="h2"
+        <AccordionSummary 
+          expandIcon={<ArrowDropDownIcon />}
           sx={{
             fontSize: "2rem",
             fontWeight: 700,
@@ -179,7 +176,7 @@ const SearchResults = () => {
           }}
         >
           Albums
-        </Typography> */}
+        </AccordionSummary>
         <AccordionDetails>
           <List>
             {searchResults.albums.map((album: Album, i: any) => (
@@ -294,21 +291,18 @@ const SearchResults = () => {
         </AccordionDetails>
       </Accordion>
       <Accordion>
-        <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-          Artist
-        </AccordionSummary>
-        {/* <Typography
-        variant="h2"
+        <AccordionSummary 
+        expandIcon={<ArrowDropDownIcon />}
         sx={{
           fontSize: "2rem",
           fontWeight: 700,
           textTransform: "uppercase",
           letterSpacing: "2px",
-          mb: 2, // margin-bottom
+          mb: 2,
         }}
-      >
-        Artists
-      </Typography> */}
+        >
+          Artist
+        </AccordionSummary>
         <AccordionDetails>
           <List>
             {searchResults.artists.map((artist: Artist) => (
