@@ -29,6 +29,12 @@ import FormControl from "@mui/material/FormControl";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+
+
 
 export {
   Container,
@@ -61,5 +67,9 @@ export {
   FormControl,
   TextareaAutosize,
   Snackbar,
-  SnackbarContent
+  SnackbarContent,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  ArrowDropDownIcon
 };
