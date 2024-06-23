@@ -239,18 +239,18 @@ const Reviews = () => {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => deleteReview(rev.id)}
+                  onClick={() => setReview(rev)}
                   sx={{ marginTop: "10px" }}
                 >
-                  Delete
+                  Update
                 </Button>
                 <Button
                   variant="contained"
                   color="secondary"
-                  onClick={() => setReview(rev)}
+                  onClick={() => deleteReview(rev.id)}
                   sx={{ marginTop: "10px", marginLeft: "10px" }}
                 >
-                  Update
+                  Delete
                 </Button>
               </CardContent>
             </Card>

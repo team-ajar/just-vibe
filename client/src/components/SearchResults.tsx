@@ -69,9 +69,11 @@ const SearchResults = () => {
         artistName: album.artist,
         image: album.image[3]["#text"],
       })
+      .then(() => {
+        setMessage(`${album.name} saved!`);
+        setSnackbarOpen(true);
+      })
       .catch((err) => console.error(err));
-    setMessage(`${album.name} saved!`);
-    setSnackbarOpen(true);
   };
 
   const saveArtist = (artist: Artist) => {
@@ -79,9 +81,11 @@ const SearchResults = () => {
       .post(`/api/music/artist/${user.id}`, {
         artistName: artist.name,
       })
+      .then(() => {
+        setMessage(`${artist.name} saved!`);
+        setSnackbarOpen(true);
+      })
       .catch((err) => console.error(err));
-    setMessage(`${artist.name} saved!`);
-    setSnackbarOpen(true);
   };
 
   const saveAlbumOfTheDay = (album: any) => {
@@ -106,14 +110,20 @@ const SearchResults = () => {
               .post("/api/album-of-the-day", { albumId, userId })
               .then(() => {
                 setAlbumOfTheDaySet(true);
+                setMessage(`Album of the day set for ${album.name}!`);
+                setSnackbarOpen(true);
               })
               .catch((err) =>
                 console.error("Error setting album of the day", err)
               );
           })
           .catch((err) => console.error("Error getting userId", err));
-      })
-      .catch((err) => console.error("Error getting albumId", err));
+        })
+      .catch((err) => {
+        console.error("Error getting albumId", err);
+        setMessage("Album missing, please save before setting as album of the day!");
+        setSnackbarOpen(true);
+      });
   };
 
   const handleOpen = () => {
@@ -145,6 +155,7 @@ const SearchResults = () => {
       })
       .catch((err) => console.error("Error checking album of the day", err));
   }, [query]);
+  
   return (
     <Box p={2}>
       <Typography
