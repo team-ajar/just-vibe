@@ -3,10 +3,7 @@ import axios from "axios";
 import { TopAlbumsComponent } from "./TopAlbums";
 import { TopArtistsComponent } from "./TopArtists";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import {
-  Snackbar,
-  Modal,
-} from "@mui/material";
+import { Snackbar, Modal } from "@mui/material";
 import { Container, Typography, Card, Box, Button, Avatar } from "../style";
 
 interface User {
@@ -32,7 +29,7 @@ const Profile = () => {
   });
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -57,15 +54,17 @@ const Profile = () => {
       bio: "",
       image: "",
     };
-    axios.delete(`/api/user/${user.id}/${user.googleId}`).then(() => setUser(delUser)).catch((err: any) => console.error(err));
+    axios
+      .delete(`/api/user/${user.id}`)
+      .then(() => setUser(delUser))
+      .catch((err: any) => console.error(err));
     handleClose();
-    return navigate('/');
+    return navigate("/");
   };
 
   // const handleEditClick = () => {
   //   return navigate(`/profile/edit/${user.id}`);
   // };
-
 
   useEffect(() => {
     loadPage();
@@ -74,19 +73,24 @@ const Profile = () => {
 
   return (
     <Container sx={{ p: 2, mt: 3 }}>
-      <Modal open={open} onClose={handleClose}>
+      <Modal open={open} onClose={handleClose} sx={{
+        display: "flex",
+        justifyContent: "center",
+      }}>
         <Box
-          height={200}
-          width={200}
-          my={4}
-          display="flex"
-          alignItems="center"
-          gap={4}
-          p={2}
-          // sx={}
+          sx={{
+            width: 0.5,
+            height: 0.5,
+            bgcolor: "background.paper",
+            border: "2px solid #000",
+            boxShadow: "5px 5px 0px #000",
+            p: 20
+          }}
         >
-          <Typography variant="h2">Are you sure you want to delete your account?</Typography>
-          <Button onClick={deleteProfile}>Delete</Button>
+          <Typography variant="h4">
+            Are you sure you want to delete your account?
+          </Typography>
+          <Button onClick={deleteProfile} color="primary" variant="contained">Delete</Button>
         </Box>
       </Modal>
       <Box sx={{ alignItems: "left" }}>
@@ -136,17 +140,29 @@ const Profile = () => {
             </Box>
           </Box>
 
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
-            <Box sx={{ flex: 1, textAlign: 'center' }}>
-              <Typography variant="h3" sx={{ mb: 2 }}>Followers</Typography>
-              <Button variant="outlined" component={Link} to={`/profile/followers/${user.id}`}>
+          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
+            <Box sx={{ flex: 1, textAlign: "center" }}>
+              <Typography variant="h3" sx={{ mb: 2 }}>
+                Followers
+              </Typography>
+              <Button
+                variant="outlined"
+                component={Link}
+                to={`/profile/followers/${user.id}`}
+              >
                 View Followers
               </Button>
             </Box>
 
-            <Box sx={{ flex: 1, textAlign: 'center' }}>
-              <Typography variant="h3" sx={{ mb: 2 }}>Following</Typography>
-              <Button variant="outlined" component={Link} to={`/profile/following/${user.id}`}>
+            <Box sx={{ flex: 1, textAlign: "center" }}>
+              <Typography variant="h3" sx={{ mb: 2 }}>
+                Following
+              </Typography>
+              <Button
+                variant="outlined"
+                component={Link}
+                to={`/profile/following/${user.id}`}
+              >
                 View Following
               </Button>
             </Box>

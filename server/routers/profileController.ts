@@ -60,7 +60,7 @@ const profileController = {
   },
 
   deleteUser: (req: Request, res: Response) => {
-    const { userId, gooId } = req.params;
+    const { userId } = req.params;
 
     prisma.user.delete({
         where: {
