@@ -90,11 +90,11 @@ const NavBar = ({toggle, mode}: {toggle: () => void, mode: PaletteMode}) => {
       <AppBar position="static" sx={{ backgroundColor: "#CB6CE6" }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters sx={{
-            display: { xs: "flex" },
+            display: "flex",
             flexDirection: "row",
-            justifyContent: "space-between"
+            justifyContent: "space-between",
+            alignItems: "center"
           }}>
-            <Box sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}>
             <IconButton
               color="inherit"
               edge="start"
@@ -103,30 +103,31 @@ const NavBar = ({toggle, mode}: {toggle: () => void, mode: PaletteMode}) => {
             >
               <MenuIcon />
             </IconButton>
+            <Box sx={{ display: { xs: "none", md: "flex" }, flexGrow: 1 }}>
               <Link to="/home">
-                <img src={logo} alt="Just Vibe Logo" height="100" />
+                <img src={logo} alt="Just Vibe Logo" height="50" />
               </Link>
             </Box>
             <Box sx={{ display: "flex" }}>
-            <Search sx={{ justifySelf: "end" }}
-            >
-              <StyledInputBase
-                placeholder="Search for an album or artist"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={(e) => handleEnter(e)}
-              />
-              <IconButton
-                type="submit"
-                aria-label="search"
-                component={Link}
-                to={`/search-results/${searchQuery}`}
-                onClick={() => setSearchQuery("")}
-              >
-                <SearchIcon />
-              </IconButton>
-            </Search>
-            <LightDarkMode toggle={toggle} mode={mode} />
+              <Search sx={{ justifySelf: "end" }}>
+                <StyledInputBase
+                  placeholder="Search for an album or artist"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => handleEnter(e)}
+                />
+                <IconButton
+                  type="submit"
+                  aria-label="search"
+                  component={Link}
+                  to={`/search-results/${searchQuery}`}
+                  onClick={() => setSearchQuery("")}
+                  sx={{ color: "inherit" }}
+                >
+                  <SearchIcon />
+                </IconButton>
+              </Search>
+              <LightDarkMode toggle={toggle} mode={mode} />
             </Box>
           </Toolbar>
         </Container>
@@ -140,7 +141,7 @@ const NavBar = ({toggle, mode}: {toggle: () => void, mode: PaletteMode}) => {
             keepMounted: true,
           }}
           sx={{
-            display: { xs: "block", md: "block" },
+            display: "block",
             "& .MuiDrawer-paper": { boxSizing: "border-box", width: 240 },
           }}
         >
