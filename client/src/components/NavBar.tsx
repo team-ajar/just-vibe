@@ -122,6 +122,7 @@ const NavBar = ({toggle, mode}: {toggle: () => void, mode: PaletteMode}) => {
                   component={Link}
                   to={`/search-results/${searchQuery}`}
                   onClick={() => setSearchQuery("")}
+                  sx={{ color: "inherit" }}
                 >
                   <SearchIcon />
                 </IconButton>
