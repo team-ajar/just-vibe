@@ -2,7 +2,7 @@ import { Request, Response} from 'express';
 require('dotenv').config();
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
-
+import { findOrCreateAlbum } from "./Library";
 const reviewsController = {
   getReviews: (req: Request, res: Response) => {
 
@@ -27,46 +27,47 @@ const reviewsController = {
     })
   },
   createReview: (req: Request, res: Response) => {
-    const { text, rating } = req.body;
+    const { text, rating, image } = req.body;
     const { albumName, artistName, userId } = req.params;
 
-    prisma.album.findFirst({
-      where: { albumName, artistName }
-    })
-    .then((album) => {
-      if (album === null){
-        return res.status(404).send("Album missing, please save before writing review!")
-      }
-      prisma.review.create({
-        data: {
-          albumId: album.id,
-          text,
-          rating,
-          userId: Number(userId),
-        },
-      })
-      .then((review: any) => {
-        prisma.post.create({
+    findOrCreateAlbum(
+      albumName,
+      artistName,
+      image,
+      Number(userId)
+    ).then((albumId) => {
+      prisma.review
+        .create({
           data: {
-            userId: review.userId,
-            postType: 'REVIEW',
-            albumId: review.albumId,
-            reviewId: review.id
-          }
+            albumId: albumId,
+            text,
+            rating,
+            userId: Number(userId),
+          },
         })
-        .then(() => {
-          return res.status(201).send(review);
+        .then((review: any) => {
+          prisma.post
+            .create({
+              data: {
+                userId: review.userId,
+                postType: "REVIEW",
+                albumId: review.albumId,
+                reviewId: review.id,
+              },
+            })
+            .then(() => {
+              return res.status(201).send(review);
+            })
+            .catch((err) => {
+              console.error("Error creating post:", err);
+              return res.sendStatus(500);
+            });
         })
-        .catch((err) => {
-          console.error('Error creating post:', err);
-          return res.sendStatus(500);
-        })
-      })
-      .catch((error: any) => {
-        console.error('Error adding review:', error)
-        res.sendStatus(500)
-      })
-    })
+        .catch((error: any) => {
+          console.error("Error adding review:", error);
+          res.sendStatus(500);
+        });
+    });
   },
   deleteReview: (req: Request, res: Response) => {
     const { id, userId } = req.params;

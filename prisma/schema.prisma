@@ -41,9 +41,10 @@ model Review {
   @@index([albumId], map: "Review_albumId_fkey")
   @@index([userId], map: "Review_userId_fkey")
 }
-
+//keep the userId because it's used on many files
+//it will be removed, just show that the functionality works without changing the schema
 model Album {
-  id             Int             @id @default(autoincrement())
+  id             Int             @id @default(autoincrement()) //album.id
   albumName      String
   artistName     String
   image          String          @db.VarChar(300)
