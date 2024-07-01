@@ -35,7 +35,8 @@ router.route('/album-of-the-day/:id').put(albumOfTheDayController.editAlbumOfThe
 router.route('/album-of-the-day/:id').delete(albumOfTheDayController.deleteAlbumOfTheDay);
 
 router.route('/music/artist/:userId').post(musicController.saveArtist);
-router.route('/music/album/:userId').post(musicController.saveAlbum);
+//remove this music controller route since we deleted the method from musicController
+// router.route('/music/album/:userId').post(musicController.saveAlbum);
 router.route('/music/albums').get(musicController.readAlbums);
 
 router.route('/user').get(profileController.readUser);

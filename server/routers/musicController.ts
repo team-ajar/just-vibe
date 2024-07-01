@@ -33,45 +33,8 @@ const musicController = {
       })
       .catch((err) => console.error(err));
   },
-
-  saveAlbum: (req: Request, res: Response) => {
-    const {
-      albumName,
-      artistName,
-      image,
-    }: { albumName: string; artistName: string; image: string } = req.body;
-    const { userId } = req.params;
-
-    prisma.album
-      .findMany({
-        where: {
-          albumName,
-          artistName,
-          userId: Number(userId)
-        },
-      })
-      .then((found: any) => {
-        if (!found.length) {
-          prisma.album
-            .create({
-              data: {
-                artistName,
-                albumName,
-                image,
-                userId: Number(userId),
-              },
-            })
-            .then(() => res.sendStatus(201))
-            .catch((err: any) => {
-              console.error("Could not save album", err);
-              res.sendStatus(500);
-            });
-        } else {
-          res.status(404).send("Album is already saved");
-        }
-      })
-      .catch((err) => console.error(err));
-  },
+  //delete the save album method, and transport the logic to
+  //the findOrCreateAlbum method inside Library.ts
 
   readAlbums: (req: Request, res: Response) => {
     const userId = req.user?.id;

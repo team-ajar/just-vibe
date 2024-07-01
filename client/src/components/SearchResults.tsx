@@ -246,17 +246,7 @@ const SearchResults = () => {
                         flexDirection: { xs: "column", sm: "row" },
                       }}
                     >
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => saveAlbum(album)}
-                        sx={{
-                          boxShadow: "none",
-                          "&:hover": { boxShadow: "none" },
-                        }}
-                      >
-                        Save Album
-                      </Button>
+                      {/*remove the saveAlbum Button and make the writeReviewButton*/}
                       <Button
                         variant="contained"
                         color="secondary"

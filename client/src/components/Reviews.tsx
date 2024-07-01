@@ -69,7 +69,13 @@ const Reviews = () => {
     axios
       .post(
         `/api/albums/${album.artist}/${album.name}/review/${userId}`,
-        review
+        //to find a album we only need the userId, artistName and albumName
+        //if it ISN'T found, we create it, and to create it we will also need the album image
+        //pass the neccessary content to create a album, incase the album is not saved already 
+        {
+          ...review, //since to the server the review object AND the album image 
+          image: album.image[3]["#text"],
+        } 
       )
       .then((response) => {
         setReviews((prev) => [...prev, response.data]);
