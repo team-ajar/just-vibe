@@ -89,12 +89,12 @@ const NavBar = ({toggle, mode}: {toggle: () => void, mode: PaletteMode}) => {
     <Box sx={{ display: "flex" }}>
       <AppBar position="static" sx={{ backgroundColor: "#CB6CE6" }}>
         <Container maxWidth="xl">
-          <Toolbar disableGutters>
+          <Toolbar disableGutters sx={{
+            display: { xs: "flex" },
+            flexDirection: "row",
+            justifyContent: "space-between"
+          }}>
             <Box sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}>
-              <Link to="/home">
-                <img src={logo} alt="Just Vibe Logo" height="50" />
-              </Link>
-            </Box>
             <IconButton
               color="inherit"
               edge="start"
@@ -103,7 +103,13 @@ const NavBar = ({toggle, mode}: {toggle: () => void, mode: PaletteMode}) => {
             >
               <MenuIcon />
             </IconButton>
-            <Search>
+              <Link to="/home">
+                <img src={logo} alt="Just Vibe Logo" height="100" />
+              </Link>
+            </Box>
+            <Box sx={{ display: "flex" }}>
+            <Search sx={{ justifySelf: "end" }}
+            >
               <StyledInputBase
                 placeholder="Search for an album or artist"
                 value={searchQuery}
@@ -121,6 +127,7 @@ const NavBar = ({toggle, mode}: {toggle: () => void, mode: PaletteMode}) => {
               </IconButton>
             </Search>
             <LightDarkMode toggle={toggle} mode={mode} />
+            </Box>
           </Toolbar>
         </Container>
       </AppBar>
