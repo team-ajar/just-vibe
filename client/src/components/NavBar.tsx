@@ -92,7 +92,7 @@ const NavBar = ({toggle, mode}: {toggle: () => void, mode: PaletteMode}) => {
           <Toolbar disableGutters>
             <Box sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}>
               <Link to="/home">
-                <img src={logo} alt="Just Vibe Logo" height="100" />
+                <img src={logo} alt="Just Vibe Logo" height="50" />
               </Link>
             </Box>
             <IconButton
