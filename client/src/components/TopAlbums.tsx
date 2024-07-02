@@ -96,7 +96,7 @@ export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
                 onChange={(e) => showSelectedAlbum(Number(e.target.value), index + 1, topAlbum?.id || 0)}
                 displayEmpty
                 fullWidth
-                sx={{ mt: 1 }}
+                sx={{ mt: 1, width: 'auto', minWidth: 200 }}
               >
                 <MenuItem value="">Select Album</MenuItem>
                 {albums.map((album) => (
