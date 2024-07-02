@@ -14,7 +14,7 @@ const topThreeController = {
         userId: req.user!.id,
       }
     })
-    
+
     .then((albums) => {
       prisma.topAlbums.findMany({
         where: {
