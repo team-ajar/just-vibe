@@ -76,6 +76,14 @@ const HomePage = () => {
       });
   };
 
+  const handleEditClick = () => {
+    if (isEditing && newAlbumId) {
+      editAlbumOfTheDay(albumOfTheDay.id, newAlbumId);
+    } else {
+      setIsEditing(true);
+    }
+  };
+
   return (
     <Container sx={{ p: 2, mt: 3 }}>
       <Typography variant="h1" gutterBottom>Welcome!</Typography>
@@ -83,7 +91,7 @@ const HomePage = () => {
       <Typography variant="h2" gutterBottom>Your Album of The Day</Typography>
       {albumOfTheDay ? (
         <Box display="flex" justifyContent="flex-start" flexDirection={isMobile ? 'column' : 'row'}>
-          <Card sx={{ width: isMobile ? 300 : '100%', display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center' }}>
+          <Card sx={{ width: isMobile ? 300 : '100%', display: isMobile ? 0 : 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center' }}>
             <CardMedia
               component="div"
               sx={{
@@ -95,13 +103,9 @@ const HomePage = () => {
                 backgroundPosition: 'center',
               }}
             />
-            <CardContent>
+            <CardContent sx={{ flexGrow: 1 }}>
               <Typography variant="h3">{albumOfTheDay.album.albumName}</Typography>
               <Typography variant="body2">{albumOfTheDay.album.artistName}</Typography>
-              <Box display="flex" justifyContent="space-between" mt={2}>
-                <Button variant="contained" color="primary" onClick={() => setIsEditing(true)}>Edit</Button>
-                <Button variant="contained" color="secondary" onClick={() => deleteAlbumOfTheDay(albumOfTheDay.id)}>Delete</Button>
-              </Box>
               {isEditing && (
                 <Box mt={2}>
                   <Select
@@ -117,11 +121,14 @@ const HomePage = () => {
                       </MenuItem>
                     ))}
                   </Select>
-                  <Box mt={2}>
-                    <Button variant="contained" color="primary" onClick={() => newAlbumId && editAlbumOfTheDay(albumOfTheDay.id, newAlbumId)}>Save</Button>
-                  </Box>
                 </Box>
               )}
+              <Box display="flex" justifyContent="space-between" mt={2}>
+                <Button variant="contained" color="primary" onClick={handleEditClick}>
+                  {isEditing ? 'Save' : 'Edit'}
+                </Button>
+                <Button variant="contained" color="secondary" onClick={() => deleteAlbumOfTheDay(albumOfTheDay.id)}>Delete</Button>
+              </Box>
             </CardContent>
           </Card>
         </Box>
