@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import dayjs from 'dayjs';
 import { Container, Typography, Card, CardContent, CardMedia, Button, Select, MenuItem, Box } from "../style";
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const HomePage = () => {
   const [albumOfTheDay, setAlbumOfTheDay] = useState<any>(null);
@@ -10,6 +12,9 @@ const HomePage = () => {
   const [newAlbumId, setNewAlbumId] = useState<number | null>(null);
   const [albums, setAlbums] = useState<any[]>([]);
   const today = dayjs().format('dddd, MMMM D, YYYY');
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     axios.get('/api/album-of-the-day')
@@ -77,12 +82,14 @@ const HomePage = () => {
       <Typography variant="body1" gutterBottom>{today}</Typography>
       <Typography variant="h2" gutterBottom>Your Album of The Day</Typography>
       {albumOfTheDay ? (
-        <Box display="flex" justifyContent="flex-start">
-          <Card sx={{ width: 300 }}>
+        <Box display="flex" justifyContent="flex-start" flexDirection={isMobile ? 'column' : 'row'}>
+          <Card sx={{ width: isMobile ? 300 : '100%', display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center' }}>
             <CardMedia
               component="div"
               sx={{
-                paddingTop: '100%',
+                width: isMobile ? '100%' : 200,
+                height: isMobile ? 0 : 200,
+                paddingTop: isMobile ? '100%' : 0,
                 backgroundImage: `url(${albumOfTheDay.album.image})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',

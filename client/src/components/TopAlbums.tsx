@@ -1,7 +1,7 @@
 import { Album, TopAlbums } from "@prisma/client";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Box, Card, CardContent, Typography, Select, MenuItem, Button } from "../style";
+import { Box, Card, CardContent, Typography, Select, MenuItem, Button, CardMedia } from "../style";
 
 export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
   const [albums, setAlbums] = useState<Album[]>([]);
@@ -24,7 +24,6 @@ export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
       let topAlbum3 = response.data.topAlbums.find(
         (album: TopAlbums) => album.position === 3
       );
-      //
       setTopAlbum([topAlbum1, topAlbum2, topAlbum3]);
     });
   };
@@ -50,7 +49,6 @@ export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
     position: number,
     albumId: number | undefined
   ) => {
-
     if (albumId === undefined) return;
     axios.delete(`/api/top/albums/${albumId}/${position}/${userId}`)
       .then(() => {
@@ -75,13 +73,20 @@ export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
   let topAlbum3 = albums.find((album) => album.id === topAlbum[2]?.albumId);
 
   return (
-    <Box >
+    <Box>
       <Typography variant="h2">Top 3 Albums</Typography>
       <Box sx={{ display: "flex", gap: 3, flexWrap: "wrap" }}>
         {[topAlbum1, topAlbum2, topAlbum3].map((topAlbum, index) => (
           <Card key={index} sx={{ width: 300, boxShadow: "5px 5px 0px #000", border: "2px solid #000" }}>
-            <CardContent sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-              <img src={topAlbum?.image || defaultImage} width="300" height="300" />
+            <CardContent sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 0 }}>
+              <CardMedia
+                component="div"
+                sx={{
+                  width: '100%',
+                  paddingTop: '100%',
+                  backgroundImage: `url(${topAlbum?.image || defaultImage})`
+                }}
+              />
               <Typography variant="h3" sx={{ mt: 1 }}>#{index + 1}</Typography>
               <Select
                 value={topAlbum?.id || ""}
