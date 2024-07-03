@@ -115,28 +115,41 @@ const SearchResults = () => {
 
     const { name: albumName, artist: artistName } = album;
 
+    // axios
+    //   .post("/api/album-id", { albumName, artistName })
+    //   .then((response) => {
+    //     const albumId = response.data.albumId;
+
+    //     axios
+    //       .get("/api/user")
+    //       .then((profileResponse) => {
+    //         const userId = profileResponse.data.id;
+
+    //         axios
+    //           .post("/api/album-of-the-day", {
+    //             albumName: album.name
+    //           })
+    //           .then(() => {
+    //             setAlbumOfTheDaySet(true);
+    //             setMessage(`Album of the day set for ${album.name}!`);
+    //             setSnackbarOpen(true);
+    //           })
+    //           .catch((err) =>
+    //             console.error("Error setting album of the day", err)
+    //           );
+    //       })
+    //       .catch((err) => console.error("Error getting userId", err));
+    //   })
     axios
-      .post("/api/album-id", { albumName, artistName })
-      .then((response) => {
-        const albumId = response.data.albumId;
-
-        axios
-          .get("/api/user")
-          .then((profileResponse) => {
-            const userId = profileResponse.data.id;
-
-            axios
-              .post("/api/album-of-the-day", { albumId, userId })
-              .then(() => {
-                setAlbumOfTheDaySet(true);
-                setMessage(`Album of the day set for ${album.name}!`);
-                setSnackbarOpen(true);
-              })
-              .catch((err) =>
-                console.error("Error setting album of the day", err)
-              );
-          })
-          .catch((err) => console.error("Error getting userId", err));
+      .post("/api/album-of-the-day", {
+        albumName,
+        artistName,
+        image: album.image[3]["#text"],
+      })
+      .then(() => {
+        setAlbumOfTheDaySet(true);
+        setMessage(`Album of the day set for ${album.name}!`);
+        setSnackbarOpen(true);
       })
       .catch((err) => {
         console.error("Error getting albumId", err);
@@ -202,10 +215,7 @@ const SearchResults = () => {
       >
         Search Results for {query}
       </Typography>
-      <Tabs
-        value={value}
-        onChange={handleTabChange}
-      >
+      <Tabs value={value} onChange={handleTabChange}>
         <Tab label="Albums" value={0} {...a11yProps(0)} />
         <Tab label="Artists" value={1} {...a11yProps(1)} />
       </Tabs>
@@ -265,17 +275,6 @@ const SearchResults = () => {
                       flexDirection: { xs: "column", sm: "row" },
                     }}
                   >
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => saveAlbum(album)}
-                      sx={{
-                        boxShadow: "none",
-                        "&:hover": { boxShadow: "none" },
-                      }}
-                    >
-                      Save Album
-                    </Button>
                     <Button
                       variant="contained"
                       color="secondary"
