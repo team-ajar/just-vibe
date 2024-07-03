@@ -83,11 +83,8 @@ export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
                 component="div"
                 sx={{
                   width: '100%',
-                  height: 0,
                   paddingTop: '100%',
-                  backgroundImage: `url(${topAlbum?.image || defaultImage})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
+                  backgroundImage: `url(${topAlbum?.image || defaultImage})`
                 }}
               />
               <Typography variant="h3" sx={{ mt: 1 }}>#{index + 1}</Typography>
@@ -96,7 +93,7 @@ export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
                 onChange={(e) => showSelectedAlbum(Number(e.target.value), index + 1, topAlbum?.id || 0)}
                 displayEmpty
                 fullWidth
-                sx={{ mt: 1, width: 'auto', minWidth: 200 }}
+                sx={{ mt: 1 }}
               >
                 <MenuItem value="">Select Album</MenuItem>
                 {albums.map((album) => (
