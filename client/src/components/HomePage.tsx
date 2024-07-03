@@ -76,6 +76,14 @@ const HomePage = () => {
       });
   };
 
+  const handleEditClick = () => {
+    if (isEditing && newAlbumId) {
+      editAlbumOfTheDay(albumOfTheDay.id, newAlbumId);
+    } else {
+      setIsEditing(true);
+    }
+  };
+
   return (
     <Container sx={{ p: 2, mt: 3 }}>
       <Typography variant="h1" gutterBottom>Welcome!</Typography>
@@ -113,13 +121,12 @@ const HomePage = () => {
                       </MenuItem>
                     ))}
                   </Select>
-                  <Box mt={2}>
-                    <Button variant="contained" color="primary" onClick={() => newAlbumId && editAlbumOfTheDay(albumOfTheDay.id, newAlbumId)}>Save</Button>
-                  </Box>
                 </Box>
               )}
               <Box display="flex" justifyContent="space-between" mt={2}>
-                <Button variant="contained" color="primary" onClick={() => setIsEditing(true)}>Edit</Button>
+                <Button variant="contained" color="primary" onClick={handleEditClick}>
+                  {isEditing ? 'Save' : 'Edit'}
+                </Button>
                 <Button variant="contained" color="secondary" onClick={() => deleteAlbumOfTheDay(albumOfTheDay.id)}>Delete</Button>
               </Box>
             </CardContent>
