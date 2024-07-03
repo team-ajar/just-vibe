@@ -33,7 +33,8 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 
 
 export {
@@ -71,5 +72,7 @@ export {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  ArrowDropDownIcon
+  ArrowDropDownIcon,
+  Tabs,
+  Tab,
 };

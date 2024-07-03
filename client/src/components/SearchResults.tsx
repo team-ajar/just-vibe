@@ -13,10 +13,8 @@ import {
   ListItem,
   Snackbar,
   SnackbarContent,
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  ArrowDropDownIcon,
+  Tabs,
+  Tab,
 } from "../style";
 
 interface Artist {
@@ -38,6 +36,22 @@ interface SearchResultsData {
   albums: Album[];
 }
 
+const TabPanel = (props: any) => {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+    </div>
+  );
+};
+
 const SearchResults = () => {
   const { query } = useParams();
   const [searchResults, setSearchResults] = useState<SearchResultsData>({
@@ -56,6 +70,7 @@ const SearchResults = () => {
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const [value, setValue] = useState(0);
 
   const loadUser = () => {
     axios
@@ -122,10 +137,12 @@ const SearchResults = () => {
               );
           })
           .catch((err) => console.error("Error getting userId", err));
-        })
+      })
       .catch((err) => {
         console.error("Error getting albumId", err);
-        setMessage("Album missing, please save before setting as album of the day!");
+        setMessage(
+          "Album missing, please save before setting as album of the day!"
+        );
         setSnackbarOpen(true);
       });
   };
@@ -136,6 +153,16 @@ const SearchResults = () => {
 
   const handleClose = () => {
     setSnackbarOpen(false);
+  };
+
+  const handleTabChange = (event: any, newVal: any) => {
+    setValue(newVal);
+  };
+
+  const a11yProps = (index: number) => {
+    return {
+      id: `simple-tab-${index}`,
+    };
   };
 
   useEffect(() => {
@@ -159,7 +186,7 @@ const SearchResults = () => {
       })
       .catch((err) => console.error("Error checking album of the day", err));
   }, [query]);
-  
+
   return (
     <Box p={2}>
       <Typography
@@ -169,187 +196,174 @@ const SearchResults = () => {
           fontWeight: 700,
           textTransform: "uppercase",
           letterSpacing: "2px",
-          mb: 4,
+          mb: 4, // margin-bottom
           mt: 2,
         }}
       >
         Search Results for {query}
       </Typography>
-      <Accordion>
-        <AccordionSummary 
-          expandIcon={<ArrowDropDownIcon />}
-          sx={{
-            fontSize: "2rem",
-            fontWeight: 700,
-            textTransform: "uppercase",
-            letterSpacing: "2px",
-            mb: 2, // margin-bottom
-          }}
-        >
-          Albums
-        </AccordionSummary>
-        <AccordionDetails>
-          <List>
-            {searchResults.albums.map((album: Album, i: any) => (
-              <ListItem
+      <Tabs
+        value={value}
+        onChange={handleTabChange}
+      >
+        <Tab label="Albums" value={0} {...a11yProps(0)} />
+        <Tab label="Artists" value={1} {...a11yProps(1)} />
+      </Tabs>
+      <TabPanel value={value} index={0}>
+        <List>
+          {searchResults.albums.map((album: Album, i: any) => (
+            <ListItem
+              sx={{
+                width: 1,
+                display: "flex",
+                mb: 2,
+                flexDirection: {
+                  xs: "column",
+                  sm: "row",
+                },
+              }}
+              key={i}
+            >
+              <Card
                 sx={{
-                  width: 1,
                   display: "flex",
                   mb: 2,
-                  flexDirection: {
-                    xs: "column",
-                    sm: "row",
-                  },
+                  flexDirection: { xs: "column", sm: "row" },
+                  width: 1,
                 }}
-                key={i}
               >
-                <Card
-                  sx={{
-                    display: "flex",
-                    mb: 2,
-                    flexDirection: { xs: "column", sm: "row" },
-                    width: 1,
-                  }}
-                >
-                  <CardMedia
-                    component="img"
-                    sx={{ width: { xs: "100%", sm: 151 } }}
-                    image={album.image[3]["#text"]}
-                    alt={album.name}
-                  />
+                <CardMedia
+                  component="img"
+                  sx={{ width: { xs: "100%", sm: 151 } }}
+                  image={album.image[3]["#text"]}
+                  alt={album.name}
+                />
+                <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
+                  <CardContent sx={{ flex: "1 0 auto" }}>
+                    <Typography component="div" variant="h5">
+                      {album.name}
+                    </Typography>
+                    <Typography
+                      variant="subtitle1"
+                      color="text.secondary"
+                      component="div"
+                    >
+                      {album.artist}
+                    </Typography>
+                  </CardContent>
                   <Box
-                    sx={{ display: "flex", flexDirection: "column", flex: 1 }}
+                    sx={{
+                      display: "flex",
+                      alignItems: {
+                        xs: "center",
+                      },
+                      pb: 1,
+                      px: 1,
+                      pl: 1,
+                      flexWrap: "wrap",
+                      gap: 1,
+                      flexDirection: { xs: "column", sm: "row" },
+                    }}
                   >
-                    <CardContent sx={{ flex: "1 0 auto" }}>
-                      <Typography component="div" variant="h5">
-                        {album.name}
-                      </Typography>
-                      <Typography
-                        variant="subtitle1"
-                        color="text.secondary"
-                        component="div"
-                      >
-                        {album.artist}
-                      </Typography>
-                    </CardContent>
-                    <Box
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => saveAlbum(album)}
                       sx={{
-                        display: "flex",
-                        alignItems: {
-                          xs: "center",
-                        },
-                        pb: 1,
-                        px: 1,
-                        pl: 1,
-                        flexWrap: "wrap",
-                        gap: 1,
-                        flexDirection: { xs: "column", sm: "row" },
+                        boxShadow: "none",
+                        "&:hover": { boxShadow: "none" },
                       }}
                     >
-                      {/*remove the saveAlbum Button and make the writeReviewButton*/}
+                      Save Album
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => saveAlbumOfTheDay(album)}
+                      disabled={albumOfTheDaySet}
+                      sx={{
+                        boxShadow: "none",
+                        "&:hover": { boxShadow: "none" },
+                        ml: { xs: 0, sm: 1 },
+                        mt: { xs: 1, sm: 0 },
+                      }}
+                    >
+                      Set as Album of the Day
+                    </Button>
+                    <Link
+                      to={{
+                        pathname: `/reviews`,
+                      }}
+                      state={{ album, query }}
+                      style={{ textDecoration: "none" }}
+                    >
                       <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={() => saveAlbumOfTheDay(album)}
-                        disabled={albumOfTheDaySet}
+                        variant="outlined"
+                        color="primary"
                         sx={{
                           boxShadow: "none",
                           "&:hover": { boxShadow: "none" },
+                          flex: "1 1 auto",
+                          maxWidth: { xs: "100%", sm: "unset" },
                           ml: { xs: 0, sm: 1 },
                           mt: { xs: 1, sm: 0 },
                         }}
                       >
-                        Set as Album of the Day
+                        Write Review
                       </Button>
-                      <Link
-                        to={{
-                          pathname: `/reviews`,
-                        }}
-                        state={{ album, query }}
-                        style={{ textDecoration: "none" }}
-                      >
-                        <Button
-                          variant="outlined"
-                          color="primary"
-                          sx={{
-                            boxShadow: "none",
-                            "&:hover": { boxShadow: "none" },
-                            flex: "1 1 auto",
-                            maxWidth: { xs: "100%", sm: "unset" },
-                            ml: { xs: 0, sm: 1 },
-                            mt: { xs: 1, sm: 0 },
-                          }}
-                        >
-                          Write Review
-                        </Button>
-                      </Link>
-                    </Box>
+                    </Link>
                   </Box>
-                </Card>
-              </ListItem>
-            ))}
-          </List>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary 
-        expandIcon={<ArrowDropDownIcon />}
-        sx={{
-          fontSize: "2rem",
-          fontWeight: 700,
-          textTransform: "uppercase",
-          letterSpacing: "2px",
-          mb: 2,
-        }}
-        >
-          Artist
-        </AccordionSummary>
-        <AccordionDetails>
-          <List>
-            {searchResults.artists.map((artist: Artist) => (
-              <ListItem
-                key={artist.name}
+                </Box>
+              </Card>
+            </ListItem>
+          ))}
+        </List>
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <List>
+          {searchResults.artists.map((artist: Artist) => (
+            <ListItem
+              key={artist.name}
+              sx={{
+                marginBottom: "10px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Typography
+                variant="body2"
                 sx={{
-                  marginBottom: "10px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
+                  fontSize: "1.25rem",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "2px",
+                  marginRight: "10px", // space between artist name and button
+                  textDecoration: "none",
+                }}
+                component="a"
+                href={artist.url}
+              >
+                {artist.name}
+              </Typography>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => saveArtist(artist)}
+                sx={{
+                  boxShadow: "5px 5px 0px #000",
+                  "&:hover": { boxShadow: "7px 7px 0px #000" },
+                  marginLeft: "10px",
+                  whiteSpace: "nowrap",
+                  minWidth: "100px",
                 }}
               >
-                <Typography
-                  variant="body2"
-                  sx={{
-                    fontSize: "1.25rem",
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    letterSpacing: "2px",
-                    marginRight: "10px", // space between artist name and button
-                    textDecoration: "none",
-                  }}
-                  component="a"
-                  href={artist.url}
-                >
-                  {artist.name}
-                </Typography>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={() => saveArtist(artist)}
-                  sx={{
-                    boxShadow: "5px 5px 0px #000",
-                    "&:hover": { boxShadow: "7px 7px 0px #000" },
-                    marginLeft: "10px",
-                    whiteSpace: "nowrap",
-                    minWidth: "100px",
-                  }}
-                >
-                  Save Artist
-                </Button>
-              </ListItem>
-            ))}
-          </List>
-        </AccordionDetails>
-      </Accordion>
+                Save Artist
+              </Button>
+            </ListItem>
+          ))}
+        </List>
+      </TabPanel>
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}
