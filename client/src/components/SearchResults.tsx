@@ -18,6 +18,7 @@ import {
   AccordionSummary,
   ArrowDropDownIcon,
 } from "../style";
+import AlbumRanking from "./AlbumRanking";
 
 interface Artist {
   image: any;
@@ -25,9 +26,9 @@ interface Artist {
   url: string;
 }
 
-interface Album {
+export interface Album {
   id: number;
-  image: any;
+  image: { [k: string]: string }[];
   name: string;
   artist: string;
   url: string;
@@ -38,6 +39,17 @@ interface SearchResultsData {
   albums: Album[];
 }
 
+export type TopAlbums = (
+  | {
+      position: number;
+      album: {
+        albumName: string;
+        image: string,
+        id: number
+      };
+    }
+  | undefined
+)[];
 const SearchResults = () => {
   const { query } = useParams();
   const [searchResults, setSearchResults] = useState<SearchResultsData>({
@@ -66,18 +78,17 @@ const SearchResults = () => {
       .catch((err) => console.error(err));
   };
 
-  const saveAlbum = (album: any) => {
-    axios
-      .post(`/api/music/album/${user.id}`, {
-        albumName: album.name,
-        artistName: album.artist,
-        image: album.image[3]["#text"],
-      })
-      .then(() => {
-        setMessage(`${album.name} saved!`);
-        setSnackbarOpen(true);
-      })
-      .catch((err) => console.error(err));
+  const [topAlbums, setTopAlbums] = useState<TopAlbums>([
+    undefined,
+    undefined,
+    undefined,
+  ]);
+
+  const getAlbums = () => {
+    if (user.id === 0) return;
+    axios.get<TopAlbums>(`/api/top/albums`).then((response) => {
+      setTopAlbums(response.data);
+    });
   };
 
   const saveArtist = (artist: Artist) => {
@@ -122,10 +133,12 @@ const SearchResults = () => {
               );
           })
           .catch((err) => console.error("Error getting userId", err));
-        })
+      })
       .catch((err) => {
         console.error("Error getting albumId", err);
-        setMessage("Album missing, please save before setting as album of the day!");
+        setMessage(
+          "Album missing, please save before setting as album of the day!"
+        );
         setSnackbarOpen(true);
       });
   };
@@ -140,6 +153,7 @@ const SearchResults = () => {
 
   useEffect(() => {
     loadUser();
+
     fetch(`/api/search/${query}`)
       .then((response) => response.json())
       .then((data) => {
@@ -159,7 +173,10 @@ const SearchResults = () => {
       })
       .catch((err) => console.error("Error checking album of the day", err));
   }, [query]);
-  
+  useEffect(() => {
+    if (user.id === 0) return;
+    getAlbums();
+  }, [user]);
   return (
     <Box p={2}>
       <Typography
@@ -176,7 +193,7 @@ const SearchResults = () => {
         Search Results for {query}
       </Typography>
       <Accordion>
-        <AccordionSummary 
+        <AccordionSummary
           expandIcon={<ArrowDropDownIcon />}
           sx={{
             fontSize: "2rem",
@@ -261,6 +278,11 @@ const SearchResults = () => {
                       >
                         Set as Album of the Day
                       </Button>
+                      <AlbumRanking
+                        album={album}
+                        topAlbums={topAlbums}
+                        refresh={getAlbums}
+                      />
                       <Link
                         to={{
                           pathname: `/reviews`,
@@ -292,15 +314,15 @@ const SearchResults = () => {
         </AccordionDetails>
       </Accordion>
       <Accordion>
-        <AccordionSummary 
-        expandIcon={<ArrowDropDownIcon />}
-        sx={{
-          fontSize: "2rem",
-          fontWeight: 700,
-          textTransform: "uppercase",
-          letterSpacing: "2px",
-          mb: 2,
-        }}
+        <AccordionSummary
+          expandIcon={<ArrowDropDownIcon />}
+          sx={{
+            fontSize: "2rem",
+            fontWeight: 700,
+            textTransform: "uppercase",
+            letterSpacing: "2px",
+            mb: 2,
+          }}
         >
           Artist
         </AccordionSummary>

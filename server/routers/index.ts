@@ -16,9 +16,10 @@ const router = express.Router();
 router.route('/search/:search').get(searchController.handleMusicSearch);
 router.route('/search/users/:userId/:query').get(searchController.handleUserSearch);
 
-router.route('/top/albums/:userId').get(isAuthenticated, topThreeController.getTopAlbums);
-router.route('/top/albums/:oldAlbumId/:position/:userId').post(isAuthenticated, topThreeController.createOrUpdateTopAlbum);
-router.route('/top/albums/:albumId/:position/:userId').delete(isAuthenticated, topThreeController.deleteTopAlbum);
+router.route('/top/albums').get(isAuthenticated, topThreeController.getTopAlbums);
+router.route('/top/albums/rank').post(isAuthenticated, topThreeController.updateRanking);
+router.route("/top/albums/:albumId").delete(isAuthenticated, topThreeController.deleteTopAlbum)
+
 
 router.route('/top/artists/:userId').get(isAuthenticated, topThreeController.getTopArtists);
 router.route('/top/artists/:oldArtistId/:position/:userId').post(isAuthenticated, topThreeController.createOrUpdateTopArtist);

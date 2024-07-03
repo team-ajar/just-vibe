@@ -37,7 +37,7 @@ export const light: ThemeOptions = {
       fontSize: '1.5rem',
       fontWeight: 700,
       fontFamily: 'Arial, sans-serif',
-      textTransform: 'uppercase',
+      // textTransform: 'lowercase',
       letterSpacing: '2px',
     },
     h6: {
