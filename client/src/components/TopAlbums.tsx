@@ -55,12 +55,16 @@ export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                p: 0
               }}
             >
-              <img
-                src={topAlbum?.album.image || defaultImage}
-                width="300"
-                height="300"
+              <CardMedia
+                component="div"
+                sx={{
+                  width: '100%',
+                  paddingTop: '100%',
+                  backgroundImage: `url(${topAlbum?.album.image || defaultImage})`
+                }}
               />
               <Typography variant="h3" sx={{ mt: 1 }}>
                 #{index + 1}
