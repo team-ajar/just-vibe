@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Box, Button, Card, CardContent, Typography } from "../style";
+import { Box, Card, CardContent, Typography, Select, MenuItem, Button, CardMedia } from "../style";
 import { TopAlbums } from "./SearchResults";
 
 export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
