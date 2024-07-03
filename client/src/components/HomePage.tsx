@@ -95,13 +95,9 @@ const HomePage = () => {
                 backgroundPosition: 'center',
               }}
             />
-            <CardContent>
+            <CardContent sx={{ flexGrow: 1 }}>
               <Typography variant="h3">{albumOfTheDay.album.albumName}</Typography>
               <Typography variant="body2">{albumOfTheDay.album.artistName}</Typography>
-              <Box display="flex" justifyContent="space-between" mt={2}>
-                <Button variant="contained" color="primary" onClick={() => setIsEditing(true)}>Edit</Button>
-                <Button variant="contained" color="secondary" onClick={() => deleteAlbumOfTheDay(albumOfTheDay.id)}>Delete</Button>
-              </Box>
               {isEditing && (
                 <Box mt={2}>
                   <Select
@@ -122,6 +118,10 @@ const HomePage = () => {
                   </Box>
                 </Box>
               )}
+              <Box display="flex" justifyContent="space-between" mt={2}>
+                <Button variant="contained" color="primary" onClick={() => setIsEditing(true)}>Edit</Button>
+                <Button variant="contained" color="secondary" onClick={() => deleteAlbumOfTheDay(albumOfTheDay.id)}>Delete</Button>
+              </Box>
             </CardContent>
           </Card>
         </Box>
