@@ -83,7 +83,7 @@ const HomePage = () => {
       <Typography variant="h2" gutterBottom>Your Album of The Day</Typography>
       {albumOfTheDay ? (
         <Box display="flex" justifyContent="flex-start" flexDirection={isMobile ? 'column' : 'row'}>
-          <Card sx={{ width: isMobile ? 300 : '100%', display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center' }}>
+          <Card sx={{ width: isMobile ? 300 : '100%', display: isMobile ? 0 : 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center' }}>
             <CardMedia
               component="div"
               sx={{
