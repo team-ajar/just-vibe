@@ -168,8 +168,8 @@ const Profile = () => {
             </Box>
           </Box>
         </Card>
-        {user.id > 0 && <TopAlbumsComponent userId={user.id} />}
-        {user.id > 0 && <TopArtistsComponent userId={user.id} />}
+        <TopAlbumsComponent/>
+        <TopArtistsComponent/>
       </Box>
     </Container>
   );
