@@ -13,7 +13,11 @@ export function findOrCreateAlbum(
         albumName,
         artistName,
         image,
-        userId: Number(userId),
+        user: {
+          some: {
+            id: userId
+          }
+        }
       },
     })
     .then((album) => {
@@ -26,7 +30,6 @@ export function findOrCreateAlbum(
               albumName,
               artistName,
               image,
-              userId,
               user: {
                 connect: {
                   id: userId,
@@ -47,7 +50,7 @@ export function findOrCreateAlbum(
     });
 
 }
-export function setAbumPosition(
+export function setAlbumPosition(
   albumId: number,
   userId: number,
   position: number
@@ -73,6 +76,83 @@ export function setAbumPosition(
           position,
           userId,
           albumId,
+        },
+      });
+    })
+    .catch((err) => {
+      throw err;
+    });
+}
+
+export function findOrCreateArtist(
+  name: string,
+  userId: number
+) {
+  return prisma.artist
+    .findFirst({
+      where: {
+        name,
+        user: {
+          some: {
+            id: userId
+          }
+        },
+      },
+    })
+    .then((artist) => {
+      if (artist) {
+        return artist.id;
+      } else {
+        return prisma.artist
+          .create({
+            data: {
+              name,
+              user: {
+                connect: {
+                  id: userId,
+                },
+              },
+            },
+          })
+          .then((artist) => {
+            return artist.id;
+          })
+          .catch((err) => {
+            throw err;
+          });
+      }
+    })
+    .catch((err) => {
+      throw err;
+    });
+
+}
+export function setArtistPosition(
+  artistId: number,
+  userId: number,
+  position: number
+) {
+  return prisma.topArtists
+    .deleteMany({
+      where: {
+        OR: [
+          {
+            userId,
+            artistId,
+          },
+          {
+            userId,
+            position,
+          },
+        ],
+      },
+    })
+    .then(() => {
+      return prisma.topArtists.create({
+        data: {
+          position,
+          userId,
+          artistId,
         },
       });
     })

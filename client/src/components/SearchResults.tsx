@@ -17,12 +17,24 @@ import {
   Tab,
 } from "../style";
 import AlbumRanking from "./AlbumRanking";
+import ArtistRanking from "./ArtistRanking";
 
-interface Artist {
+export interface Artist {
   image: any;
   name: string;
   url: string;
 }
+
+export type TopArtists = (
+  | {
+      position: number;
+      artist: {
+        name: string;
+        id: number;
+      };
+    }
+  | undefined
+)[];
 
 export interface Album {
   id: number;
@@ -42,8 +54,8 @@ export type TopAlbums = (
       position: number;
       album: {
         albumName: string;
-        image: string,
-        id: number
+        image: string;
+        id: number;
       };
     }
   | undefined
@@ -99,6 +111,12 @@ const SearchResults = () => {
     undefined,
   ]);
 
+  const [topArtists, setTopArtists] = useState<TopArtists>([
+    undefined,
+    undefined,
+    undefined,
+  ]);
+
   const getAlbums = () => {
     if (user.id === 0) return;
     axios.get<TopAlbums>(`/api/top/albums`).then((response) => {
@@ -106,17 +124,14 @@ const SearchResults = () => {
     });
   };
 
-  const saveArtist = (artist: Artist) => {
-    axios
-      .post(`/api/music/artist/${user.id}`, {
-        artistName: artist.name,
-      })
-      .then(() => {
-        setMessage(`${artist.name} saved!`);
-        setSnackbarOpen(true);
-      })
-      .catch((err) => console.error(err));
+  const getArtists = () => {
+    if (user.id === 0) return;
+    axios.get<TopArtists>(`/api/top/artists`).then((response) => {
+      setTopArtists(response.data);
+    });
   };
+
+
 
   const saveAlbumOfTheDay = (album: any) => {
     if (albumOfTheDaySet) {
@@ -211,9 +226,11 @@ const SearchResults = () => {
       })
       .catch((err) => console.error("Error checking album of the day", err));
   }, [query]);
+  //componentDidMount();
   useEffect(() => {
     if (user.id === 0) return;
     getAlbums();
+    getArtists();
   }, [user]);
   return (
     <Box p={2}>
@@ -305,10 +322,10 @@ const SearchResults = () => {
                       Set as Album of the Day
                     </Button>
                     <AlbumRanking
-                        album={album}
-                        topAlbums={topAlbums}
-                        refresh={getAlbums}
-                      />
+                      album={album}
+                      topAlbums={topAlbums}
+                      refresh={getAlbums}
+                    />
                     <Link
                       to={{
                         pathname: `/reviews`,
@@ -365,20 +382,11 @@ const SearchResults = () => {
               >
                 {artist.name}
               </Typography>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => saveArtist(artist)}
-                sx={{
-                  boxShadow: "5px 5px 0px #000",
-                  "&:hover": { boxShadow: "7px 7px 0px #000" },
-                  marginLeft: "10px",
-                  whiteSpace: "nowrap",
-                  minWidth: "100px",
-                }}
-              >
-                Save Artist
-              </Button>
+              <ArtistRanking
+                artist={artist}
+                topArtists={topArtists}
+                refresh={getArtists}
+              />
             </ListItem>
           ))}
         </List>
