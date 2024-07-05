@@ -86,9 +86,9 @@ const HomePage = () => {
 
   return (
     <Container sx={{ p: 2, mt: 3 }}>
-      <Typography variant="h1" gutterBottom>Welcome!</Typography>
-      <Typography variant="body1" gutterBottom>{today}</Typography>
-      <Typography variant="h2" gutterBottom>Your Album of The Day</Typography>
+      <Typography variant="h1" gutterBottom display="flex" justifyContent="center">Welcome!</Typography>
+      <Typography variant="body1" gutterBottom display="flex" justifyContent="center">{today}</Typography>
+      <Typography variant="h2" gutterBottom display="flex" justifyContent="center">Your Album of The Day</Typography>
       {albumOfTheDay ? (
         <Box display="flex" justifyContent="flex-start" flexDirection={isMobile ? 'column' : 'row'}>
           <Card sx={{ width: isMobile ? 300 : '100%', display: isMobile ? 0 : 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center' }}>
@@ -133,7 +133,7 @@ const HomePage = () => {
           </Card>
         </Box>
       ) : (
-        <Typography variant="body1">{errorMessage}</Typography>
+        <Typography variant="body1" display="flex" justifyContent="center" >{errorMessage}</Typography>
       )}
     </Container>
   );

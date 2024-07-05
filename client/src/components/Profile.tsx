@@ -72,7 +72,7 @@ const Profile = () => {
   }, []);
 
   return (
-    <Container sx={{ p: 2, mt: 3 }}>
+    <Container sx={{ p: 2, mt: 3, display: "flex", justifyContent: "center" }}>
       <Modal open={open} onClose={handleClose} sx={{
         display: "flex",
         justifyContent: "center",
@@ -93,7 +93,7 @@ const Profile = () => {
           <Button onClick={deleteProfile} color="primary" variant="contained">Delete</Button>
         </Box>
       </Modal>
-      <Box sx={{ alignItems: "left" }}>
+      <Box >
         <Typography variant="h1" sx={{ mb: 2 }}>
           Profile
         </Typography>
@@ -108,6 +108,7 @@ const Profile = () => {
           <Box
             sx={{
               display: "flex",
+              // justifyContent: "center",
               flexDirection: "column",
               alignItems: "center",
             }}
