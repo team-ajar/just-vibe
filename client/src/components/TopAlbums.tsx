@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Card, CardContent, Typography, Select, MenuItem, Button, CardMedia } from "../style";
 import { TopAlbums } from "./SearchResults";
 
-export const TopAlbumsComponent = ({ userId }: { userId: number }) => {
+export const TopAlbumsComponent = () => {
   const [topAlbums, setTopAlbums] = useState<TopAlbums>([
     undefined,
     undefined,
