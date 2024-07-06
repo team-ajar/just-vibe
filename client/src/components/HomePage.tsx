@@ -124,10 +124,10 @@ const HomePage = () => {
                 </Box>
               )}
               <Box display="flex" justifyContent="space-between" mt={2}>
-                <Button variant="contained" color="primary" onClick={handleEditClick}>
+                <Button variant="contained" color="secondary" onClick={handleEditClick}>
                   {isEditing ? 'Save' : 'Edit'}
                 </Button>
-                <Button variant="contained" color="secondary" onClick={() => deleteAlbumOfTheDay(albumOfTheDay.id)}>Delete</Button>
+                <Button variant="contained" color="primary" onClick={() => deleteAlbumOfTheDay(albumOfTheDay.id)}>Delete</Button>
               </Box>
             </CardContent>
           </Card>

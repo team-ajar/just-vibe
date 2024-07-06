@@ -79,10 +79,10 @@ const EditProfile = () => {
           fullWidth
           sx={{ mb: 2 }}
         />
-        <Button type="submit" variant="contained" color="primary" sx={{ mr: 2 }}>
+        <Button type="submit" variant="contained" color="secondary" sx={{ mr: 2 }}>
           Submit
         </Button>
-        <Button component={Link} to="/profile" variant="outlined" color="secondary">
+        <Button component={Link} to="/profile" variant="outlined" color="primary">
           Cancel
         </Button>
       </Box>

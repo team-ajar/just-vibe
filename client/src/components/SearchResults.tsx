@@ -321,11 +321,6 @@ const SearchResults = () => {
                     >
                       Set as Album of the Day
                     </Button>
-                    <AlbumRanking
-                      album={album}
-                      topAlbums={topAlbums}
-                      refresh={getAlbums}
-                    />
                     <Link
                       to={{
                         pathname: `/reviews`,
@@ -334,7 +329,7 @@ const SearchResults = () => {
                       style={{ textDecoration: "none" }}
                     >
                       <Button
-                        variant="outlined"
+                        variant="contained"
                         color="primary"
                         sx={{
                           boxShadow: "none",
@@ -348,6 +343,11 @@ const SearchResults = () => {
                         Write Review
                       </Button>
                     </Link>
+                    <AlbumRanking
+                      album={album}
+                      topAlbums={topAlbums}
+                      refresh={getAlbums}
+                    />
                   </Box>
                 </Box>
               </Card>

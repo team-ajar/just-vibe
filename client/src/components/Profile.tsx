@@ -125,6 +125,7 @@ const Profile = () => {
             <Box sx={{ display: "flex", gap: 2 }}>
               <Button
                 variant="contained"
+                color="secondary"
                 component={Link}
                 to={`/profile/edit/${user.id}`}
               >
@@ -132,7 +133,7 @@ const Profile = () => {
               </Button>
               <Button
                 variant="contained"
-                color="secondary"
+                color="primary"
                 onClick={handleOpen}
               >
                 Delete Profile
@@ -147,6 +148,7 @@ const Profile = () => {
               </Typography>
               <Button
                 variant="outlined"
+                color="secondary"
                 component={Link}
                 to={`/profile/followers/${user.id}`}
               >
@@ -160,6 +162,7 @@ const Profile = () => {
               </Typography>
               <Button
                 variant="outlined"
+                color="secondary"
                 component={Link}
                 to={`/profile/following/${user.id}`}
               >

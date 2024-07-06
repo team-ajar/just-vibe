@@ -54,7 +54,7 @@ export const TopArtistsComponent = () => {
               <Typography variant="h3" sx={{ mt: 1 }}>#{index + 1}</Typography>
               <Button
                 variant="contained"
-                color="secondary"
+                color="primary"
                 onClick={() => deleteSelectedArtist(topArtist?.artist.id)}
                 sx={{ mt: 2 }}
               >

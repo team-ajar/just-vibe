@@ -71,7 +71,7 @@ const FollowingList = () => {
               </Box>
               <Button
                 variant="contained"
-                color="secondary"
+                color="primary"
                 onClick={() => unfollowUser(followed.following.id)}
               >
                 Unfollow

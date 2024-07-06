@@ -71,7 +71,7 @@ export const TopAlbumsComponent = () => {
               </Typography>
               <Button
                 variant="contained"
-                color="secondary"
+                color="primary"
                 onClick={() => deleteSelectedAlbum(topAlbum?.album?.id)}
                 sx={{ mt: 2 }}
               >
