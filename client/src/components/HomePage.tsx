@@ -91,7 +91,7 @@ const HomePage = () => {
       <Typography variant="h2" gutterBottom>Your Album of The Day</Typography>
       {albumOfTheDay ? (
         <Box display="flex" justifyContent="flex-start" flexDirection={isMobile ? 'column' : 'row'}>
-          <Card sx={{ width: isMobile ? 300 : '100%', display: isMobile ? 0 : 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center' }}>
+          <Card sx={{ width: isMobile ? '100%' : '100%', display: isMobile ? 'block' : 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center' }}>
             <CardMedia
               component="div"
               sx={{
@@ -103,7 +103,7 @@ const HomePage = () => {
                 backgroundPosition: 'center',
               }}
             />
-            <CardContent sx={{ flexGrow: 1 }}>
+            <CardContent sx={{ flexGrow: 1, width: '100%' }}>
               <Typography variant="h3">{albumOfTheDay.album.albumName}</Typography>
               <Typography variant="body2">{albumOfTheDay.album.artistName}</Typography>
               {isEditing && (
