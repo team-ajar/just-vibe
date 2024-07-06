@@ -80,7 +80,11 @@ app.use(express.static(DIST_PATH));
 app.use("/api", router);
 
 app.get("/", (req: Request, res: Response) => {
-  res.sendFile(path.join(DIST_PATH, "index.html"));
+  if (req.isAuthenticated()) {
+    res.redirect("/home");
+  } else {
+    res.sendFile(path.join(DIST_PATH, "index.html"));
+  }
 });
 
 app.get(
@@ -106,6 +110,10 @@ app.post('/api/logout', (req, res) => {
       return res.status(500).send('Logout failed');
     }
   });
+});
+
+app.get('/api/checkAuth', (req, res) => {
+  res.json({ isAuthenticated: req.isAuthenticated() });
 });
 
 app.get("/home", isAuthenticated, (req, res) => {
