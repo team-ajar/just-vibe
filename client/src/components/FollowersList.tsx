@@ -115,7 +115,7 @@ const FollowersList = () => {
               ) ? (
                 <Button
                 variant="contained"
-                color="secondary"
+                color="primary"
                 onClick={() => unfollowUser(follower.followedBy.id)}
               >
                 Unfollow
@@ -123,7 +123,7 @@ const FollowersList = () => {
               ) : (
                 <Button
                 variant="contained"
-                color="primary"
+                color="secondary"
                 onClick={() => followUser(follower.followedBy.id)}
               >
                 Follow

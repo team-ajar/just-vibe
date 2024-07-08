@@ -1,5 +1,5 @@
 const isAuthenticated = (req: any, res: any, next: any) => {
-  !req.user ? res.redirect('/') : next()
+  !req.isAuthenticated() ? res.redirect('/') : next();
 };
 
 export default isAuthenticated;
