@@ -17,13 +17,13 @@ router.route('/search/:search').get(searchController.handleMusicSearch);
 router.route('/search/users/:userId/:query').get(searchController.handleUserSearch);
 
 router.route('/top/albums').get(isAuthenticated, topThreeController.getTopAlbums);
-router.route('/top/albums/rank').post(isAuthenticated, topThreeController.updateRanking);
-router.route("/top/albums/:albumId").delete(isAuthenticated, topThreeController.deleteTopAlbum)
+router.route('/top/albums/rank').post(isAuthenticated, topThreeController.updateAlbumRanking);
+router.route('/top/albums/:albumId').delete(isAuthenticated, topThreeController.deleteTopAlbum)
 
 
-router.route('/top/artists/:userId').get(isAuthenticated, topThreeController.getTopArtists);
-router.route('/top/artists/:oldArtistId/:position/:userId').post(isAuthenticated, topThreeController.createOrUpdateTopArtist);
-router.route('/top/artists/:artistId/:position/:userId').delete(isAuthenticated, topThreeController.deleteTopArtist);
+router.route('/top/artists').get(isAuthenticated, topThreeController.getTopArtists);
+router.route('/top/artists/rank').post(isAuthenticated, topThreeController.updateArtistRanking);
+router.route('/top/artists/:artistId').delete(isAuthenticated, topThreeController.deleteTopArtist);
 
 router.route('/albums/:artistName/:albumName/reviews').get(reviewsController.getReviews);
 router.route('/albums/:artistName/:albumName/review/:userId').post(reviewsController.createReview);

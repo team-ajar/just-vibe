@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 require("dotenv").config();
 import { PrismaClient } from "@prisma/client";
-import { findOrCreateAlbum, setAbumPosition } from "./Library";
+import { findOrCreateAlbum, setAlbumPosition, findOrCreateArtist, setArtistPosition } from "./Library";
 const prisma = new PrismaClient();
 
 const topThreeController = {
@@ -103,91 +103,49 @@ const topThreeController = {
   },
 
   getTopArtists: (req: Request, res: Response) => {
-    prisma.artist
-      .findMany({
-        orderBy: {
-          name: "asc",
-        },
-        where: {
-          userId: req.user!.id,
-        },
-      })
-      .then((artists) => {
-        prisma.topArtists
-          .findMany({
-            where: {
-              userId: req.user!.id,
-            },
-            orderBy: {
-              position: "asc",
-            },
-          })
-          .then((topArtists) => {
-            res.status(200).json({ artists, topArtists });
-          });
-      })
-      .catch((error) => {
-        console.error("Error retrieving albums:", error);
-        res.sendStatus(500);
-      });
-  },
-
-  createOrUpdateTopArtist: (req: Request, res: Response) => {
-    const { position, oldArtistId, userId } = req.params;
-    const { newArtistId } = req.body;
-
-    if (oldArtistId === "0") {
-      prisma.topArtists
-        .create({
-          data: {
-            position: Number(position),
-            artistId: Number(newArtistId),
-            userId: Number(userId),
-          },
-        })
-        .then((topArtist) => {
-          res.status(201).json(topArtist);
-        })
-        .catch((error) => {
-          console.error("Error creating album:", error);
-          res.sendStatus(500);
-        });
-      return;
-    }
-
+    const userId = req.user!.id;
     prisma.topArtists
-      .update({
+      .findMany({
         where: {
-          position_artistId_userId: {
-            position: Number(position),
-            artistId: Number(oldArtistId),
-            userId: Number(userId),
+          userId,
+        },
+        select: {
+          position: true,
+          artist: {
+            select: {
+              id: true,
+              name: true,
+            },
           },
         },
-        data: {
-          artistId: Number(newArtistId),
+        orderBy: {
+          position: "asc",
         },
+        take: 3,
       })
-      .then((topArtist) => {
-        res.status(200).json(topArtist);
+      .then((topArtists) => {
+        const artist1 = topArtists.find((artist) => artist.position === 1);
+        const artist2 = topArtists.find((artist) => artist.position === 2);
+        const artist3 = topArtists.find((artist) => artist.position === 3);
+        return res.status(200).send([artist1, artist2, artist3]);
       })
-      .catch((error) => {
-        console.error("Error updating album:", error);
+      .catch((err) => {
+        console.error(err);
         res.sendStatus(500);
       });
   },
+
+  
 
   deleteTopArtist: (req: Request, res: Response) => {
-    const { position, artistId, userId } = req.params;
+    const { artistId } = req.params;
+    const userId = req.user!.id;
 
     prisma.topArtists
-      .delete({
+      .deleteMany({
         where: {
-          position_artistId_userId: {
-            position: Number(position),
-            artistId: Number(artistId),
-            userId: Number(userId),
-          },
+          userId,
+          artistId: Number(artistId),
         },
       })
       .then(() => {
@@ -198,7 +156,7 @@ const topThreeController = {
         res.sendStatus(500);
       });
   },
-  updateRanking: (req: Request, res: Response) => {
+  updateAlbumRanking: (req: Request, res: Response) => {
     // get user id from session
     const userId = req.user!.id;
     // request body sent by front end
@@ -206,9 +164,32 @@ const topThreeController = {
     // find the album id, or create it and give me the new id
     findOrCreateAlbum(albumName, artistName, image, userId)
       .then((albumId) => {
-        setAbumPosition(albumId, userId, position)
+        setAlbumPosition(albumId, userId, position)
           .then((topAlbum) => {
             res.status(201).send(topAlbum);
+          })
+          .catch((err) => {
+            console.error(err);
+            res.sendStatus(500);
+          });
+      })
+      .catch((err) => {
+        console.error(err);
+        res.sendStatus(500);
+      });
+  },
+
+  updateArtistRanking: (req: Request, res: Response) => {
+    // get user id from session
+    const userId = req.user!.id;
+    // request body sent by front end
+    const { artistName, position } = req.body;
+    // find the album id, or create it and give me the new id
+    findOrCreateArtist(artistName, userId )
+      .then((artistId) => {
+        setArtistPosition(artistId, userId, position)
+          .then((topArtist) => {
+            res.status(201).send(topArtist);
           })
           .catch((err) => {
             console.error(err);

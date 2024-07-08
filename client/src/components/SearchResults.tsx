@@ -17,12 +17,24 @@ import {
   Tab,
 } from "../style";
 import AlbumRanking from "./AlbumRanking";
+import ArtistRanking from "./ArtistRanking";
 
-interface Artist {
+export interface Artist {
   image: any;
   name: string;
   url: string;
 }
+
+export type TopArtists = (
+  | {
+      position: number;
+      artist: {
+        name: string;
+        id: number;
+      };
+    }
+  | undefined
+)[];
 
 export interface Album {
   id: number;
@@ -42,12 +54,13 @@ export type TopAlbums = (
       position: number;
       album: {
         albumName: string;
-        image: string,
-        id: number
+        image: string;
+        id: number;
       };
     }
   | undefined
 )[];
+
 const TabPanel = (props: any) => {
   const { children, value, index, ...other } = props;
 
@@ -71,7 +84,6 @@ const SearchResults = () => {
     albums: [],
   });
 
-  const [albumOfTheDaySet, setAlbumOfTheDaySet] = useState<boolean>(false);
   const [user, setUser] = useState({
     id: 0,
     googleId: "",
@@ -83,6 +95,7 @@ const SearchResults = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [value, setValue] = useState(0);
+  const [albumOfTheDaySet, setAlbumOfTheDaySet] = useState<boolean>(false);
 
   const loadUser = () => {
     axios
@@ -99,6 +112,12 @@ const SearchResults = () => {
     undefined,
   ]);
 
+  const [topArtists, setTopArtists] = useState<TopArtists>([
+    undefined,
+    undefined,
+    undefined,
+  ]);
+
   const getAlbums = () => {
     if (user.id === 0) return;
     axios.get<TopAlbums>(`/api/top/albums`).then((response) => {
@@ -106,73 +125,80 @@ const SearchResults = () => {
     });
   };
 
-  const saveArtist = (artist: Artist) => {
-    axios
-      .post(`/api/music/artist/${user.id}`, {
-        artistName: artist.name,
-      })
-      .then(() => {
-        setMessage(`${artist.name} saved!`);
-        setSnackbarOpen(true);
-      })
-      .catch((err) => console.error(err));
+  const getArtists = () => {
+    if (user.id === 0) return;
+    axios.get<TopArtists>(`/api/top/artists`).then((response) => {
+      setTopArtists(response.data);
+    });
   };
 
-  const saveAlbumOfTheDay = (album: any) => {
-    if (albumOfTheDaySet) {
-      alert("You have already set an album of the day for today.");
-      return;
-    }
-
-    const { name: albumName, artist: artistName } = album;
-
-    // axios
-    //   .post("/api/album-id", { albumName, artistName })
-    //   .then((response) => {
-    //     const albumId = response.data.albumId;
-
-    //     axios
-    //       .get("/api/user")
-    //       .then((profileResponse) => {
-    //         const userId = profileResponse.data.id;
-
-    //         axios
-    //           .post("/api/album-of-the-day", {
-    //             albumName: album.name
-    //           })
-    //           .then(() => {
-    //             setAlbumOfTheDaySet(true);
-    //             setMessage(`Album of the day set for ${album.name}!`);
-    //             setSnackbarOpen(true);
-    //           })
-    //           .catch((err) =>
-    //             console.error("Error setting album of the day", err)
-    //           );
-    //       })
-    //       .catch((err) => console.error("Error getting userId", err));
-    //   })
+  const fetchAlbumOfTheDay = () => {
     axios
-      .post("/api/album-of-the-day", {
-        albumName,
-        artistName,
-        image: album.image[3]["#text"],
-      })
-      .then(() => {
-        setAlbumOfTheDaySet(true);
-        setMessage(`Album of the day set for ${album.name}!`);
-        setSnackbarOpen(true);
+      .get("/api/album-of-the-day")
+      .then((response) => {
+        if (response.data && dayjs(response.data.date).isSame(dayjs(), "day")) {
+          setAlbumOfTheDaySet(true);
+        } else {
+          setAlbumOfTheDaySet(false);
+        }
       })
       .catch((err) => {
-        console.error("Error getting albumId", err);
-        setMessage(
-          "Album missing, please save before setting as album of the day!"
-        );
+        console.error("Error checking album of the day", err);
+        setAlbumOfTheDaySet(false);
+      });
+  };
+
+  const saveAlbumOfTheDay = (album: Album) => {
+    const { name: albumName, artist: artistName } = album;
+
+    axios.get("/api/album-of-the-day")
+      .then((response) => {
+        if (response.data) {
+          const currentAlbumId = response.data.album.id;
+
+          if (currentAlbumId !== album.id) {
+            axios.delete(`/api/album-of-the-day/${response.data.id}`)
+              .then(() => {
+                setAlbumOfTheDaySet(false);
+                setNewAlbumOfTheDay(album);
+              })
+              .catch((err) => {
+                console.error("Error deleting current album of the day:", err);
+                setMessage("Error deleting current album of the day");
+                setSnackbarOpen(true);
+              });
+          } else {
+            setAlbumOfTheDaySet(true);
+            setMessage(`Album of the day replaced with ${album.name}!`);
+            setSnackbarOpen(true);
+          }
+        } else {
+          setNewAlbumOfTheDay(album);
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching current album of the day:", err);
+        setMessage("Error fetching current album of the day");
         setSnackbarOpen(true);
       });
   };
 
-  const handleOpen = () => {
-    setSnackbarOpen(false);
+  const setNewAlbumOfTheDay = (album: Album) => {
+    axios.post("/api/album-of-the-day", {
+      albumName: album.name,
+      artistName: album.artist,
+      image: album.image[3]["#text"],
+    })
+    .then(() => {
+      setMessage(`Album of the day set for ${album.name}!`);
+      setAlbumOfTheDaySet(true);
+      setSnackbarOpen(true);
+    })
+    .catch((err) => {
+      console.error("Error setting album of the day", err);
+      setMessage("Error setting album of the day");
+      setSnackbarOpen(true);
+    });
   };
 
   const handleClose = () => {
@@ -202,19 +228,15 @@ const SearchResults = () => {
       })
       .catch((error) => console.error("Error fetching search results:", error));
 
-    axios
-      .get("/api/album-of-the-day")
-      .then((response) => {
-        if (response.data && dayjs(response.data.date).isSame(dayjs(), "day")) {
-          setAlbumOfTheDaySet(true);
-        }
-      })
-      .catch((err) => console.error("Error checking album of the day", err));
+    fetchAlbumOfTheDay();
   }, [query]);
+
   useEffect(() => {
     if (user.id === 0) return;
     getAlbums();
+    getArtists();
   }, [user]);
+
   return (
     <Box p={2}>
       <Typography
@@ -224,7 +246,7 @@ const SearchResults = () => {
           fontWeight: 700,
           textTransform: "uppercase",
           letterSpacing: "2px",
-          mb: 4, // margin-bottom
+          mb: 4,
           mt: 2,
         }}
       >
@@ -294,7 +316,6 @@ const SearchResults = () => {
                       variant="contained"
                       color="secondary"
                       onClick={() => saveAlbumOfTheDay(album)}
-                      disabled={albumOfTheDaySet}
                       sx={{
                         boxShadow: "none",
                         "&:hover": { boxShadow: "none" },
@@ -304,11 +325,6 @@ const SearchResults = () => {
                     >
                       Set as Album of the Day
                     </Button>
-                    <AlbumRanking
-                        album={album}
-                        topAlbums={topAlbums}
-                        refresh={getAlbums}
-                      />
                     <Link
                       to={{
                         pathname: `/reviews`,
@@ -317,7 +333,7 @@ const SearchResults = () => {
                       style={{ textDecoration: "none" }}
                     >
                       <Button
-                        variant="outlined"
+                        variant="contained"
                         color="primary"
                         sx={{
                           boxShadow: "none",
@@ -331,6 +347,11 @@ const SearchResults = () => {
                         Write Review
                       </Button>
                     </Link>
+                    <AlbumRanking
+                      album={album}
+                      topAlbums={topAlbums}
+                      refresh={getAlbums}
+                    />
                   </Box>
                 </Box>
               </Card>
@@ -357,7 +378,7 @@ const SearchResults = () => {
                   fontWeight: 700,
                   textTransform: "uppercase",
                   letterSpacing: "2px",
-                  marginRight: "10px", // space between artist name and button
+                  marginRight: "10px",
                   textDecoration: "none",
                 }}
                 component="a"
@@ -365,20 +386,11 @@ const SearchResults = () => {
               >
                 {artist.name}
               </Typography>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => saveArtist(artist)}
-                sx={{
-                  boxShadow: "5px 5px 0px #000",
-                  "&:hover": { boxShadow: "7px 7px 0px #000" },
-                  marginLeft: "10px",
-                  whiteSpace: "nowrap",
-                  minWidth: "100px",
-                }}
-              >
-                Save Artist
-              </Button>
+              <ArtistRanking
+                artist={artist}
+                topArtists={topArtists}
+                refresh={getArtists}
+              />
             </ListItem>
           ))}
         </List>

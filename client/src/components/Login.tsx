@@ -1,8 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, Typography, Button, Box } from "../style";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import logo from "./justvibelogo.png";
 
 const Login = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios.get('/api/checkAuth')
+      .then(response => {
+        if (response.data.isAuthenticated) {
+          navigate('/home');
+        }
+      })
+      .catch(error => {
+        console.error('Error checking authentication status:', error);
+      });
+  }, [navigate]);
+
   return (
     <Container maxWidth="sm" sx={{ p: 2, mt: 3, textAlign: 'center' }}>
       <Box sx={{ mb: 2 }}>

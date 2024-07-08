@@ -220,7 +220,7 @@ const Reviews = () => {
           </FormControl>
           {review.id && (
             <Button
-              variant="outlined"
+              variant="contained"
               color="secondary"
               onClick={() => updateReview(review.id)}
               sx={{ marginLeft: "10px" }}
@@ -244,7 +244,7 @@ const Reviews = () => {
                 </Typography>
                 <Button
                   variant="contained"
-                  color="primary"
+                  color="secondary"
                   onClick={() => setReview(rev)}
                   sx={{ marginTop: "10px" }}
                 >
@@ -252,7 +252,7 @@ const Reviews = () => {
                 </Button>
                 <Button
                   variant="contained"
-                  color="secondary"
+                  color="primary"
                   onClick={() => deleteReview(rev.id)}
                   sx={{ marginTop: "10px", marginLeft: "10px" }}
                 >

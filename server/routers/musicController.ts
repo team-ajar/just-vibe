@@ -19,7 +19,11 @@ const musicController = {
             .create({
               data: {
                 name: artistName,
-                userId: Number(userId),
+                user: {
+                  connect: {
+                    id: Number(userId)
+                  }
+                },
               },
             })
             .then(() => res.sendStatus(201))
@@ -37,11 +41,15 @@ const musicController = {
   //the findOrCreateAlbum method inside Library.ts
 
   readAlbums: (req: Request, res: Response) => {
-    const userId = req.user?.id;
+    const userId = req.user!.id;
 
     prisma.album.findMany({
       where: {
-        userId: userId
+        user: {
+          some: {
+            id: userId
+          }
+        }
       }
     })
     .then(albums => {

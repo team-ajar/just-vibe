@@ -112,7 +112,7 @@ const SearchUsers = () => {
               ) ? (
                 <Button
                   variant="contained"
-                  color="secondary"
+                  color="primary"
                   onClick={() => unfollowUser(foundUser.id)}
                   sx={{ marginLeft: 2 }}
                 >
@@ -121,7 +121,7 @@ const SearchUsers = () => {
               ) : (
                 <Button
                   variant="contained"
-                  color="primary"
+                  color="secondary"
                   onClick={() => followUser(foundUser.id)}
                 >
                   Follow

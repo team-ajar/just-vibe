@@ -126,6 +126,7 @@ const Profile = () => {
             <Box sx={{ display: "flex", gap: 2 }}>
               <Button
                 variant="contained"
+                color="secondary"
                 component={Link}
                 to={`/profile/edit/${user.id}`}
               >
@@ -133,7 +134,7 @@ const Profile = () => {
               </Button>
               <Button
                 variant="contained"
-                color="secondary"
+                color="primary"
                 onClick={handleOpen}
               >
                 Delete Profile
@@ -148,6 +149,7 @@ const Profile = () => {
               </Typography>
               <Button
                 variant="outlined"
+                color="secondary"
                 component={Link}
                 to={`/profile/followers/${user.id}`}
               >
@@ -161,6 +163,7 @@ const Profile = () => {
               </Typography>
               <Button
                 variant="outlined"
+                color="secondary"
                 component={Link}
                 to={`/profile/following/${user.id}`}
               >
@@ -169,8 +172,8 @@ const Profile = () => {
             </Box>
           </Box>
         </Card>
-        {user.id > 0 && <TopAlbumsComponent userId={user.id} />}
-        {user.id > 0 && <TopArtistsComponent userId={user.id} />}
+        <TopAlbumsComponent/>
+        <TopArtistsComponent/>
       </Box>
     </Container>
   );
