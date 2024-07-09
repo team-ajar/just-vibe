@@ -3,7 +3,15 @@ import axios from "axios";
 import { TopAlbumsComponent } from "./TopAlbums";
 import { TopArtistsComponent } from "./TopArtists";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Container, Typography, Card, Box, Button, Avatar, Modal } from "../style";
+import {
+  Container,
+  Typography,
+  Card,
+  Box,
+  Button,
+  Avatar,
+  Modal,
+} from "../style";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
@@ -38,7 +46,6 @@ const Profile = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const loadPage = () => {
-
     axios
       .get("/api/user")
       .then(({ data }: any) => {
@@ -70,7 +77,9 @@ const Profile = () => {
   }, []);
 
   return (
-    <Container sx={{ p: 2, mt: 3, display: "flex", justifyContent: "center", m: 4, }}>
+    <Container
+      sx={{ p: 2, mt: 3, display: "flex", justifyContent: "space-around", m: 4,}}
+    >
       <Modal
         open={open}
         onClose={handleClose}
@@ -109,17 +118,17 @@ const Profile = () => {
         </Box>
       </Modal>
       <Box>
-        <Typography variant="h1" sx={{ mb: 2 }} >
+        <Typography variant="h1" sx={{ mb: 2 }}>
           Profile
         </Typography>
-        <Box sx={{ display: "flex", justifyContent: "center"}}>
+        <Box sx={{ display: "flex", justifyContent: "center", m: 4 }}>
           <Card
             sx={{
               maxWidth: 600,
               p: 3,
               boxShadow: "10px 10px 0px #000",
               border: "2px solid #000",
-              width: isMobile ? 400 : 600
+              width: isMobile ? 400 : 600,
             }}
           >
             <Box
@@ -194,8 +203,12 @@ const Profile = () => {
             </Box>
           </Card>
         </Box>
-        <TopAlbumsComponent />
-        <TopArtistsComponent />
+        <Box sx={{ display: "flex", justifyContent: "center", m: 4 }}>
+          <TopAlbumsComponent />
+        </Box>
+        <Box sx={{ display: "flex", justifyContent: "center", m: 4 }}>
+          <TopArtistsComponent />
+        </Box>
       </Box>
     </Container>
   );
