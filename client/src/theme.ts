@@ -18,7 +18,7 @@ export const light: ThemeOptions = {
     h1: {
       fontSize: '3rem',
       fontWeight: 700,
-      textTransform: 'uppercase',
+      // textTransform: 'uppercase',
       letterSpacing: '2px',
     },
     h2: {
