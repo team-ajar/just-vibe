@@ -114,7 +114,7 @@ const Feed = () => {
           Search Users
         </Button>
       </Box>
-      <Typography variant="h2" gutterBottom>Reviews From People You Follow</Typography>
+      <Typography variant="h2" gutterBottom>Reviews From You and People You Follow</Typography>
       {reviews.length > 0 ? (
         <Grid container spacing={5}>
           {reviews.map(review => (

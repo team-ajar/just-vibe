@@ -20,7 +20,6 @@ router.route('/top/albums').get(isAuthenticated, topThreeController.getTopAlbums
 router.route('/top/albums/rank').post(isAuthenticated, topThreeController.updateAlbumRanking);
 router.route('/top/albums/:albumId').delete(isAuthenticated, topThreeController.deleteTopAlbum)
 
-
 router.route('/top/artists').get(isAuthenticated, topThreeController.getTopArtists);
 router.route('/top/artists/rank').post(isAuthenticated, topThreeController.updateArtistRanking);
 router.route('/top/artists/:artistId').delete(isAuthenticated, topThreeController.deleteTopArtist);
@@ -36,8 +35,6 @@ router.route('/album-of-the-day/:id').put(albumOfTheDayController.editAlbumOfThe
 router.route('/album-of-the-day/:id').delete(albumOfTheDayController.deleteAlbumOfTheDay);
 
 router.route('/music/artist/:userId').post(musicController.saveArtist);
-//remove this music controller route since we deleted the method from musicController
-// router.route('/music/album/:userId').post(musicController.saveAlbum);
 router.route('/music/albums').get(musicController.readAlbums);
 
 router.route('/user').get(profileController.readUser);
