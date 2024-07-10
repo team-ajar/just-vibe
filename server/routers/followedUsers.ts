@@ -60,6 +60,21 @@ const followedUsers = {
         res.sendStatus(500);
       });
   },
+
+  deleteReview: (req: Request, res: Response) => {
+    const { reviewId } = req.params;
+
+    prisma.review.delete({
+      where: { id: parseInt(reviewId) }
+    })
+      .then(() => {
+        res.sendStatus(200);
+      })
+      .catch((err) => {
+        console.error("Error deleting review", err);
+        res.sendStatus(500);
+      });
+  },
 };
 
 export default followedUsers;

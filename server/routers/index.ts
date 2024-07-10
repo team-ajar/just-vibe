@@ -18,7 +18,7 @@ router.route('/search/users/:userId/:query').get(searchController.handleUserSear
 
 router.route('/top/albums').get(isAuthenticated, topThreeController.getTopAlbums);
 router.route('/top/albums/rank').post(isAuthenticated, topThreeController.updateAlbumRanking);
-router.route('/top/albums/:albumId').delete(isAuthenticated, topThreeController.deleteTopAlbum)
+router.route('/top/albums/:albumId').delete(isAuthenticated, topThreeController.deleteTopAlbum);
 
 router.route('/top/artists').get(isAuthenticated, topThreeController.getTopArtists);
 router.route('/top/artists/rank').post(isAuthenticated, topThreeController.updateArtistRanking);
@@ -49,6 +49,7 @@ router.route('/followers/:userId').get(followController.getFollowers);
 router.route('/following/:userId').get(followController.getFollowing);
 
 router.route('/feed/reviews/:userId').get(followedUsers.getFollowedUsersReviews);
+router.route('/reviews/:reviewId').delete(followedUsers.deleteReview);
 
 router.route('/reactions').post(reactionsController.addOrUpdateReaction);
 router.route('/reactions/:userId/:postId').delete(reactionsController.removeReaction);
