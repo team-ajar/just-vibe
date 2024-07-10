@@ -75,6 +75,14 @@ const Feed = () => {
       .catch(err => console.error(err));
   };
 
+  const deleteReview = (reviewId: number) => {
+    axios.delete(`/api/reviews/${reviewId}`)
+      .then(() => {
+        setReviews(prevReviews => prevReviews.filter(review => review.id !== reviewId));
+      })
+      .catch(err => console.error("Error deleting review", err));
+  };
+
   const handleChange = (e: any) => {
     setQuery(e);
   };
@@ -114,7 +122,7 @@ const Feed = () => {
           Search Users
         </Button>
       </Box>
-      <Typography variant="h2" gutterBottom>Reviews From People You Follow</Typography>
+      <Typography variant="h2" gutterBottom>Reviews From You and People You Follow</Typography>
       {reviews.length > 0 ? (
         <Grid container spacing={5}>
           {reviews.map(review => (
@@ -143,6 +151,16 @@ const Feed = () => {
                 <CardContent>
                   <Typography variant="body1">@{review.username}: {review.text}</Typography>
                   <Reactions userId={user.id} postId={review.id} />
+                  {review.userId === user.id && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => deleteReview(review.id)}
+                      sx={{ mt: 2 }}
+                    >
+                      Delete Review
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             </Grid>
@@ -152,7 +170,7 @@ const Feed = () => {
         <Typography variant="body1">No reviews to display</Typography>
       )}
     </Container>
-  )
+  );
 };
 
 export default Feed;
