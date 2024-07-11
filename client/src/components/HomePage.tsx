@@ -189,7 +189,7 @@ const HomePage = () => {
                 <CardContent sx={{ flexGrow: 1, width: "100%" }}>
                   <Typography variant="h3">{album.album.albumName}</Typography>
                   <Typography variant="body2">{album.album.artistName}</Typography>
-                  <Typography variant="body2">Shared by: {album.username}</Typography>
+                  <Typography variant="body2">Shared by @{album.username}</Typography>
                 </CardContent>
               </Card>
             </Box>
