@@ -7,6 +7,14 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
+interface User {
+  id: number;
+  googleId: string;
+  location: string;
+  name: string;
+  username: string;
+}
+
 const HomePage = () => {
   const [albumOfTheDay, setAlbumOfTheDay] = useState<any>(null);
   const [followedAlbumsOfTheDay, setFollowedAlbumsOfTheDay] = useState<any[]>([]);
@@ -14,13 +22,21 @@ const HomePage = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [newAlbumId, setNewAlbumId] = useState<number | null>(null);
   const [albums, setAlbums] = useState<any[]>([]);
+  const [user, setUser] = useState<User | null>(null);
   const today = dayjs().format("dddd, MMMM D, YYYY");
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
-    const loggedInUserId = 1;
+    axios.get('/api/user')
+      .then(response => {
+        setUser(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching user", error);
+        setErrorMessage("Error fetching user");
+      });
 
     axios.get("/api/album-of-the-day")
       .then(response => {
@@ -43,16 +59,20 @@ const HomePage = () => {
         console.error("Error fetching albums", error);
         setErrorMessage("Error fetching albums");
       });
-
-    axios.get(`/api/followed/albums-of-the-day/${loggedInUserId}`)
-      .then(response => {
-        setFollowedAlbumsOfTheDay(response.data);
-      })
-      .catch(error => {
-        console.error("Error fetching followed users' albums of the day", error);
-        setErrorMessage("Error fetching followed users' albums of the day");
-      });
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      axios.get(`/api/followed/albums-of-the-day/${user.id}`)
+        .then(response => {
+          setFollowedAlbumsOfTheDay(response.data);
+        })
+        .catch(error => {
+          console.error("Error fetching followed users' albums of the day", error);
+          setErrorMessage("Error fetching followed users' albums of the day");
+        });
+    }
+  }, [user]);
 
   const deleteAlbumOfTheDay = (id: number) => {
     axios.delete(`/api/album-of-the-day/${id}`)
