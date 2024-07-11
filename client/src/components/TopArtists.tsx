@@ -46,7 +46,7 @@ export const TopArtistsComponent = () => {
   return (
     <Box >
       <Typography variant="h2">Top 3 Artists</Typography>
-      <Box sx={{ display: "flex", gap: 3, flexWrap: "wrap" }}>
+      <Box sx={{ display: "flex", gap: 3, flexWrap: "wrap", pt: 2 }}>
         {topArtists.map((topArtist, index) => (
           <Card key={index} sx={{ width: 300, boxShadow: "5px 5px 0px #000", border: "2px solid #000" }}>
             <CardContent sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
