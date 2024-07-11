@@ -50,6 +50,7 @@ router.route('/following/:userId').get(followController.getFollowing);
 
 router.route('/feed/reviews/:userId').get(followedUsers.getFollowedUsersReviews);
 router.route('/reviews/:reviewId').delete(followedUsers.deleteReview);
+router.route('/followed/albums-of-the-day/:userId').get(followedUsers.getFollowedUsersAlbumsOfTheDay);
 
 router.route('/reactions').post(reactionsController.addOrUpdateReaction);
 router.route('/reactions/:userId/:postId').delete(reactionsController.removeReaction);

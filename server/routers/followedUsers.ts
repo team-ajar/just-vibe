@@ -75,6 +75,40 @@ const followedUsers = {
         res.sendStatus(500);
       });
   },
+
+  getFollowedUsersAlbumsOfTheDay: (req: Request, res: Response) => {
+    const { userId } = req.params;
+
+    prisma.follows.findMany({
+      where: { followedById: parseInt(userId) },
+      include: {
+        following: {
+          select: {
+            id: true,
+            username: true,
+            albumsOfTheDay: {
+              include: {
+                album: true,
+              },
+            },
+          },
+        },
+      },
+    })
+      .then(follows => {
+        const followedAlbumsOfTheDay = follows.map(follow => ({
+          userId: follow.following.id,
+          username: follow.following.username,
+          album: follow.following.albumsOfTheDay.length > 0 ? follow.following.albumsOfTheDay[0].album : null,
+        })).filter(followed => followed.album);
+
+        res.status(200).send(followedAlbumsOfTheDay);
+      })
+      .catch(err => {
+        console.error("Error fetching followed users' albums of the day", err);
+        res.sendStatus(500);
+      });
+  },
 };
 
 export default followedUsers;
