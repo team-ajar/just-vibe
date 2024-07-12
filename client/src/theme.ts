@@ -89,6 +89,13 @@ export const light: ThemeOptions = {
         },
       },
     },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#CB6CE6'
+        }
+      }
+    }
   },
 }
 export const dark: ThemeOptions = {
@@ -184,6 +191,20 @@ export const dark: ThemeOptions = {
         },
       },
     },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          color: '#ffffff'
+        }
+      }
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#89489c'
+        }
+      }
+    }
   },
 }
 const theme = createTheme(dark);

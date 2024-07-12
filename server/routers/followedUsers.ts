@@ -7,42 +7,71 @@ const followedUsers = {
   getFollowedUsersReviews: (req: Request, res: Response) => {
     const { userId } = req.params;
 
-    prisma.follows
-      .findMany({
-        where: { followedById: parseInt(userId) },
-        include: {
-          following: {
-            include: {
-              reviews: {
-                include: {
-                  Album: true,
-                },
-                orderBy: {
-                  id: 'desc',
-                }
+    const user = prisma.user.findUnique({
+      where: { id: parseInt(userId) },
+      select: { username: true },
+    });
+
+    const followedUsersReviews = prisma.follows.findMany({
+      where: { followedById: parseInt(userId) },
+      include: {
+        following: {
+          include: {
+            reviews: {
+              include: {
+                Album: true,
               },
+              orderBy: {
+                id: 'desc',
+              }
             },
           },
         },
-      })
-      .then((follows: any) => {
-        const reviews = follows.flatMap(
-          (follow: {
-            following: {
-              username: any;
-              reviews: any;
-            };
-          }) =>
-            follow.following.reviews.map((review: any) => ({
-              ...review,
-              username: follow.following.username,
-              album: review.Album,
-            }))
+      },
+    });
+
+    const userReviews = prisma.review.findMany({
+      where: { userId: parseInt(userId) },
+      include: { Album: true },
+      orderBy: { id: 'desc' },
+    });
+
+    Promise.all([user, followedUsersReviews, userReviews])
+      .then(([user, follows, userReviews]) => {
+        const followedReviews = follows.flatMap(
+          (follow) => follow.following.reviews.map((review) => ({
+            ...review,
+            username: follow.following.username,
+            album: review.Album,
+          }))
         );
-        res.status(200).send(reviews);
+
+        const ownReviews = userReviews.map((review) => ({
+          ...review,
+          username: user?.username || "You",
+          album: review.Album,
+        }));
+
+        const allReviews = [...ownReviews, ...followedReviews].sort((a, b) => b.id - a.id);
+        res.status(200).send(allReviews);
       })
       .catch((err) => {
-        console.error("Error fetching followed users reviews", err);
+        console.error("Error fetching followed users and own reviews", err);
+        res.sendStatus(500);
+      });
+  },
+
+  deleteReview: (req: Request, res: Response) => {
+    const { reviewId } = req.params;
+
+    prisma.review.delete({
+      where: { id: parseInt(reviewId) }
+    })
+      .then(() => {
+        res.sendStatus(200);
+      })
+      .catch((err) => {
+        console.error("Error deleting review", err);
         res.sendStatus(500);
       });
   },
