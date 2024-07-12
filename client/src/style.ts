@@ -35,7 +35,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-
+import Modal  from '@mui/material/Modal';
 
 export {
   Container,
@@ -75,4 +75,5 @@ export {
   ArrowDropDownIcon,
   Tabs,
   Tab,
+  Modal
 };

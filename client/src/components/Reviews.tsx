@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import Snackbar from '@mui/material/Snackbar';
-import SnackbarContent from '@mui/material/SnackbarContent';
+import Snackbar from "@mui/material/Snackbar";
+import SnackbarContent from "@mui/material/SnackbarContent";
 import {
   Container,
   Typography,
@@ -11,8 +11,11 @@ import {
   Button,
   Box,
   FormControl,
-  TextareaAutosize
+  TextareaAutosize,
+  Modal,
 } from "../style";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 interface Review {
   text: string;
@@ -45,6 +48,10 @@ const Reviews = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [show, setShow] = useState(false);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const showReviews = () => {
     axios
@@ -71,11 +78,11 @@ const Reviews = () => {
         `/api/albums/${album.artist}/${album.name}/review/${userId}`,
         //to find a album we only need the userId, artistName and albumName
         //if it ISN'T found, we create it, and to create it we will also need the album image
-        //pass the neccessary content to create a album, incase the album is not saved already 
+        //pass the neccessary content to create a album, incase the album is not saved already
         {
-          ...review, //since to the server the review object AND the album image 
+          ...review, //since to the server the review object AND the album image
           image: album.image[3]["#text"],
-        } 
+        }
       )
       .then((response) => {
         setReviews((prev) => [...prev, response.data]);
@@ -102,6 +109,7 @@ const Reviews = () => {
       .catch((error) => {
         console.error("Error deleting review:", error);
       });
+    handleModalClose();
   };
 
   const updateReview = (reviewId?: number) => {
@@ -144,9 +152,17 @@ const Reviews = () => {
     setSnackbarOpen(false);
   };
 
+  const handleModalClose = () => {
+    setShow(false);
+  };
+
   return (
     <Container sx={{ p: 2, mt: 3 }}>
-      <Button variant="contained" onClick={() => navigate(`/search-results/${query}`)} sx={{ mb: 2 }}>
+      <Button
+        variant="contained"
+        onClick={() => navigate(`/search-results/${query}`)}
+        sx={{ mb: 2 }}
+      >
         &larr; Back to Search Results
       </Button>
       <Box sx={{ display: "flex", flexDirection: "column" }} mt={2}>
@@ -156,12 +172,21 @@ const Reviews = () => {
         >
           {album.name}
         </Typography>
-        <Box sx={{ flex: 1, display: "flex", gap: {
-          xs: "10px",
-          sm: "90px"
-        }, alignItems: "center", flexDirection: { xs: "column", sm: "row" }, mr: {
-          xs: 1.5
-        }}} >
+        <Box
+          sx={{
+            flex: 1,
+            display: "flex",
+            gap: {
+              xs: "10px",
+              sm: "90px",
+            },
+            alignItems: "center",
+            flexDirection: { xs: "column", sm: "row" },
+            mr: {
+              xs: 1.5,
+            },
+          }}
+        >
           <img
             src={album.image[3]["#text"]}
             alt={`${album.name} album cover`}
@@ -253,12 +278,54 @@ const Reviews = () => {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => deleteReview(rev.id)}
+                  onClick={() => setShow(true)}
                   sx={{ marginTop: "10px", marginLeft: "10px" }}
                 >
                   Delete
                 </Button>
               </CardContent>
+              <Modal open={show} onClose={handleModalClose}
+              sx={{
+                top: isMobile ? "10%" : "10%",
+                left: isMobile ? "10%" : "25%",
+                width: isMobile ? "100%" : "100%",
+                display: isMobile ? "block" : "flex",
+                flexDirection: isMobile ? "column" : "row",
+                alignItems: "center",
+              }}>
+                <Box
+                  sx={{
+                    // width: 0.25,
+                    // height: 0.25,
+                    bgcolor: "background.paper",
+                    border: "2px solid #000",
+                    boxShadow: "5px 5px 0px #000",
+                    p: 10,
+                    // alignContent: "center",
+                    position: "fixed",
+                    top: "25%",
+                    left: "25%",
+                  }}
+                >
+                  <Typography variant="h4">
+                    Are you sure you want to delete your review?
+                  </Typography>
+                  <Button
+                    onClick={() => deleteReview(rev.id)}
+                    color="primary"
+                    variant="contained"
+                  >
+                    Delete
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={handleModalClose}
+                  >
+                    Cancel
+                  </Button>
+                </Box>
+              </Modal>
             </Card>
           ))
         ) : (
@@ -269,11 +336,9 @@ const Reviews = () => {
         open={snackbarOpen}
         autoHideDuration={6000}
         onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
-        <SnackbarContent
-          message={snackbarMessage}
-        />
+        <SnackbarContent message={snackbarMessage} />
       </Snackbar>
     </Container>
   );

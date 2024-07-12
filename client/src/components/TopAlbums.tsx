@@ -40,7 +40,7 @@ export const TopAlbumsComponent = () => {
   return (
     <Box>
       <Typography variant="h2">Top 3 Albums</Typography>
-      <Box sx={{ display: "flex", gap: 3, flexWrap: "wrap" }}>
+      <Box sx={{ display: "flex", gap: 3, flexWrap: "wrap", pt: 2 }}>
         {topAlbums.map((topAlbum, index) => (
           <Card
             key={index}
@@ -55,9 +55,18 @@ export const TopAlbumsComponent = () => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                p: 0
+                p: 0,
+                position: "relative"
               }}
             >
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => deleteSelectedAlbum(topAlbum?.album?.id)}
+                sx={{ mt: 2, position: "absolute", top: 0, right: "10px" }}
+              >
+                Delete
+              </Button>
               <CardMedia
                 component="div"
                 sx={{
@@ -69,14 +78,7 @@ export const TopAlbumsComponent = () => {
               <Typography variant="h3" sx={{ mt: 1 }}>
                 #{index + 1}
               </Typography>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => deleteSelectedAlbum(topAlbum?.album?.id)}
-                sx={{ mt: 2 }}
-              >
-                Delete
-              </Button>
+              
             </CardContent>
           </Card>
         ))}

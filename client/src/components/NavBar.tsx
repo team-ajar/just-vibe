@@ -87,7 +87,7 @@ const NavBar = ({toggle, mode}: {toggle: () => void, mode: PaletteMode}) => {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <AppBar position="static" sx={{ backgroundColor: "#CB6CE6" }}>
+      <AppBar position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters sx={{
             display: "flex",
