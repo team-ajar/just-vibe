@@ -4,8 +4,7 @@ import dayjs from "dayjs";
 import { Container, Typography, Card, CardContent, CardMedia, Button, Select, MenuItem, Box } from "../style";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import Carousel from 'react-material-ui-carousel';
 
 interface User {
   id: number;
