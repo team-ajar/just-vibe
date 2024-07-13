@@ -18,19 +18,19 @@ export const light: ThemeOptions = {
     h1: {
       fontSize: '3rem',
       fontWeight: 700,
-      textTransform: 'uppercase',
+      // textTransform: 'uppercase',
       letterSpacing: '2px',
     },
     h2: {
       fontSize: '2rem',
       fontWeight: 700,
-      textTransform: 'uppercase',
+      // textTransform: 'uppercase',
       letterSpacing: '2px',
     },
     h3: {
       fontSize: '1.5rem',
       fontWeight: 700,
-      textTransform: 'uppercase',
+      // textTransform: 'uppercase',
       letterSpacing: '2px',
     },
     h5: {
@@ -44,7 +44,7 @@ export const light: ThemeOptions = {
       fontSize: '1.25rem',
       fontWeight: 700,
       fontFamily: 'Arial, sans-serif',
-      textTransform: 'uppercase',
+      // textTransform: 'uppercase',
       letterSpacing: '2px',
     },
     body1: {
@@ -89,6 +89,13 @@ export const light: ThemeOptions = {
         },
       },
     },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#CB6CE6'
+        }
+      }
+    }
   },
 }
 export const dark: ThemeOptions = {
@@ -109,33 +116,33 @@ export const dark: ThemeOptions = {
     h1: {
       fontSize: '3rem',
       fontWeight: 700,
-      textTransform: 'uppercase',
+      // textTransform: 'uppercase',
       letterSpacing: '2px',
     },
     h2: {
       fontSize: '2rem',
       fontWeight: 700,
-      textTransform: 'uppercase',
+      // textTransform: 'uppercase',
       letterSpacing: '2px',
     },
     h3: {
       fontSize: '1.5rem',
       fontWeight: 700,
-      textTransform: 'uppercase',
+      // textTransform: 'uppercase',
       letterSpacing: '2px',
     },
     h5: {
       fontSize: '1.5rem',
       fontWeight: 700,
       fontFamily: 'Arial, sans-serif',
-      textTransform: 'uppercase',
+      // textTransform: 'uppercase',
       letterSpacing: '2px',
     },
     h6: {
       fontSize: '1.25rem',
       fontWeight: 700,
       fontFamily: 'Arial, sans-serif',
-      textTransform: 'uppercase',
+      // textTransform: 'uppercase',
       letterSpacing: '2px',
     },
     body1: {
@@ -184,6 +191,20 @@ export const dark: ThemeOptions = {
         },
       },
     },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          color: '#ffffff'
+        }
+      }
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#89489c'
+        }
+      }
+    }
   },
 }
 const theme = createTheme(dark);

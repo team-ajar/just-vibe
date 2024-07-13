@@ -244,7 +244,7 @@ const SearchResults = () => {
         sx={{
           fontSize: "3rem",
           fontWeight: 700,
-          textTransform: "uppercase",
+          // textTransform: "uppercase",
           letterSpacing: "2px",
           mb: 4,
           mt: 2,
@@ -376,7 +376,7 @@ const SearchResults = () => {
                 sx={{
                   fontSize: "1.25rem",
                   fontWeight: 700,
-                  textTransform: "uppercase",
+                  // textTransform: "uppercase",
                   letterSpacing: "2px",
                   marginRight: "10px",
                   textDecoration: "none",
