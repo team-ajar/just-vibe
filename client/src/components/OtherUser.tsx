@@ -1,12 +1,6 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  Container,
-  Typography,
-  Card,
-  Box,
-  Avatar,
-} from "../style";
+import { Container, Typography, Card, Box, Avatar, Button } from "../style";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useParams } from "react-router-dom";
@@ -22,7 +16,6 @@ interface User {
 }
 
 const OtherProfile = () => {
-
   const [user, setUser] = useState<User>({
     id: 0,
     googleId: "",
@@ -33,7 +26,17 @@ const OtherProfile = () => {
     image: "",
   });
   const { userId } = useParams<{ userId: string }>();
-  
+  const [baseUser, setBaseUser] = useState<User>({
+    id: 0,
+    googleId: "",
+    location: "",
+    name: "",
+    username: "",
+    bio: "",
+    image: "",
+  });
+  const [follows, setFollows] = useState([]);
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -42,60 +45,58 @@ const OtherProfile = () => {
       .get(`/api/user/${userId}`)
       .then(({ data }: any) => {
         // console.log(data);
-        setUser(data)
+        setUser(data);
       })
       .catch((err) => console.error(err));
   };
 
+  const followUser = (following: any) => {
+    axios.post(`/api/follow/${baseUser.id}/${following}`)
+      .then(() => (
+        axios
+        .get(`/api/following/${baseUser.id}`)
+        .then((response) => setFollows(response.data))
+        .catch((error) => console.error("Error fetching follows", error))
+      ));
+    // return loadUser();
+  };
+
+  const unfollowUser = (unfollowing: any) => {
+    axios.delete(`/api/follow/${baseUser.id}/${unfollowing}`)
+    .then(() => (
+      axios
+      .get(`/api/following/${baseUser.id}`)
+      .then((response) => setFollows(response.data))
+      .catch((error) => console.error("Error fetching follows", error))
+    ));
+    // return loadUser();
+  };
+
   useEffect(() => {
     loadPage();
-  }, []);
+
+    axios
+      .get("/api/user")
+      .then(({ data }: any) => {
+        // console.log(data);
+        setBaseUser(data);
+      })
+      .catch((err) => console.error(err));
+
+    axios
+      .get(`/api/following/${baseUser.id}`)
+      .then((response) => setFollows(response.data))
+      .catch((error) => console.error("Error fetching follows", error));
+  }, [userId]);
 
   return (
     <Container
-      sx={{ p: 2, mt: 3, display: "flex", justifyContent: "center", m: 4,}}
+      sx={{ p: 2, mt: 3, display: "flex", justifyContent: "center", m: 4 }}
     >
-      {/* <Modal
-        open={open}
-        onClose={handleClose}
-        sx={{
-          top: isMobile ? "10%" : "10%",
-          left: isMobile ? "10%" : "25%",
-          width: isMobile ? "100%" : "100%",
-          display: isMobile ? "block" : "flex",
-          flexDirection: isMobile ? "column" : "row",
-          alignItems: "center",
-        }}
-      >
-        <Box
-          sx={{
-            // width: 0.25,
-            // height: 0.25,
-            bgcolor: "background.paper",
-            border: "2px solid #000",
-            boxShadow: "5px 5px 0px #000",
-            p: 10,
-            // alignContent: "center",
-            position: isMobile ? "" : "fixed",
-            top: "25%",
-            left: "25%",
-          }}
-        >
-          <Typography variant="h4">
-            Are you sure you want to delete your account?
-          </Typography>
-          <Button onClick={deleteProfile} color="primary" variant="contained">
-            Delete
-          </Button>
-          <Button variant="outlined" color="secondary" onClick={handleClose}>
-            Cancel
-          </Button>
-        </Box>
-      </Modal> */}
       <Box>
-        {/* <Typography variant="h1" sx={{ mb: 2 }}>
-          Profile
-        </Typography> */}
+        <Typography variant="h1" sx={{ mb: 2 }}>
+          {user.username}
+        </Typography>
         <Box sx={{ display: "flex", justifyContent: "center", m: 4 }}>
           <Card
             sx={{
@@ -127,23 +128,17 @@ const OtherProfile = () => {
               <Typography variant="body1" sx={{ mb: 2 }}>
                 {user.bio ? user.bio : ""}
               </Typography>
-              {/* <Box sx={{ display: "flex", gap: 2 }}>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  component={Link}
-                  to={`/profile/edit/${user.id}`}
-                >
-                  Edit Profile
+              {follows.some(
+                (followed: any) => followed.followingId === baseUser.id
+              ) ? (
+                <Button variant="contained" color="primary" onClick={() => unfollowUser(user.id)}>
+                  Unfollow
                 </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleOpen}
-                >
-                  Delete Profile
+              ) : (
+                <Button variant="contained" color="secondary" onClick={() => followUser(user.id)}>
+                  Follow
                 </Button>
-              </Box> */}
+              )}
             </Box>
             <Box
               sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}
@@ -186,7 +181,7 @@ const OtherProfile = () => {
         </Box> */}
       </Box>
     </Container>
-  )
+  );
 };
 
 export default OtherProfile;

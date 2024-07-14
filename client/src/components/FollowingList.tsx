@@ -67,6 +67,7 @@ const FollowingList = () => {
                 <ListItemText
                   primary={followed.following.name}
                   secondary={`@${followed.following.username}`}
+                  onClick={() => navigate(`/profile/${followed.following.id}`)}
                 />
               </Box>
               <Button
