@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Box, Card, CardContent, Typography, Select, MenuItem, Button, CardMedia } from "../style";
 import { TopAlbums } from "./SearchResults";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export const TopAlbumsComponent = () => {
   const [topAlbums, setTopAlbums] = useState<TopAlbums>([
@@ -65,7 +66,7 @@ export const TopAlbumsComponent = () => {
                 onClick={() => deleteSelectedAlbum(topAlbum?.album?.id)}
                 sx={{ mt: 2, position: "absolute", top: 0, right: "10px" }}
               >
-                Delete
+                <DeleteIcon/>
               </Button>
               <CardMedia
                 component="div"

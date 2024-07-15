@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Box, Card, CardContent, Typography, Button } from "../style";
 import { TopArtists } from "./SearchResults";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export const TopArtistsComponent = () => {
 
@@ -59,7 +60,7 @@ export const TopArtistsComponent = () => {
                 onClick={() => deleteSelectedArtist(topArtist?.artist.id)}
                 sx={{ mt: 2, position: "absolute", top: 0, right: "10px" }}
               >
-                Delete
+                <DeleteIcon/>
               </Button>
             </CardContent>
           </Card>
