@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { Container, Typography, Box, Button, styled } from "../style";
 
@@ -105,7 +105,7 @@ const SearchUsers = () => {
       <Box component="ul" p={0} m={0}>
         {searchResults.map((foundUser: User, index: number) => (
           <StyledListItem key={index}>
-            <Typography variant="body1">{`@${foundUser.username} - ${foundUser.name}`}</Typography>
+            <Typography variant="body1" component={Link} to={`/profile/${foundUser.id}`}>{`@${foundUser.username} - ${foundUser.name}`}</Typography>
             <div>
               {follows.some(
                 (followedUser: any) => followedUser.followingId === foundUser.id
