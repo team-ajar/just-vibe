@@ -26,6 +26,7 @@ module.exports = {
       { test: /\.(ts|tsx)$/, use: ['ts-loader'], exclude: /node_modules/ },
       { test: /\.(js|jsx)$/, use: ['babel-loader'], exclude: /node_modules/ },
       { test: /\.(png|jpe?g|gif)$/i, use: ['file-loader'] },
+      { test: /\.css$/, use: ['style-loader', 'css-loader'] },
     ],
   },
   output: {
@@ -40,5 +41,5 @@ module.exports = {
       template: './client/index.html',
       filename: 'index.html'
     }),
-],
+  ],
 };

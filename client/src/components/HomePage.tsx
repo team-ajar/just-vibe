@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import dayjs from "dayjs";
-import {
-  Container,
-  Typography,
-  Card,
-  CardContent,
-  CardMedia,
-  Button,
-  Select,
-  MenuItem,
-  Box,
-  Modal,
-} from "../style";
+import { Container, Typography, Card, CardContent, CardMedia, Button, Select, MenuItem, Box, Modal } from "../style";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import Carousel from 'react-material-ui-carousel';
+
+interface User {
+  id: number;
+  googleId: string;
+  location: string;
+  name: string;
+  username: string;
+}
 
 const HomePage = () => {
   const [albumOfTheDay, setAlbumOfTheDay] = useState<any>(null);
+  const [followedAlbumsOfTheDay, setFollowedAlbumsOfTheDay] = useState<any[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [newAlbumId, setNewAlbumId] = useState<number | null>(null);
   const [albums, setAlbums] = useState<any[]>([]);
+  const [user, setUser] = useState<User | null>(null);
   const [show, setShow] = useState(false);
   const today = dayjs().format("dddd, MMMM D, YYYY");
 
@@ -29,32 +29,50 @@ const HomePage = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
-    axios
-      .get("/api/album-of-the-day")
-      .then((response) => {
+    axios.get('/api/user')
+      .then(response => {
+        setUser(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching user", error);
+        setErrorMessage("Error fetching user");
+      });
+
+    axios.get("/api/album-of-the-day")
+      .then(response => {
         if (response.data) {
           setAlbumOfTheDay(response.data);
         } else {
-          setErrorMessage(
-            "No album of the day set for today. Search for an album and set it as your album of the day!"
-          );
+          setErrorMessage("No album of the day set for today. Search for an album and set it as your album of the day!");
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.error("Error fetching album of the day", error);
         setErrorMessage("Error fetching album of the day");
       });
 
-    axios
-      .get("/api/music/albums")
-      .then((response) => {
+    axios.get("/api/music/albums")
+      .then(response => {
         setAlbums(response.data);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error("Error fetching albums", error);
         setErrorMessage("Error fetching albums");
       });
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      axios.get(`/api/followed/albums-of-the-day/${user.id}`)
+        .then(response => {
+          setFollowedAlbumsOfTheDay(response.data);
+        })
+        .catch(error => {
+          console.error("Error fetching followed users' albums of the day", error);
+          setErrorMessage("Error fetching followed users' albums of the day");
+        });
+    }
+  }, [user]);
 
   const deleteAlbumOfTheDay = (id: number) => {
     axios
@@ -78,9 +96,8 @@ const HomePage = () => {
         userId: albumOfTheDay.user.id,
       })
       .then(() => {
-        axios
-          .get("/api/album-of-the-day")
-          .then((response) => {
+        axios.get("/api/album-of-the-day")
+          .then(response => {
             if (response.data) {
               setAlbumOfTheDay(response.data);
               setIsEditing(false);
@@ -89,12 +106,12 @@ const HomePage = () => {
               setErrorMessage("Error fetching updated album of the day");
             }
           })
-          .catch((error) => {
+          .catch(error => {
             console.error("Error fetching updated album of the day", error);
             setErrorMessage("Error fetching updated album of the day");
           });
       })
-      .catch((error) => {
+      .catch(error => {
         console.error("Error editing album of the day", error);
         setErrorMessage("Error editing album of the day");
       });
@@ -257,6 +274,35 @@ const HomePage = () => {
         <Typography variant="body1" display="flex" justifyContent="center">
           {errorMessage}
         </Typography>
+      )}
+      <Typography variant="h2" gutterBottom>Followed Users' Albums of The Day</Typography>
+      {followedAlbumsOfTheDay.length > 0 ? (
+        <Carousel>
+          {followedAlbumsOfTheDay.map(album => (
+            <Box key={album.userId} display="flex" justifyContent="flex-start" flexDirection={isMobile ? "column" : "row"}>
+              <Card sx={{ width: isMobile ? "100%" : "100%", display: isMobile ? "block" : "flex", flexDirection: isMobile ? "column" : "row", alignItems: "center" }}>
+                <CardMedia
+                  component="div"
+                  sx={{
+                    width: isMobile ? "100%" : 200,
+                    height: isMobile ? 0 : 200,
+                    paddingTop: isMobile ? "100%" : 0,
+                    backgroundImage: `url(${album.album.image})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                />
+                <CardContent sx={{ flexGrow: 1, width: "100%" }}>
+                  <Typography variant="h3">{album.album.albumName}</Typography>
+                  <Typography variant="body2">{album.album.artistName}</Typography>
+                  <Typography variant="body2">Shared by @{album.username}</Typography>
+                </CardContent>
+              </Card>
+            </Box>
+          ))}
+        </Carousel>
+      ) : (
+        <Typography variant="body1">No albums of the day to display</Typography>
       )}
     </Container>
   );
