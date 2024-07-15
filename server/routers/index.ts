@@ -40,6 +40,7 @@ router.route('/music/albums').get(musicController.readAlbums);
 router.route('/user').get(profileController.readUser);
 router.route('/user/:userId').patch(profileController.updateUser);
 router.route('/user/:userId').delete(profileController.deleteUser);
+router.route('/user/:userId').get(profileController.viewUser);
 
 router.route('/album-id').post(albumIdController.getAlbumId);
 

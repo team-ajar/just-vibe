@@ -70,6 +70,24 @@ const profileController = {
       .then(() => res.sendStatus(201))
       .catch(() => res.sendStatus(500));
   },
+
+  viewUser: (req: Request, res: Response) => {
+    const { userId } = req.params;
+
+    prisma.user.findUnique({
+      where: {
+        id: Number(userId)
+      }
+    })
+      .then((found: any) => {
+        if (found) {
+          res.status(200).send(found);
+        } else {
+          res.status(404).send("User not found");
+        }
+      })
+      .catch((err: any) => res.sendStatus(500));
+  }
 };
 
 export default profileController;

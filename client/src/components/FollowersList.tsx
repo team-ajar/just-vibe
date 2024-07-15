@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import {
   List,
@@ -107,6 +107,7 @@ const FollowersList = () => {
                 <ListItemText
                   primary={follower.followedBy.name}
                   secondary={`@${follower.followedBy.username}`}
+                  onClick={() => navigate(`/profile/${follower.followedBy.id}`)}
                 />
               </Box>
               

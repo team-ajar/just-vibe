@@ -78,7 +78,7 @@ const Profile = () => {
 
   return (
     <Container
-      sx={{ p: 2, mt: 3, display: "flex", justifyContent: "space-around", m: 4,}}
+      sx={{ p: 2, mt: 3, m: 4,}}
     >
       <Modal
         open={open}
@@ -117,8 +117,8 @@ const Profile = () => {
           </Button>
         </Box>
       </Modal>
-      <Box>
-        <Typography variant="h1" sx={{ mb: 2 }}>
+      <Box sx={{alignItems: "flex-start", alignContent: "center"}}>
+        <Typography variant="h1" sx={{ mb: 2, display: "flex", justifyContent: "center", }}>
           Profile
         </Typography>
         <Box sx={{ display: "flex", justifyContent: "center", m: 4 }}>

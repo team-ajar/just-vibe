@@ -11,6 +11,7 @@ import EditProfile from './EditProfile';
 import Login from './Login';
 import FollowersList from './FollowersList';
 import FollowingList from './FollowingList';
+import OtherProfile from './OtherUser';
 import { light, dark } from "../theme";
 import { CssBaseline, PaletteMode, ThemeProvider, createTheme } from '@mui/material';
 const App = () => {
@@ -43,6 +44,7 @@ const App = () => {
         <Route path='/profile/edit/:id' element={<EditProfile/>} />
         <Route path='/profile/followers/:userId' element={<FollowersList />} />
         <Route path='/profile/following/:userId' element={<FollowingList />} />
+        <Route path='/profile/:userId' element={<OtherProfile />} />
       </Routes>
     </div>
     </ThemeProvider>
