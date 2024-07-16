@@ -252,7 +252,6 @@ const Feed = () => {
                     </Button>
                   </Box>
                 </Modal>
-                ƒ
               </Card>
             </Grid>
           ))}
