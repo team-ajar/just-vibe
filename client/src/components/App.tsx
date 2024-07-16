@@ -14,6 +14,7 @@ import FollowingList from './FollowingList';
 import OtherProfile from './OtherUser';
 import { light, dark } from "../theme";
 import { CssBaseline, PaletteMode, ThemeProvider, createTheme } from '@mui/material';
+
 const App = () => {
   const location = useLocation();
   const isLoginPage = location.pathname === '/';
