@@ -275,7 +275,7 @@ const HomePage = () => {
           {errorMessage}
         </Typography>
       )}
-      <Typography variant="h2" gutterBottom>Followed Users' Albums of The Day</Typography>
+      <Typography variant="h2" display="flex" justifyContent="center" gutterBottom>Followed Users' Albums of The Day</Typography>
       {followedAlbumsOfTheDay.length > 0 ? (
         <Carousel>
           {followedAlbumsOfTheDay.map(album => (
